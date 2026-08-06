@@ -70,6 +70,7 @@ No ejecute un instalador con privilegios sin leerlo. Ningún script descarga y c
 - [Libro en PDF](docs/libro/Libro_Informatica_I_2026.pdf)
 - [Fuentes LaTeX](docs/libro/latex/README.md)
 - [Syllabus actualizado](docs/SYLLABUS.md) y [libro de Excel](docs/Syllabus_Informatica_I_Actualizado_2026.xlsx)
+- [Agenda del segundo semestre de 2026 y distribución docente](docs/AGENDA_16_SEMANAS.md)
 - Cada módulo enlaza las secciones del libro, objetivos, instalación, ejercicio, validación y evidencia esperada.
 
 ## Comandos comunes

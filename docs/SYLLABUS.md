@@ -3,9 +3,11 @@
 ## Identidad
 
 - Programa: Especialización en Ingeniería de Software.
+- Periodo académico: segundo semestre de 2026.
 - Enfoque: arquitectura moderna y desarrollo asistido por IA.
 - Caso conductor: LibreReserva.
 - Modalidad: explicación breve, laboratorio acumulativo, validación y defensa.
+- Agenda: [16 miércoles, cuatro horas por sesión](AGENDA_16_SEMANAS.md).
 
 ## Unidades
 

@@ -4,6 +4,7 @@
 
 - Duración: 16 semanas.
 - Intensidad: 4 horas cada miércoles.
+- Horario: 6:00 p. m. a 10:00 p. m.
 - Total presencial: 64 horas.
 - Periodo académico: segundo semestre de 2026.
 - Primera sesión: miércoles 12 de agosto de 2026.
@@ -42,17 +43,15 @@ La primera mitad produce una versión funcional y probada. La segunda transforma
 
 ## Estructura de una sesión de cuatro horas
 
-| Tiempo relativo | Actividad |
+| Horario | Actividad |
 |---|---|
-| 0:00–0:20 | Activación, revisión de evidencias y preguntas |
-| 0:20–1:20 | Fundamentos, decisiones y demostración breve |
-| 1:20–1:30 | Pausa |
-| 1:30–2:25 | Taller guiado |
-| 2:25–2:35 | Pausa |
-| 2:35–3:35 | Laboratorio acumulativo sobre LibreReserva |
-| 3:35–4:00 | Validación, retroalimentación y siguiente entrega |
-
-El horario institucional puede desplazar estos bloques sin cambiar su duración relativa.
+| 6:00–6:20 p. m. | Activación, revisión de evidencias y preguntas |
+| 6:20–7:20 p. m. | Fundamentos, decisiones y demostración breve |
+| 7:20–7:30 p. m. | Pausa |
+| 7:30–8:25 p. m. | Taller guiado |
+| 8:25–8:35 p. m. | Pausa |
+| 8:35–9:35 p. m. | Laboratorio acumulativo sobre LibreReserva |
+| 9:35–10:00 p. m. | Validación, retroalimentación y siguiente entrega |
 
 ## Hitos acumulativos
 

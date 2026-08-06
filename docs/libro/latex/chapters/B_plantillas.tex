@@ -1,0 +1,122 @@
+\chapter{Plantillas de trabajo y evaluación}
+\label{ap:plantillas}
+
+Estas plantillas reducen trabajo mecánico y hacen comparables las evidencias. Deben adaptarse; completar campos sin una decisión real no aporta valor.
+
+\section{Registro de decisión arquitectónica}
+
+\begin{lstlisting}[caption={docs/adr/NNNN-titulo.md}]
+# NNNN. Titulo de la decision
+Fecha: AAAA-MM-DD
+Estado: propuesta | aceptada | reemplazada
+
+## Contexto
+Problema, restricciones y fuerzas en tension.
+
+## Opciones consideradas
+- Opcion A: beneficios, costos y riesgos.
+- Opcion B: beneficios, costos y riesgos.
+
+## Decision
+Opcion elegida y razon vinculada a escenarios de calidad.
+
+## Consecuencias
+Efectos positivos, negativos, deuda y condiciones para revisarla.
+
+## Evidencia
+Prueba, experimento, metrica o fuente que sustenta la decision.
+\end{lstlisting}
+
+\section{Escenario de atributo de calidad}
+
+\begin{center}
+\begin{tabularx}{0.94\textwidth}{p{3.3cm}X}
+\toprule
+Fuente del estímulo & \\[0.45cm]\midrule
+Estímulo & \\[0.45cm]\midrule
+Entorno & \\[0.45cm]\midrule
+Artefacto afectado & \\[0.45cm]\midrule
+Respuesta esperada & \\[0.45cm]\midrule
+Medida verificable & \\[0.45cm]\midrule
+Método y fecha de prueba & \\[0.45cm]
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{Registro de amenaza}
+
+\begin{center}
+\begin{tabularx}{0.94\textwidth}{p{3.3cm}X}
+\toprule
+Identificador y categoría & \\[0.45cm]\midrule
+Activo y límite de confianza & \\[0.45cm]\midrule
+Actor y precondición & \\[0.45cm]\midrule
+Escenario de abuso & \\[0.45cm]\midrule
+Probabilidad / impacto & \\[0.45cm]\midrule
+Control preventivo / detectivo & \\[0.45cm]\midrule
+Prueba del control & \\[0.45cm]\midrule
+Riesgo residual, responsable, fecha & \\[0.45cm]
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{Registro de uso de IA}
+
+\begin{center}
+\begin{tabularx}{0.94\textwidth}{p{3.3cm}X}
+\toprule
+Fecha, integrante y tarea & \\[0.45cm]\midrule
+Herramienta, modelo y versión & \\[0.45cm]\midrule
+Datos o archivos compartidos & \\[0.45cm]\midrule
+Solicitud o referencia al registro & \\[0.45cm]\midrule
+Salida usada y archivos afectados & \\[0.45cm]\midrule
+Ediciones humanas & \\[0.45cm]\midrule
+Pruebas, escaneos y fuentes & \\[0.45cm]\midrule
+Decisión: aceptar, corregir, descartar & \\[0.45cm]
+\bottomrule
+\end{tabularx}
+\end{center}
+
+No se exige registrar razonamiento privado ni conversaciones irrelevantes. Sí se registra suficiente información para comprender procedencia, alcance y verificación.
+
+\section{Informe de experimento}
+
+\begin{enumerate}
+  \item \textbf{Pregunta e hipótesis:} afirmación falsable antes de medir.
+  \item \textbf{Variables:} factor cambiado, respuestas medidas y controles.
+  \item \textbf{Entorno:} hardware, software, versiones, datos y configuración.
+  \item \textbf{Procedimiento:} pasos y repeticiones reproducibles.
+  \item \textbf{Resultados:} datos crudos, resumen y gráfica con unidad.
+  \item \textbf{Amenazas a la validez:} sesgos, muestra, calentamiento y ruido.
+  \item \textbf{Conclusión:} limitada por la evidencia; no generalizar más allá.
+\end{enumerate}
+
+\section{Lista de revisión de código}
+
+\begin{itemize}
+  \item El cambio corresponde a un requisito y tiene alcance comprensible.
+  \item Los nombres expresan dominio; las dependencias respetan límites.
+  \item Errores, tiempo, concurrencia e idempotencia se consideran cuando aplican.
+  \item Las pruebas cubren comportamiento, casos límite y fallo relevante.
+  \item No hay secretos, datos personales, registro excesivo ni privilegios innecesarios.
+  \item Contratos, migraciones, telemetría y documentación permanecen coherentes.
+  \item Código generado por IA fue declarado, revisado y validado.
+  \item Licencias y atribuciones de nuevas dependencias fueron comprobadas.
+\end{itemize}
+
+\section{Paquete de evidencia}
+
+Una entrega final puede organizarse así:
+
+\begin{lstlisting}
+evidencias/
+  arquitectura/       # C4, UML, ADR y escenarios
+  calidad/            # pruebas, cobertura y experimentos
+  entrega/            # ejecuciones CI, digest y manifiestos
+  observabilidad/     # consultas, paneles y trazas
+  seguridad/          # amenazas, SBOM, escaneos y triage
+  ia/                 # registro y evaluacion comparada
+  matriz-ra.md        # enlace entre resultados y archivos
+\end{lstlisting}
+
+Los archivos de resultados automáticos deben poder regenerarse. Si son grandes, se conserva una síntesis y la instrucción exacta; no se llena el repositorio con imágenes de contenedor, modelos o bases de datos.

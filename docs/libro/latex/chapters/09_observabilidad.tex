@@ -1,0 +1,107 @@
+\chapter{Observabilidad, confiabilidad y costo}
+\label{chap:observabilidad}
+
+\begin{objetivos}
+El estudiante podrá instrumentar señales correlacionadas, formular indicadores y objetivos de servicio, usar presupuestos de error y validar hipótesis operativas con OpenTelemetry, Prometheus, Grafana y Jaeger.
+\end{objetivos}
+
+\section{Observar para explicar}
+
+Monitorear responde preguntas previstas; observar permite investigar estados no anticipados a partir de la telemetría. Los registros describen eventos, las métricas resumen series numéricas y las trazas conectan el recorrido de una solicitud. Ninguna señal basta por sí sola. Un identificador de traza común permite pasar de una alerta agregada a una operación concreta.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[node distance=1.1cm and 1.1cm, every node/.style={font=\small}]
+\node[system] (app) {Servicio instrumentado};
+\node[activity, right=of app] (otel) {OpenTelemetry Collector};
+\node[evidence, above right=0.6cm and 1.2cm of otel] (prom) {Prometheus\\métricas};
+\node[evidence, right=of otel] (jaeger) {Jaeger\\trazas};
+\node[evidence, below right=0.6cm and 1.2cm of otel] (logs) {Backend\\registros};
+\node[decision, right=2.0cm of jaeger] (graf) {Grafana\\paneles y alertas};
+\draw[arrow] (app)--node[above]{OTLP}(otel);
+\draw[arrow] (otel)--(prom); \draw[arrow] (otel)--(jaeger); \draw[arrow] (otel)--(logs);
+\draw[arrow] (prom)--(graf); \draw[arrow] (jaeger)--(graf); \draw[arrow] (logs)--(graf);
+\end{tikzpicture}
+\caption{Flujo conceptual de telemetría; los backends concretos son sustituibles.}
+\end{figure}
+
+\section{Diseño de señales}
+
+Para servicios orientados a solicitudes, RED propone tasa, errores y duración. Para recursos, USE propone utilización, saturación y errores. Una métrica debe tener nombre, unidad, descripción y cardinalidad controlada. Etiquetar con identificador de usuario o URL completa crea series potencialmente ilimitadas y puede exponer datos personales.
+
+Los registros estructurados facilitan consulta. Deben incluir marca temporal, nivel, evento, componente e identificadores de correlación, pero no tokens, contraseñas, cuerpos completos ni datos personales innecesarios. Las trazas se muestrean: conservar el 100\% puede ser inviable; el muestreo debe mantener suficientes errores y casos lentos para investigar.
+
+\section{SLI, SLO y presupuesto de error}
+
+Un indicador de nivel de servicio (SLI) cuantifica una experiencia: proporción de solicitudes válidas atendidas correctamente antes de 400 ms. Un objetivo (SLO) fija el nivel esperado en una ventana: 99,5\% durante 28 días. El acuerdo (SLA) añade consecuencias contractuales y no debe confundirse con el objetivo interno.
+
+Si el SLO mensual es 99,5\%, el presupuesto de error es 0,5\%. Para una ventana de 28 días, esto equivale a:
+\[
+28\times24\times60\times0{,}005=201{,}6\text{ minutos}.
+\]
+El cálculo no autoriza consumir indiscriminadamente esa indisponibilidad; sirve para equilibrar confiabilidad y velocidad de cambio.
+
+\begin{table}[htbp]
+\centering
+\caption{Especificación de un SLI útil.}
+\begin{tabularx}{\textwidth}{p{3.2cm}X}
+\toprule
+\textbf{Elemento} & \textbf{Definición para LibreReserva}\\
+\midrule
+Evento válido & Solicitud HTTP a crear o consultar reserva, excluyendo tráfico sintético identificado.\\
+Evento bueno & Respuesta no 5xx completada en menos de 400 ms.\\
+SLI & Eventos buenos divididos por eventos válidos.\\
+SLO & Al menos 99,5\% en ventana móvil de 28 días.\\
+Fuente & Métricas de servidor instrumentadas con OpenTelemetry.\\
+Respuesta & Congelar cambios riesgosos si la tasa de consumo amenaza agotar el presupuesto.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Instrumentación libre y neutral}
+
+OpenTelemetry define APIs, SDK, convenciones y un protocolo para producir y transportar telemetría sin atar el código a un proveedor. El Collector recibe, procesa y exporta señales. Prometheus consulta y almacena métricas; Grafana visualiza; Jaeger permite explorar trazas. La demostración oficial de OpenTelemetry ofrece un sistema distribuido deliberadamente complejo para experimentar.
+
+\begin{instalacion}
+Para la aplicación Python:
+\begin{lstlisting}[language=bash]
+python -m pip install opentelemetry-distro \
+  opentelemetry-exporter-otlp
+opentelemetry-bootstrap -a install
+\end{lstlisting}
+Para un laboratorio integrado use Podman Compose o Docker Compose y los archivos de la demostración oficial: \url{https://opentelemetry.io/docs/demo/}. Prometheus documenta sus imágenes en \url{https://prometheus.io/docs/prometheus/latest/installation/}; Grafana, en \url{https://grafana.com/docs/grafana/latest/setup-grafana/configure-docker/}. Compruebe puertos disponibles y memoria: el demo completo puede exceder 6 GiB; para equipos limitados despliegue solo aplicación, Collector, Prometheus y Jaeger.
+\end{instalacion}
+
+\begin{lstlisting}[language=bash,caption={Ejecución de FastAPI con instrumentación automática.}]
+export OTEL_SERVICE_NAME=librereserva-api
+export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317
+export OTEL_EXPORTER_OTLP_PROTOCOL=grpc
+opentelemetry-instrument uvicorn app.main:app --port 8000
+\end{lstlisting}
+
+\section{Validar con una hipótesis operativa}
+
+Un panel decorativo no constituye observabilidad. Cada panel debe apoyar una decisión. Ejemplo: ``el aumento del p95 se origina en esperas de base de datos''. La métrica identifica la ventana; una traza lenta muestra el tramo; el registro estructurado confirma el evento; una prueba controlada valida la causa.
+
+\begin{validacion}
+Genere diez solicitudes correctas, una que produzca conflicto 409 y, en una rama experimental, una latencia artificial. Verifique: (1) la métrica de tasa aumenta; (2) 409 no se clasifica automáticamente como fallo del servidor; (3) la traza lenta contiene el tramo responsable; (4) el registro comparte \texttt{trace\_id}; (5) ningún atributo contiene secretos o datos personales.
+\end{validacion}
+
+\section{Rendimiento, resiliencia y costo}
+
+La latencia se informa con percentiles, no solo promedio. Un límite de tiempo evita esperas infinitas; un reintento solo es seguro cuando la operación lo permite, usa retroceso y dispersión, y tiene un presupuesto. De lo contrario amplifica una sobrecarga. El circuito de corte, el aislamiento de recursos y la degradación controlada reducen propagación de fallos.
+
+El costo también es atributo arquitectónico. Réplicas o trazas adicionales pueden mejorar confiabilidad y elevar consumo. Debe reportarse por unidad útil ---por ejemplo, costo estimado por mil reservas--- y relacionarse con el SLO. En laboratorio se aceptan aproximaciones basadas en CPU, memoria y almacenamiento; deben explicitar supuestos.
+
+\begin{ejercicio}
+\textbf{Laboratorio 9.1 --- pregunta antes que panel.} Instrumente LibreReserva, construya un panel RED y documente una consulta de diagnóstico que enlace métrica, traza y registro. Incluya capturas, configuración versionada y explicación; no evalúe estética aislada.
+
+\textbf{Laboratorio 9.2 --- experimento de resiliencia.} Inyecte demora y fallos a una dependencia local, compare sin y con timeout/reintento acotado y grafique p50, p95, errores y volumen adicional. Concluya cuándo el reintento ayudó y cuándo empeoró el sistema.
+\end{ejercicio}
+
+\section{Preguntas de revisión}
+\begin{enumerate}
+  \item ¿Qué etiqueta de alta cardinalidad eliminaría y qué alternativa conservaría capacidad diagnóstica?
+  \item ¿Cómo cambia una decisión de despliegue cuando queda 10\% del presupuesto de error?
+  \item ¿Por qué el promedio de latencia puede ocultar una mala experiencia real?
+\end{enumerate}

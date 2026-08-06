@@ -1,0 +1,113 @@
+\chapter{Modularidad, dominio y patrones}
+
+\begin{objetivos}
+El lector podrá diseñar límites modulares, reconocer cohesión y acoplamiento, emplear conceptos de diseño orientado al dominio y construir una arquitectura hexagonal que mantenga el núcleo independiente de interfaces y persistencia.
+\end{objetivos}
+
+\section{Modularidad antes que distribución}
+Un módulo agrupa responsabilidades que cambian por razones relacionadas y expone un contrato deliberado. La modularidad es una propiedad lógica; no exige múltiples procesos. Un monolito puede estar bien modularizado y un conjunto de servicios puede formar un ``monolito distribuido'' si todos comparten base de datos, despliegue y conocimiento interno.
+
+La cohesión es la relación interna entre los elementos de un módulo. El acoplamiento es la dependencia entre módulos. El objetivo no es eliminar dependencias, sino hacerlas necesarias, explícitas y estables. Una dependencia hacia una abstracción de negocio suele ser menos volátil que una dependencia hacia una biblioteca concreta de infraestructura.
+
+Para LibreReserva se proponen cuatro contextos iniciales:
+\begin{itemize}
+  \item \textbf{Recursos}: salas, equipos, capacidades y restricciones;
+  \item \textbf{Reservas}: disponibilidad, reglas de solapamiento y ciclo de vida;
+  \item \textbf{Identidad}: usuarios, roles y relación con el proveedor institucional;
+  \item \textbf{Notificaciones}: preferencias, plantillas y entrega asíncrona.
+\end{itemize}
+
+\section{Lenguaje ubicuo y límites de dominio}
+El diseño orientado al dominio propone que desarrolladores y expertos compartan vocabulario. ``Reserva confirmada'' debe poseer el mismo significado en conversaciones, código, eventos y pruebas. Cuando una palabra cambia de sentido entre áreas, puede indicar una frontera. Por ejemplo, un \emph{recurso} para inventario puede incluir costo de reposición, mientras para reservas sólo interesa capacidad y disponibilidad.
+
+Un agregado protege invariantes dentro de una frontera transaccional. No debe crecer para contener todo lo relacionado. En LibreReserva, la regla ``un recurso no puede tener dos reservas confirmadas que se solapen'' requiere una estrategia de concurrencia en Reservas; no obliga a cargar información completa del usuario ni el historial de notificaciones.
+
+\section{Arquitectura hexagonal}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[every node/.style={align=center}]
+  \node[draw=AzulUD,fill=AzulClaro,regular polygon,regular polygon sides=6,minimum size=4.2cm] (core) {Dominio y\\casos de uso};
+  \node[draw=Verde,fill=VerdeClaro,rounded corners,left=2.5cm of core] (http) {Adaptador\\HTTP/FastAPI};
+  \node[draw=Verde,fill=VerdeClaro,rounded corners,right=2.5cm of core] (db) {Adaptador\\PostgreSQL};
+  \node[draw=Naranja,fill=NaranjaClaro,rounded corners,above=1.4cm of core] (cli) {Pruebas / CLI};
+  \node[draw=Naranja,fill=NaranjaClaro,rounded corners,below=1.4cm of core] (mq) {RabbitMQ / correo};
+  \draw[-{Latex},thick] (http) -- node[above]{puerto de entrada} (core);
+  \draw[-{Latex},thick] (core) -- node[above]{puerto de salida} (db);
+  \draw[-{Latex},thick] (cli) -- (core);
+  \draw[-{Latex},thick] (core) -- (mq);
+\end{tikzpicture}
+\caption{El dominio depende de puertos; los adaptadores dependen del dominio.}
+\label{fig:hexagonal}
+\end{figure}
+
+Los puertos expresan capacidades requeridas o ofrecidas. Un caso de uso puede depender de \software{RepositorioReservas} sin conocer SQLAlchemy. El adaptador PostgreSQL implementa ese puerto. Esta dirección permite probar el núcleo con dobles simples y reemplazar infraestructura sin modificar reglas de negocio.
+
+\section{Patrones y límites}
+\subsection{MVC, Repository y DAO}
+MVC separa entrada, coordinación y presentación, pero no define toda la arquitectura. Repository representa una colección de objetos del dominio; DAO encapsula acceso a datos con una orientación más cercana a tablas o consultas. Usarlos como sinónimos suele producir capas sin significado.
+
+\subsection{Inversión de dependencias}
+Las políticas de alto nivel no deberían depender de detalles de bajo nivel. La inversión se concreta cuando el dominio define el contrato y el adaptador lo implementa. Crear una interfaz para cada clase no mejora automáticamente el diseño: la abstracción debe representar variabilidad o un límite real.
+
+\section{Esqueleto modular en Python}
+\begin{instalacion}
+Active el entorno virtual creado en el capítulo 1 e instale herramientas de desarrollo:
+\begin{lstlisting}[language=bash]
+python -m pip install --upgrade pip
+python -m pip install "fastapi[standard-no-fastapi-cloud-cli]" pytest
+\end{lstlisting}
+FastAPI y pytest son proyectos de código abierto. Registre versiones con \comando{python -m pip freeze > requirements.lock}.
+\end{instalacion}
+
+\begin{lstlisting}[language=Python]
+# src/reservas/dominio.py
+from dataclasses import dataclass
+from datetime import datetime
+
+@dataclass(frozen=True)
+class Intervalo:
+    inicio: datetime
+    fin: datetime
+
+    def __post_init__(self):
+        if self.inicio >= self.fin:
+            raise ValueError("el intervalo debe ser positivo")
+
+    def se_solapa(self, otro: "Intervalo") -> bool:
+        return self.inicio < otro.fin and otro.inicio < self.fin
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+# tests/test_intervalo.py
+from datetime import datetime
+import pytest
+from src.reservas.dominio import Intervalo
+
+def test_rechaza_intervalo_vacio():
+    instante = datetime(2026, 8, 6, 10, 0)
+    with pytest.raises(ValueError):
+        Intervalo(instante, instante)
+
+def test_detecta_solapamiento():
+    a = Intervalo(datetime(2026, 8, 6, 9), datetime(2026, 8, 6, 11))
+    b = Intervalo(datetime(2026, 8, 6, 10), datetime(2026, 8, 6, 12))
+    assert a.se_solapa(b)
+\end{lstlisting}
+
+\begin{validacion}
+Ejecute \comando{pytest -q}. Las pruebas del dominio deben funcionar sin iniciar FastAPI, PostgreSQL o RabbitMQ. Esa independencia es evidencia del límite, no sólo una preferencia de carpetas.
+\end{validacion}
+
+\section{Ejercicios}
+\begin{ejercicio}[title={Ejercicio 1. Mapa de contextos}]
+Defina propietarios, lenguaje, datos y contratos para Recursos, Reservas, Identidad y Notificaciones. Señale relaciones cliente--proveedor y términos que cambian de significado entre contextos.
+\end{ejercicio}
+
+\begin{ejercicio}[title={Ejercicio 2. Prueba de frontera}]
+Cree una prueba que falle si el paquete \software{src/reservas/dominio.py} importa FastAPI, SQLAlchemy o un cliente de RabbitMQ. Puede analizar el árbol sintáctico con el módulo estándar \software{ast}. Explique qué tipos de acoplamiento esta prueba no puede detectar.
+\end{ejercicio}
+
+\begin{ejercicio}[title={Ejercicio 3. Concurrencia}]
+Proponga tres estrategias para impedir reservas simultáneas: bloqueo pesimista, control optimista y restricción en base de datos. Compare consistencia, rendimiento, experiencia del usuario y complejidad de recuperación.
+\end{ejercicio}

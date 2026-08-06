@@ -1,0 +1,110 @@
+\chapter{Sistemas modernos y entorno reproducible}
+
+\begin{objetivos}
+Al terminar este capítulo, el lector podrá explicar qué es una arquitectura de software, distinguir decisiones de arquitectura de decisiones locales de implementación, preparar un entorno reproducible y registrar evidencia técnica desde el primer cambio.
+\end{objetivos}
+
+\section{La arquitectura como conjunto de decisiones}
+La arquitectura de software describe las estructuras significativas de un sistema, las responsabilidades que contienen, sus relaciones y las razones que justifican su forma. No se reduce al diagrama inicial ni al framework utilizado. Una arquitectura existe aunque nadie la haya documentado: emerge de dependencias, límites de despliegue, modelos de datos, decisiones de seguridad y mecanismos de operación.
+
+Una decisión es arquitectónicamente significativa cuando cambiarla tarde resulta costoso o cuando condiciona atributos como disponibilidad, desempeño, seguridad, mantenibilidad o costo. Elegir el nombre de una variable suele ser local; decidir que cada módulo posea su propio esquema de datos modifica el acoplamiento, la consistencia y la operación.
+
+La arquitectura se evalúa en contexto. Una solución apropiada para un prototipo de veinte usuarios puede ser irresponsable para un sistema clínico. Por ello, la primera pregunta no es ``¿qué tecnología está de moda?'', sino ``¿qué problema, restricciones y consecuencias debemos manejar?''.
+
+\begin{caso}
+LibreReserva permite que estudiantes y docentes consulten disponibilidad y reserven salas, laboratorios o equipos. El sistema debe evitar reservas simultáneas, conservar auditoría, proteger datos personales y continuar operando durante periodos de alta demanda. En la primera iteración habrá un único equipo de desarrollo y un despliegue institucional.
+\end{caso}
+
+\section{Ciclo de trabajo basado en evidencia}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=1.4cm, every node/.style={align=center}]
+  \node[draw=AzulUD,fill=AzulClaro,rounded corners,minimum width=2.7cm,minimum height=1cm] (p) {Problema y\\restricciones};
+  \node[draw=AzulUD,fill=AzulClaro,rounded corners,right=of p,minimum width=2.7cm,minimum height=1cm] (h) {Hipótesis\\arquitectónica};
+  \node[draw=Verde,fill=VerdeClaro,rounded corners,right=of h,minimum width=2.7cm,minimum height=1cm] (i) {Implementación\\mínima};
+  \node[draw=Verde,fill=VerdeClaro,rounded corners,below=of i,minimum width=2.7cm,minimum height=1cm] (m) {Medición y\\pruebas};
+  \node[draw=Naranja,fill=NaranjaClaro,rounded corners,left=of m,minimum width=2.7cm,minimum height=1cm] (d) {Decisión y\\registro};
+  \draw[-{Latex},thick] (p) -- (h);
+  \draw[-{Latex},thick] (h) -- (i);
+  \draw[-{Latex},thick] (i) -- (m);
+  \draw[-{Latex},thick] (m) -- (d);
+  \draw[-{Latex},thick] (d) -| (p);
+\end{tikzpicture}
+\caption{Ciclo de decisión arquitectónica guiado por evidencia.}
+\label{fig:ciclo-evidencia}
+\end{figure}
+
+Una hipótesis arquitectónica debe producir una observación. Si se afirma que un índice reducirá el tiempo de consulta, se debe medir el percentil 95 antes y después. Si se afirma que un límite modular permite cambios independientes, se debe demostrar que las pruebas de un módulo pueden ejecutarse sin iniciar todos los demás. La evidencia no elimina el juicio profesional, pero evita decisiones basadas únicamente en intuición.
+
+\section{Software libre y reproducibilidad}
+El software libre permite estudiar, modificar y redistribuir el programa bajo las condiciones de su licencia. Esto favorece el aprendizaje porque los componentes pueden ejecutarse localmente e inspeccionarse. Sin embargo, ``código disponible'' no siempre significa ``software libre'', y dos componentes libres pueden imponer obligaciones incompatibles al distribuir una solución. En cada ejercicio se debe registrar nombre, versión, fuente y licencia.
+
+La reproducibilidad requiere que otra persona pueda reconstruir el entorno con instrucciones explícitas. Como mínimo, un repositorio debe contener:
+\begin{itemize}
+  \item archivo \software{README.md} con propósito, requisitos y comandos;
+  \item dependencias declaradas y, cuando sea posible, bloqueadas;
+  \item configuración de ejemplo sin secretos;
+  \item pruebas automáticas y criterios de aceptación;
+  \item licencia del proyecto y atribuciones necesarias;
+  \item registro de decisiones y de uso de IA.
+\end{itemize}
+
+\section{Preparación del laboratorio}
+\begin{instalacion}
+\textbf{Herramientas obligatorias}: Git, Python 3.12 o superior, un editor libre (VSCodium, Neovim o Emacs), GNU Make y Podman. Se recomienda un equipo con 8 GB de RAM; los capítulos de observabilidad e IA funcionan mejor con 16 GB.
+
+En Debian o Ubuntu:
+\begin{lstlisting}[language=bash]
+sudo apt-get update
+sudo apt-get install -y git python3 python3-venv make podman
+\end{lstlisting}
+
+En macOS, Podman recomienda su instalador oficial. Después de instalarlo:
+\begin{lstlisting}[language=bash]
+podman machine init --cpus 4 --memory 6144
+podman machine start
+\end{lstlisting}
+
+En Windows, instale WSL2 y Podman Desktop. Los comandos del libro deben ejecutarse dentro de la distribución GNU/Linux de WSL2. Documentación: \url{https://podman.io/docs/installation}.
+\end{instalacion}
+
+\subsection{Repositorio inicial}
+\begin{lstlisting}[language=bash]
+mkdir librereserva && cd librereserva
+git init
+python3 -m venv .venv
+source .venv/bin/activate
+printf "# LibreReserva\n" > README.md
+mkdir -p docs/adr src tests
+printf ".venv/\n__pycache__/\n.env\n" > .gitignore
+git add README.md .gitignore docs src tests
+git commit -m "chore: iniciar proyecto reproducible"
+\end{lstlisting}
+
+\begin{validacion}
+Ejecute:
+\begin{lstlisting}[language=bash]
+git status --short
+python --version
+podman info --format '{{.Host.OCIRuntime.Name}}'
+podman run --rm docker.io/library/hello-world
+\end{lstlisting}
+El repositorio debe quedar sin cambios pendientes; Python debe responder con una versión compatible; Podman debe informar un runtime OCI y el contenedor de prueba debe finalizar con código cero.
+\end{validacion}
+
+\section{Ejercicios}
+\begin{ejercicio}[title={Ejercicio 1. Inventario verificable}]
+Construya una tabla con sistema operativo, arquitectura de CPU, memoria disponible, versiones de Git, Python y Podman, licencia y URL oficial de cada herramienta. Incluya los comandos usados para obtener cada dato. No copie capturas como única evidencia: conserve también la salida textual.
+\end{ejercicio}
+
+\begin{ejercicio}[title={Ejercicio 2. Primera hipótesis}]
+Escriba una hipótesis arquitectónica sobre LibreReserva con la forma: ``Si adoptamos X bajo la condición Y, esperamos mejorar Z, medido mediante M, aceptando el costo C''. Identifique qué prueba podría refutarla.
+\end{ejercicio}
+
+\section{Lista de comprobación}
+\begin{itemize}
+  \item El entorno se reconstruye a partir del README.
+  \item Ningún secreto se encuentra dentro del repositorio.
+  \item Las versiones y licencias están registradas.
+  \item Existe al menos una hipótesis que pueda validarse o refutarse.
+\end{itemize}

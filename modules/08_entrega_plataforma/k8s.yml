@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: librereserva
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: librereserva
+  template:
+    metadata:
+      labels:
+        app: librereserva
+    spec:
+      containers:
+        - name: api
+          image: localhost/librereserva:0.1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          readinessProbe:
+            httpGet:
+              path: /salud/lista
+              port: 8000
+          livenessProbe:
+            httpGet:
+              path: /salud/viva
+              port: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: librereserva
+spec:
+  selector:
+    app: librereserva
+  ports:
+    - port: 80
+      targetPort: 8000

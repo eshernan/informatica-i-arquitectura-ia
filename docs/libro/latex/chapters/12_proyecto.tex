@@ -1,0 +1,110 @@
+\chapter{Proyecto integrador: LibreReserva operable}
+\label{chap:proyecto}
+
+\begin{objetivos}
+El estudiante integrará arquitectura, código, entrega, operación, seguridad e IA responsable en un producto pequeño, defendible y reproducible. El objetivo no es acumular tecnologías, sino demostrar decisiones proporcionadas mediante evidencia.
+\end{objetivos}
+
+\section{Problema y restricciones}
+
+LibreReserva permite publicar recursos institucionales, consultar disponibilidad, reservar, cancelar y auditar cambios. El equipo debe construir un incremento operable para dos perfiles: usuario y administrador. Se asumen datos sintéticos, presupuesto de infraestructura nulo y ejecución local con software libre.
+
+Restricciones iniciales: API HTTP documentada; persistencia PostgreSQL; ejecución en contenedor OCI sin privilegio; automatización en Forgejo; despliegue local reproducible; telemetría OpenTelemetry; modelado de amenazas; registro de uso de IA. El equipo puede sustituir una herramienta por otra libre si mantiene la capacidad y justifica la decisión en un ADR.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[node distance=1.0cm and 1.2cm, every node/.style={font=\small}]
+\node[actor] (u) {Usuario};
+\node[system, right=of u] (api) {API modular};
+\node[evidence, right=of api] (db) {PostgreSQL};
+\node[system, below=of api] (worker) {Procesador de eventos};
+\node[evidence, right=of worker] (mq) {RabbitMQ};
+\node[activity, above=of api] (ci) {Forgejo Actions};
+\node[evidence, above=of db] (obs) {Telemetría};
+\draw[arrow] (u)--(api); \draw[arrow] (api)--(db); \draw[arrow] (api)--(mq);
+\draw[arrow] (mq)--(worker); \draw[arrow] (ci)--(api); \draw[arrow] (api)--(obs);
+\end{tikzpicture}
+\caption{Arquitectura de referencia, deliberadamente sustituible mediante ADR.}
+\end{figure}
+
+\section{Resultados de aprendizaje y evidencias}
+
+\begin{longtable}{p{1.2cm}p{5.1cm}p{8cm}}
+\caption{Matriz de trazabilidad del proyecto.}\\
+\toprule
+\textbf{RA} & \textbf{Capacidad} & \textbf{Evidencia obligatoria}\\
+\midrule
+\endfirsthead
+\toprule
+\textbf{RA} & \textbf{Capacidad} & \textbf{Evidencia obligatoria}\\
+\midrule
+\endhead
+RA1 & Analizar problema y restricciones & Mapa de actores, alcance, supuestos y riesgos.\\
+RA2 & Priorizar atributos de calidad & Tres escenarios medibles y tabla de compromisos.\\
+RA3 & Comunicar arquitectura & C4 de contexto/contenedores, UML selectivo y ADR.\\
+RA4 & Diseñar modularidad & Límites, puertos, dependencias y prueba de arquitectura.\\
+RA5 & Integrar datos y servicios & Contrato API, migración, idempotencia y prueba de integración.\\
+RA6 & Construir y validar & Incremento vertical, suite y reporte de calidad.\\
+RA7 & Entregar y operar & Canalización, imagen, manifiestos y despliegue reproducible.\\
+RA8 & Observar confiabilidad & SLI/SLO, panel, trazas y experimento de fallo.\\
+RA9 & Diseñar seguridad & Modelo de amenazas, SBOM, escaneos y triage.\\
+RA10 & Usar IA responsablemente & Registro, evaluación comparada, revisión y defensa.\\
+\bottomrule
+\end{longtable}
+
+\section{Iteraciones}
+
+\begin{enumerate}
+  \item \textbf{Descubrimiento y arquitectura.} Problema, restricciones, escenarios de calidad, C4, modelo de dominio y dos ADR. Validación: revisión cruzada y prototipo de riesgo.
+  \item \textbf{Incremento ejecutable.} Crear y consultar reservas con persistencia, migración, manejo de conflictos y pruebas. Validación: contrato, cobertura razonada y demostración desde clon limpio.
+  \item \textbf{Entrega segura.} Forgejo Actions, imagen OCI, SBOM, secretos, escaneos y despliegue kind. Validación: digest trazable y puerta que rechaza un cambio deliberadamente defectuoso.
+  \item \textbf{Operación y resiliencia.} Telemetría, SLO, panel, alerta y experimento controlado. Validación: diagnóstico con métrica, traza y registro.
+  \item \textbf{Evaluación de IA y cierre.} Experimento asistido, deuda, costo, riesgos pendientes, manual reproducible y defensa individual.
+\end{enumerate}
+
+Cada iteración termina con una versión demostrable. La retroalimentación modifica el producto y, cuando corresponde, el ADR o el modelo de amenazas. No se aceptan diagramas que describan un sistema distinto del entregado.
+
+\section{Definición de terminado}
+
+Una historia está terminada cuando: criterios de aceptación aprobados; revisión de otra persona; pruebas relevantes automatizadas; contrato y documentación actualizados; telemetría suficiente; amenazas examinadas; ningún secreto confirmado; canalización verde; imagen identificada por digest; y autoría/asistencia de IA declarada. Una excepción debe registrarse como deuda con riesgo, responsable y fecha.
+
+\section{Rúbrica}
+
+\begin{table}[htbp]
+\centering
+\caption{Rúbrica analítica del proyecto final.}
+\small
+\begin{tabularx}{\textwidth}{p{4cm}cX}
+\toprule
+\textbf{Dimensión} & \textbf{Peso} & \textbf{Desempeño esperado}\\
+\midrule
+Problema y decisiones arquitectónicas & 20\% & Restricciones explícitas, alternativas reales, escenarios medibles y ADR coherentes.\\
+Construcción y pruebas & 20\% & Incremento correcto, modular, legible y probado por riesgo; datos reproducibles.\\
+Entrega y operación & 15\% & Canalización confiable, artefacto trazable, despliegue y recuperación demostrados.\\
+Observabilidad y confiabilidad & 15\% & SLI/SLO defendible, señales correlacionadas y experimento que sustenta una conclusión.\\
+Seguridad, privacidad y suministro & 15\% & Amenazas priorizadas, controles probados, secretos protegidos, SBOM y triage.\\
+IA responsable y trazabilidad & 10\% & Uso declarado, contexto protegido, evaluación independiente y comprensión demostrada.\\
+Comunicación y reproducibilidad & 5\% & Documentación concisa, fuentes, licencias y ejecución desde entorno limpio.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Una falla crítica de integridad ---credenciales reales, datos personales sin autorización, resultados fabricados o atribución deliberadamente falsa--- se gestiona según el reglamento institucional y no se compensa con otros porcentajes.
+
+\section{Validación final}
+
+\begin{validacion}
+Un evaluador parte de un clon limpio y sigue el README. Debe poder: crear entorno; ejecutar pruebas; construir imagen; generar SBOM; desplegar; realizar una reserva; observar su traza; ejecutar un caso adverso autorizado y relacionar la versión desplegada con una confirmación. Todo comando dependiente del sistema indica plataforma y versión.
+\end{validacion}
+
+\section{Defensa}
+
+La demostración dura quince minutos: problema y decisión principal; recorrido funcional; fallo inducido y diagnóstico; control de seguridad; resultado del experimento con IA; deuda reconocida. Luego cada integrante responde sobre una parte seleccionada al azar y realiza un cambio pequeño. Esto evalúa comprensión compartida y reduce la utilidad de entregas que el equipo no puede explicar.
+
+\begin{ejercicio}
+\textbf{Entrega final.} Repositorio, etiqueta de versión, digest de imagen, paquete de evidencias y breve informe arquitectónico. Incluya licencia del proyecto, atribuciones de componentes, instrucciones de instalación, matriz RA--evidencia y registro de decisiones. No entregue dependencias descargadas, modelos de IA ni secretos dentro del repositorio.
+\end{ejercicio}
+
+\section{Cierre}
+
+La arquitectura moderna es una práctica de decisiones comprobables. Las plataformas, incluida la IA generativa, cambian con rapidez; la capacidad durable consiste en formular restricciones, comparar alternativas, construir ciclos de evidencia y responder responsablemente por el sistema resultante.

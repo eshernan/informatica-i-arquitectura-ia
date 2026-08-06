@@ -1,0 +1,115 @@
+\chapter{Comunicación de arquitectura: C4, UML y ADR}
+
+\begin{objetivos}
+El lector podrá seleccionar una vista según su audiencia, producir diagramas C4 coherentes, complementar con UML cuando exista una pregunta dinámica o estructural concreta y registrar decisiones mediante ADR versionados.
+\end{objetivos}
+
+\section{Una vista responde una pregunta}
+Un diagrama útil declara alcance, audiencia, elementos, relaciones y leyenda. Mezclar procesos de negocio, servidores, clases y proveedores en una sola imagen genera ambigüedad. C4 organiza la estructura estática en niveles de acercamiento: contexto, contenedores, componentes y código. Los dos primeros suelen ser suficientes para discutir arquitectura de solución.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[every node/.style={align=center},node distance=0.75cm]
+  \node[draw=AzulUD,fill=AzulClaro,rounded corners,minimum width=11.5cm,minimum height=1.1cm] (ctx) {1. Contexto: personas y sistemas externos};
+  \node[draw=AzulUD,fill=white,rounded corners,below=of ctx,minimum width=9.5cm,minimum height=1.1cm] (con) {2. Contenedores: aplicaciones y almacenes de datos};
+  \node[draw=Verde,fill=VerdeClaro,rounded corners,below=of con,minimum width=7.5cm,minimum height=1.1cm] (cmp) {3. Componentes: responsabilidades internas};
+  \node[draw=Gris,fill=GrisClaro,rounded corners,below=of cmp,minimum width=5.5cm,minimum height=1.1cm] (cod) {4. Código: detalle selectivo};
+  \draw[-{Latex},thick] (ctx) -- node[right]{acercamiento} (con);
+  \draw[-{Latex},thick] (con) -- (cmp);
+  \draw[-{Latex},thick] (cmp) -- (cod);
+\end{tikzpicture}
+\caption{Niveles de abstracción del modelo C4.}
+\label{fig:c4}
+\end{figure}
+
+\section{Contexto y contenedores de LibreReserva}
+En contexto aparecen Estudiante, Docente, Administrador, el sistema institucional de identidad y el servicio de correo. No se muestran frameworks ni tablas. La pregunta es quién usa el sistema y con qué sistemas se relaciona.
+
+En contenedores se distinguen interfaz web, API, base de datos y trabajador de notificaciones. Aquí sí se indican responsabilidades, tecnologías y protocolos. ``Contenedor'' en C4 no significa necesariamente contenedor OCI; puede ser una aplicación, proceso o almacén desplegable.
+
+\section{Cuándo emplear UML}
+UML sigue siendo valioso cuando se selecciona el diagrama adecuado:
+\begin{itemize}
+  \item secuencia para una interacción crítica, como confirmar una reserva;
+  \item estados para el ciclo solicitada--confirmada--cancelada--expirada;
+  \item clases para un modelo de dominio complejo, sin convertir cada atributo en documentación permanente;
+  \item despliegue para relacionar nodos, procesos y redes cuando C4 no ofrece el detalle requerido.
+\end{itemize}
+
+La consistencia importa más que la notación. Una API llamada \emph{Reservas} en el diagrama de contenedores no debería aparecer como \emph{Booking Core} en una secuencia sin explicar el cambio.
+
+\section{ADR: decisiones que sobreviven a la reunión}
+Un Architecture Decision Record registra una decisión significativa. Un formato mínimo contiene título, estado, contexto, opciones, decisión, consecuencias y fecha. Los ADR deben vivir junto al código para que cambien mediante revisión.
+
+\begin{lstlisting}
+# ADR-0001: iniciar como monolito modular
+
+Estado: aceptado
+
+Contexto:
+Un equipo de cuatro personas debe entregar la primera version en doce semanas.
+
+Decision:
+Usar un unico despliegue con modulos Reservas, Recursos, Identidad y Notificaciones.
+
+Consecuencias:
++ transacciones y despliegue simples;
++ menor costo operativo;
+- se requieren pruebas de limites para evitar acoplamiento interno;
+- la extraccion futura de un modulo exigira contratos explicitos.
+\end{lstlisting}
+
+\section{Diagramas como código}
+\begin{instalacion}
+Instale PlantUML y Graphviz.
+
+Debian/Ubuntu:
+\begin{lstlisting}[language=bash]
+sudo apt-get install -y default-jre graphviz plantuml
+\end{lstlisting}
+
+macOS:
+\begin{lstlisting}[language=bash]
+brew install graphviz plantuml
+\end{lstlisting}
+
+Compruebe con \comando{plantuml -version}. También puede usar Mermaid CLI o Structurizr Lite. No instale extensiones de editor sin revisar permisos y origen.
+\end{instalacion}
+
+\begin{lstlisting}
+@startuml
+actor Estudiante
+rectangle "LibreReserva" {
+  [Interfaz web] --> [API de reservas] : HTTPS/JSON
+  [API de reservas] --> database "PostgreSQL" : SQL
+  [API de reservas] --> [Notificaciones] : evento
+}
+Estudiante --> [Interfaz web] : consulta y reserva
+@enduml
+\end{lstlisting}
+
+Guarde el texto como \software{docs/contexto.puml} y genere la imagen:
+\begin{lstlisting}[language=bash]
+plantuml -tsvg docs/contexto.puml
+\end{lstlisting}
+
+\begin{validacion}
+El SVG debe generarse sin errores. Revise automáticamente que la documentación exista y que corresponda a la fuente versionada:
+\begin{lstlisting}[language=bash]
+test -s docs/contexto.svg
+git diff --exit-code -- docs/contexto.svg
+\end{lstlisting}
+\end{validacion}
+
+\section{Ejercicios}
+\begin{ejercicio}[title={Ejercicio 1. Paquete mínimo de arquitectura}]
+Construya para LibreReserva un diagrama de contexto, uno de contenedores, una secuencia de confirmación y un diagrama de estados de Reserva. Cada relación debe estar etiquetada y cada tecnología debe aparecer solamente en el nivel adecuado.
+\end{ejercicio}
+
+\begin{ejercicio}[title={Ejercicio 2. Revisión cruzada}]
+Intercambie los diagramas con otro equipo. Sin explicación oral, identifique usuarios, responsabilidades, protocolos, almacenes, fronteras de confianza y recorrido de una reserva. Registre todas las preguntas que el diagrama no permita responder y modifíquelo sólo cuando la pregunta pertenezca a su alcance.
+\end{ejercicio}
+
+\begin{ejercicio}[title={Ejercicio 3. ADR alternativo}]
+Redacte un ADR que rechace microservicios en la primera versión. Incluya condiciones observables que justificarían reconsiderar la decisión, por ejemplo equipos independientes, ciclos de despliegue incompatibles o requisitos de aislamiento.
+\end{ejercicio}

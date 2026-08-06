@@ -1,0 +1,112 @@
+\chapter{Seguridad, privacidad y cadena de suministro}
+\label{chap:seguridad}
+
+\begin{objetivos}
+El estudiante podrá modelar amenazas, diseñar controles desde los requisitos, gestionar secretos, explorar vulnerabilidades de aplicación y dependencias, producir una SBOM y justificar la prioridad de remediación con evidencia.
+\end{objetivos}
+
+\section{Seguridad como propiedad del sistema}
+
+La seguridad no es una herramienta ejecutada al final. Surge de decisiones sobre identidad, datos, límites de confianza, operación y recuperación. \emph{Secure by Design} exige que los resultados seguros sean la opción normal; \emph{Secure by Default}, que una instalación inicial no dependa de que cada usuario descubra ajustes esenciales.
+
+El marco SSDF de NIST agrupa prácticas para preparar la organización, proteger el software, producir software bien protegido y responder a vulnerabilidades. En el curso se traduce en criterios verificables: revisión, dependencias fijadas, mínimos privilegios, análisis automatizado, procedencia y plan de respuesta.
+
+\section{Modelado de amenazas}
+
+Un modelo de amenazas comienza con activos y límites, no con una lista genérica de ataques. Para LibreReserva son activos las identidades, disponibilidad de espacios, reservas, historial y credenciales. El diagrama de flujo de datos identifica procesos, almacenes, actores y cruces de confianza.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[node distance=1.2cm and 3.0cm, every node/.style={font=\small}]
+\node[actor] (u) {Usuario};
+\node[system, right=of u] (api) {API};
+\node[evidence, right=of api] (db) {PostgreSQL};
+\node[system, below=of api] (idp) {Proveedor de identidad};
+\draw[dashed, rounded corners] ($(api.north west)+(-.35,.45)$) rectangle ($(db.south east)+(.35,-.45)$);
+\node[font=\scriptsize, above=0.5cm of api] {zona de servicio};
+\draw[arrow] (u)--node[above,font=\scriptsize]{HTTPS + token}(api);
+\draw[arrow] (api)--node[above,font=\scriptsize]{consulta parametrizada}(db);
+\draw[arrow] (api)--node[right,font=\scriptsize]{validación}(idp);
+\end{tikzpicture}
+\caption{Flujo de datos simplificado y límite de confianza.}
+\end{figure}
+
+STRIDE ayuda a preguntar por suplantación, manipulación, repudio, divulgación, denegación y elevación de privilegios. No calcula riesgo. Cada amenaza necesita precondición, impacto, control, propietario y prueba. Una escala simple de probabilidad e impacto facilita ordenar el trabajo, sin pretender una precisión inexistente.
+
+\begin{table}[htbp]
+\centering
+\caption{Extracto del modelo de amenazas.}
+\begin{tabularx}{\textwidth}{p{2.25cm}p{2.4cm}X X}
+\toprule
+\textbf{Amenaza} & \textbf{Activo} & \textbf{Control diseñado} & \textbf{Validación}\\
+\midrule
+Acceso horizontal & Reserva ajena & Autorizar por sujeto y recurso en cada operación & Prueba con dos identidades; esperar 404 o 403 sin filtrar datos.\\
+Inyección & Base de datos & Consultas parametrizadas y cuenta con privilegio mínimo & Casos adversos y análisis dinámico.\\
+Token filtrado & Identidad & No registrar cabeceras sensibles; expiración y rotación & Escaneo de registros y repositorio.\\
+Agotamiento & Disponibilidad & Cuotas, límites, timeout y presión inversa & Carga controlada y alerta antes de saturación.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Identidad, autorización y secretos}
+
+Autenticar confirma una identidad; autorizar decide una acción sobre un recurso. La verificación debe ocurrir en el servidor, incluso si la interfaz oculta botones. Para permisos ricos, una política explícita es más auditable que condicionales dispersos. Las cuentas de servicio reciben mínimo privilegio y una identidad distinta por carga.
+
+Un secreto no es configuración ordinaria. Debe generarse con entropía suficiente, almacenarse fuera del repositorio, limitarse, rotarse y revocarse. Un archivo \texttt{.env} local puede facilitar desarrollo, pero se excluye de Git y se acompaña de \texttt{.env.example} sin valores reales. Si un secreto fue confirmado, borrarlo del último cambio no basta: se revoca y se considera expuesto en todo el historial distribuido.
+
+\section{Privacidad y abuso}
+
+La minimización reduce superficie: recopilar solo lo necesario, conservarlo el tiempo definido y limitar usos. El equipo registra propósito, base de autorización institucional, acceso, retención y mecanismo de eliminación. Los registros de observabilidad también son datos y deben respetar estas reglas.
+
+Los casos de abuso complementan los casos de uso: acaparar todos los horarios, enumerar reservas, automatizar cancelaciones o inferir ocupación sensible. Los controles pueden combinar reglas de negocio, límites de tasa, detección y revisión, evitando bloquear injustamente usuarios legítimos.
+
+\section{Dependencias y procedencia}
+
+Una lista de materiales de software (SBOM) enumera componentes y versiones. No prueba que sean seguros, pero permite responder si una vulnerabilidad afecta al producto. El análisis de composición, el escaneo de imágenes y la detección de secretos son señales; los hallazgos deben verificarse según explotabilidad, exposición y compensaciones.
+
+\begin{instalacion}
+Las siguientes herramientas tienen código abierto y ofrecen binarios o imágenes oficiales. Consulte las instrucciones de su plataforma antes de ejecutar instaladores:
+\begin{itemize}
+  \item Trivy: \url{https://www.trivy.dev/docs/latest/getting-started/installation/}.
+  \item Syft: \url{https://github.com/anchore/syft}.
+  \item Gitleaks: \url{https://github.com/gitleaks/gitleaks}.
+  \item OWASP ZAP en contenedor: \url{https://www.zaproxy.org/docs/docker/about/}.
+\end{itemize}
+En Debian/Ubuntu o macOS use el paquete oficial correspondiente; registre versión y origen. Una imagen puede ejecutarse con Podman sustituyendo \texttt{docker} en los ejemplos del proyecto cuando el comando sea compatible.
+\end{instalacion}
+
+\begin{lstlisting}[language=bash,caption={Controles reproducibles sobre repositorio e imagen.}]
+gitleaks detect --source . --redact --report-format sarif \
+  --report-path resultados/gitleaks.sarif
+syft localhost/librereserva:0.1.0 -o cyclonedx-json \
+  > resultados/sbom.cdx.json
+trivy image --severity HIGH,CRITICAL \
+  --format json --output resultados/trivy.json \
+  localhost/librereserva:0.1.0
+podman run --rm --network host -v "$PWD/resultados:/zap/wrk:Z" \
+  ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
+  -t http://127.0.0.1:8000 -J zap.json
+\end{lstlisting}
+
+La red del contenedor cambia entre sistemas; \texttt{--network host} no se comporta igual en todas las máquinas virtuales. Si ZAP no alcanza la aplicación, use el nombre o dirección documentada por Podman y registre el ajuste. Nunca apunte un escáner activo a un sistema externo sin autorización expresa.
+
+\begin{validacion}
+La canalización debe fallar ante un secreto de prueba reconocido, pero la demostración se realiza con un patrón ficticio provisto por la herramienta, nunca con credenciales reales. La SBOM debe contener el paquete web esperado. Para cada vulnerabilidad alta: confirmar versión, ruta, exposición y corrección disponible; aceptar temporalmente exige justificación, responsable y fecha de vencimiento.
+\end{validacion}
+
+\section{Respuesta y recuperación}
+
+El diseño incluye detección, contención, erradicación, recuperación y aprendizaje. Se conserva evidencia con acceso controlado, se rota lo comprometido, se informa por canales institucionales y se escribe una revisión sin culpabilizar personas. Copias de seguridad solo cuentan si una restauración ha sido ensayada.
+
+\begin{ejercicio}
+\textbf{Laboratorio 10.1 --- amenaza a control.} Modele el flujo de LibreReserva, identifique ocho amenazas STRIDE, priorice cuatro y escriba una prueba por control. Entregue diagrama, registro de amenazas y resultados.
+
+\textbf{Laboratorio 10.2 --- cadena de suministro.} Genere SBOM CycloneDX, escanee imagen y repositorio, ejecute ZAP Baseline contra la instancia local y triage cinco hallazgos. Distinga vulnerabilidad confirmada, no aplicable, riesgo aceptado y falso positivo; no entregue solo reportes automáticos.
+\end{ejercicio}
+
+\section{Preguntas de revisión}
+\begin{enumerate}
+  \item ¿Qué cambia en el diseño si se asume que una credencial será filtrada alguna vez?
+  \item ¿Por qué una vulnerabilidad crítica en una dependencia no implica siempre el mismo riesgo?
+  \item ¿Qué dato dejaría de almacenar para reducir simultáneamente costo y exposición?
+\end{enumerate}

@@ -1,0 +1,23 @@
+name: validar-curso
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Validar estructura, scripts, código y notebooks
+        run: ./scripts/validate_repository.sh
+      - name: Instalar dependencias académicas
+        run: python -m pip install -r requirements-dev.txt
+      - name: Ejecutar pruebas HTTP y basadas en propiedades
+        run: python -m pytest labs/librereserva/tests modules/07_pruebas -v

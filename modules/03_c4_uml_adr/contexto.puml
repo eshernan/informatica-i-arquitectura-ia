@@ -1,0 +1,15 @@
+@startuml
+title LibreReserva - contexto
+left to right direction
+skinparam backgroundColor transparent
+skinparam shadowing false
+
+actor "Usuario" as user
+actor "Administrador" as admin
+rectangle "LibreReserva\n[Plataforma de reservas]" as system #EAF2F8
+rectangle "Proveedor de identidad\n[Sistema externo]" as identity #EAF7F0
+
+user --> system : consulta y reserva
+admin --> system : administra recursos
+system --> identity : valida identidad
+@enduml

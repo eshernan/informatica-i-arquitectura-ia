@@ -1,0 +1,89 @@
+\chapter{Requisitos, restricciones y atributos de calidad}
+
+\begin{objetivos}
+El lector aprenderá a convertir expectativas ambiguas en escenarios verificables, diferenciar requisitos funcionales de atributos de calidad, priorizar tensiones y diseñar funciones de aptitud que revelen degradaciones arquitectónicas.
+\end{objetivos}
+
+\section{Del deseo a la condición comprobable}
+Los requisitos funcionales describen capacidades: crear una reserva, cancelar un recurso o consultar disponibilidad. Los atributos de calidad describen cómo debe comportarse el sistema: responder con cierta latencia, resistir fallos, impedir accesos indebidos o ser modificable por un equipo pequeño.
+
+Palabras como ``rápido'', ``seguro'' y ``escalable'' son insuficientes porque no establecen condiciones ni umbrales. Un escenario de atributo de calidad contiene seis partes: fuente del estímulo, estímulo, ambiente, elemento afectado, respuesta y medida.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=0.65cm, every node/.style={align=center,font=\small}]
+  \node[draw,fill=AzulClaro,rounded corners,minimum width=2cm,minimum height=1cm] (s) {Fuente\\500 usuarios};
+  \node[draw,fill=AzulClaro,rounded corners,right=of s,minimum width=2cm,minimum height=1cm] (e) {Estímulo\\consultar cupo};
+  \node[draw,fill=GrisClaro,rounded corners,right=of e,minimum width=2cm,minimum height=1cm] (a) {Ambiente\\hora pico};
+  \node[draw,fill=VerdeClaro,rounded corners,right=of a,minimum width=2cm,minimum height=1cm] (r) {Respuesta\\lista consistente};
+  \node[draw,fill=VerdeClaro,rounded corners,right=of r,minimum width=2cm,minimum height=1cm] (m) {Medida\\p95 $<$ 400 ms};
+  \draw[-{Latex},thick] (s) -- (e);
+  \draw[-{Latex},thick] (e) -- (a);
+  \draw[-{Latex},thick] (a) -- (r);
+  \draw[-{Latex},thick] (r) -- (m);
+\end{tikzpicture}
+\caption{Escenario medible de desempeño para LibreReserva.}
+\label{fig:escenario-calidad}
+\end{figure}
+
+\section{Atributos relevantes}
+\subsection{Desempeño y escalabilidad}
+El desempeño se expresa mediante latencia, rendimiento y utilización de recursos. Los promedios ocultan colas largas; por eso suelen observarse percentiles como p95 y p99. Escalabilidad no significa únicamente ``agregar servidores'': describe cómo cambia la capacidad cuando varía la carga o los recursos.
+
+\subsection{Disponibilidad y resiliencia}
+Disponibilidad es la proporción de tiempo en que una capacidad cumple su objetivo. Resiliencia es la capacidad de absorber, recuperarse y aprender de una perturbación. Reiniciar automáticamente un proceso puede mejorar recuperación, pero no corrige corrupción de datos ni dependencias saturadas.
+
+\subsection{Seguridad y privacidad}
+Seguridad incluye confidencialidad, integridad, disponibilidad, autenticidad y trazabilidad. Privacidad considera finalidad, minimización, retención y derechos sobre datos personales. ``Cifrar todo'' no sustituye control de acceso, gestión de claves ni diseño de flujos.
+
+\subsection{Modificabilidad y operabilidad}
+Modificabilidad mide el costo y riesgo de cambiar el sistema. Operabilidad abarca despliegue, diagnóstico, configuración, recuperación y soporte. Un sistema funcional pero imposible de diagnosticar tiene una arquitectura incompleta.
+
+\section{Restricciones y decisiones}
+Una restricción limita el espacio de solución: presupuesto, regulación, conocimientos del equipo, infraestructura institucional o fecha. No debe confundirse con una preferencia. ``El equipo conoce PostgreSQL'' es contexto; ``la organización exige PostgreSQL por operación centralizada'' es restricción si está formalmente establecida.
+
+Las decisiones generan compromisos. La \cref{tab:tradeoffs} muestra un análisis cualitativo que debe sustentarse con evidencia.
+
+\begin{table}[H]
+\centering
+\caption{Ejemplo de comparación de alternativas.}
+\label{tab:tradeoffs}
+\begin{tabularx}{\textwidth}{lYYY}
+\toprule
+\textbf{Criterio} & \textbf{Monolito modular} & \textbf{Microservicios} & \textbf{Serverless} \\
+\midrule
+Complejidad inicial & Baja a media & Alta & Media \\
+Consistencia transaccional & Directa & Distribuida & Dependiente de servicios \\
+Despliegue independiente & Por aplicación & Por servicio & Por función \\
+Observabilidad requerida & Moderada & Alta & Alta \\
+Adecuación al equipo pequeño & Alta & Baja sin plataforma & Media \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Funciones de aptitud}
+Una función de aptitud verifica de manera continua una propiedad arquitectónica. Puede ser una prueba que prohíba dependencias entre módulos, un presupuesto de latencia, una regla de seguridad o una validación de contrato. Debe tener dueño, frecuencia, umbral y respuesta ante incumplimiento.
+
+Ejemplos para LibreReserva:
+\begin{itemize}
+  \item ninguna ruta pública puede modificar reservas sin identidad autenticada;
+  \item el módulo de notificaciones no puede importar clases internas de reservas;
+  \item el p95 de consulta debe permanecer por debajo de 400 ms con 100 usuarios concurrentes;
+  \item cada imagen desplegable debe poseer SBOM y no contener vulnerabilidades críticas conocidas sin aceptación documentada.
+\end{itemize}
+
+\begin{ejercicio}[title={Laboratorio. Catálogo de escenarios}]
+Identifique cuatro interesados de LibreReserva y redacte ocho escenarios: dos de desempeño, dos de seguridad, uno de disponibilidad, uno de privacidad, uno de modificabilidad y uno de operabilidad. Para cada escenario defina prioridad, riesgo, método de medición y evidencia esperada.
+\end{ejercicio}
+
+\begin{validacion}
+Un escenario se acepta si otra persona puede reproducir la condición y decidir, sin interpretación adicional, si el umbral se cumplió. Revise que ninguna medida use solamente términos como ``rápido'', ``adecuado'', ``suficiente'' o ``seguro''.
+\end{validacion}
+
+\begin{ejercicio}[title={Ejercicio de decisión}]
+Suponga que LibreReserva debe ser operada por dos personas, servir a una institución y desplegarse en infraestructura propia. Compare monolito modular, microservicios y serverless mediante una matriz ponderada. Realice un análisis de sensibilidad cambiando el peso de disponibilidad y costo operativo.
+\end{ejercicio}
+
+\begin{riesgo}
+Las matrices no producen decisiones objetivas: hacen explícitos valores y supuestos. Un puntaje alto no compensa una restricción obligatoria ni una incertidumbre no investigada.
+\end{riesgo}

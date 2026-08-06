@@ -1,0 +1,94 @@
+\chapter{APIs, datos, consistencia y mensajería}
+
+\begin{objetivos}
+El lector podrá diseñar contratos HTTP coherentes, emplear OpenAPI, proteger operaciones idempotentes, modelar transacciones en PostgreSQL y usar RabbitMQ sin perder trazabilidad ni consistencia.
+\end{objetivos}
+
+\section{API como contrato}
+Una API es una promesa entre partes. Su calidad depende de semántica, errores, compatibilidad, seguridad y observabilidad, no sólo de rutas. En HTTP, GET consulta sin cambiar estado observable; POST crea o ejecuta una operación; PUT reemplaza de forma idempotente; PATCH modifica parcialmente; DELETE solicita eliminación.
+
+Los códigos de estado deben ayudar al cliente: 400 para solicitud inválida, 401 para falta de autenticación, 403 para autorización insuficiente, 404 para ausencia, 409 para conflicto y 422 para datos semánticamente inválidos. Devolver siempre 200 y esconder errores en JSON dificulta monitoreo y clientes genéricos.
+
+\section{Idempotencia y concurrencia}
+Una operación idempotente produce el mismo efecto al repetirse. Las redes reintentan; por ello, una creación crítica puede aceptar una clave de idempotencia. El servidor conserva la relación entre clave, identidad, operación y respuesta. La clave no debe compartirse entre usuarios ni aceptarse indefinidamente.
+
+Para evitar solapamientos, PostgreSQL permite transacciones, niveles de aislamiento y restricciones. Una comprobación ``consultar y luego insertar'' sin protección es vulnerable a carreras: dos transacciones pueden ver disponibilidad antes de insertar.
+
+\section{Persistencia y propiedad de datos}
+La base de datos es parte de la arquitectura. Cada módulo debe definir qué tablas controla y qué consultas expone. Compartir tablas permite velocidad inicial, pero crea contratos invisibles. Las migraciones deben ser compatibles con la versión desplegada, reversibles cuando sea posible y probadas con datos representativos.
+
+\section{Mensajería asíncrona}
+RabbitMQ implementa colas e intercambios. Un productor publica; el broker enruta; un consumidor procesa y confirma. ``Exactamente una vez'' rara vez es una garantía extremo a extremo. El diseño práctico asume entrega al menos una vez y hace idempotente al consumidor.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=1.15cm,every node/.style={align=center}]
+  \node[draw=AzulUD,fill=AzulClaro,rounded corners] (api) {API de reservas};
+  \node[draw=Verde,fill=VerdeClaro,rounded corners,right=of api] (db) {PostgreSQL\\reserva + outbox};
+  \node[draw=Naranja,fill=NaranjaClaro,rounded corners,below=of db] (pub) {Publicador\\outbox};
+  \node[draw=AzulUD,fill=AzulClaro,rounded corners,left=of pub] (mq) {RabbitMQ};
+  \node[draw=Verde,fill=VerdeClaro,rounded corners,left=of mq] (mail) {Consumidor\\notificaciones};
+  \draw[-{Latex},thick] (api) -- node[above]{transacción} (db);
+  \draw[-{Latex},thick] (db) -- (pub);
+  \draw[-{Latex},thick] (pub) -- node[above]{publica} (mq);
+  \draw[-{Latex},thick] (mq) -- node[above]{entrega} (mail);
+\end{tikzpicture}
+\caption{Patrón outbox para publicación confiable.}
+\label{fig:outbox}
+\end{figure}
+
+\section{Plataforma local}
+\begin{instalacion}
+Se requiere Podman. Cree una red y ejecute PostgreSQL y RabbitMQ con credenciales exclusivas de laboratorio:
+\begin{lstlisting}[language=bash]
+podman network create librereserva
+podman run -d --name postgres --network librereserva \
+  -e POSTGRES_DB=reservas -e POSTGRES_USER=reservas \
+  -e POSTGRES_PASSWORD=solo-laboratorio \
+  -p 5432:5432 docker.io/library/postgres:17
+podman run -d --name rabbit --network librereserva \
+  -p 5672:5672 -p 15672:15672 \
+  docker.io/library/rabbitmq:4-management
+\end{lstlisting}
+No reutilice estas credenciales en otros entornos. Para producción use secretos externos, TLS, usuarios con privilegios mínimos e imágenes fijadas por digest.
+\end{instalacion}
+
+\begin{lstlisting}[language=Python]
+from fastapi import FastAPI, Header, HTTPException, status
+from pydantic import BaseModel
+
+app = FastAPI(title="LibreReserva", version="1.0.0")
+respuestas: dict[str, dict] = {}
+
+class NuevaReserva(BaseModel):
+    recurso_id: str
+    inicio: str
+    fin: str
+
+@app.post("/reservas", status_code=status.HTTP_201_CREATED)
+def crear(datos: NuevaReserva, idempotency_key: str = Header()):
+    if idempotency_key in respuestas:
+        return respuestas[idempotency_key]
+    if datos.inicio >= datos.fin:
+        raise HTTPException(422, "intervalo invalido")
+    respuesta = {"id": idempotency_key, "estado": "confirmada"}
+    respuestas[idempotency_key] = respuesta
+    return respuesta
+\end{lstlisting}
+
+\begin{validacion}
+Inicie la API con \comando{fastapi dev}. Consulte \url{http://127.0.0.1:8000/docs}. Envíe dos POST con la misma clave; deben devolver el mismo identificador y no crear dos efectos. Detenga RabbitMQ y compruebe que la reserva pueda persistirse con un registro outbox pendiente.
+\end{validacion}
+
+\section{Ejercicios}
+\begin{ejercicio}[title={Ejercicio 1. Contrato OpenAPI}]
+Defina rutas para consultar recursos, crear, cancelar y consultar reservas. Incluya esquemas de error, autenticación, paginación y claves de idempotencia. Valide el documento con una herramienta OpenAPI libre y genere pruebas de ejemplos inválidos.
+\end{ejercicio}
+
+\begin{ejercicio}[title={Ejercicio 2. Consumidor idempotente}]
+Implemente una tabla de mensajes procesados. Entregue dos veces \software{ReservaConfirmada}; el consumidor debe enviar una sola notificación. Explique qué ocurre si el proceso cae después de enviar el correo y antes de confirmar el mensaje.
+\end{ejercicio}
+
+\begin{ejercicio}[title={Ejercicio 3. Compatibilidad}]
+Agregue un campo opcional \software{proposito} al evento. Demuestre compatibilidad entre productor nuevo y consumidor antiguo. Después conviértalo en obligatorio y documente por qué el cambio rompe consumidores.
+\end{ejercicio}

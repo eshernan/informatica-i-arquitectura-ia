@@ -1,0 +1,112 @@
+\chapter{Guía de instalación y entorno reproducible}
+\label{ap:instalacion}
+
+Este apéndice concentra los requisitos de los laboratorios. Las versiones cambian; por eso se registran la versión instalada y la fuente oficial, en lugar de copiar comandos de terceros sin revisión. La ruta recomendada es GNU/Linux. macOS funciona con una máquina de Podman y Windows con WSL2 más una distribución Linux.
+
+\section{Capas del entorno}
+
+\begin{table}[htbp]
+\centering
+\caption{Herramientas por capacidad.}
+\begin{tabularx}{\textwidth}{p{3cm}p{3.7cm}X}
+\toprule
+\textbf{Capacidad} & \textbf{Herramienta libre} & \textbf{Uso en el curso}\\
+\midrule
+Código y automatización & Git, Make, Python & Versionado, tareas repetibles y aplicación.\\
+Editor y diagramas & VSCodium, PlantUML, Graphviz & Código, C4/UML como texto y exportación.\\
+Aplicación y datos & FastAPI, PostgreSQL, RabbitMQ & API, persistencia y eventos.\\
+Contenedores & Podman, Buildah & Construcción y ejecución OCI sin demonio central.\\
+Forja y CI & Forgejo, Forgejo Runner & Revisión, incidencias y canalizaciones.\\
+Orquestación & kubectl, kind, Kubernetes & Despliegue local y reconciliación.\\
+Observabilidad & OpenTelemetry, Prometheus, Grafana, Jaeger & Métricas, paneles y trazas.\\
+Seguridad & Gitleaks, Syft, Trivy, OWASP ZAP & Secretos, SBOM, vulnerabilidades y DAST.\\
+IA local & Ollama, Continue & Generación asistida bajo control del entorno.\\
+Documento & TeX Live & Compilación de este libro y entregas técnicas.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Perfil mínimo y perfil ampliado}
+
+El perfil mínimo requiere procesador de 64 bits, 8 GiB de RAM y unos 20 GiB libres para repositorios, imágenes y datos. Permite ejecutar la API, base de datos y pruebas por separado. El perfil ampliado, con 16 GiB o más, permite kind, la pila de observabilidad y un modelo local pequeño. Estas cifras son orientativas: la arquitectura, la cuantización del modelo y los servicios simultáneos cambian el consumo.
+
+Los laboratorios se pueden distribuir entre integrantes o ejecutar por etapas. La carencia de GPU no impide el curso; la IA local funciona más lentamente en CPU y puede reemplazarse por una instancia institucional autorizada. Ninguna evaluación exige pagar una suscripción.
+
+\section{GNU/Linux Debian o Ubuntu}
+
+Revise cada paquete antes de aceptar la instalación. Los nombres varían entre versiones de distribución.
+
+\begin{lstlisting}[language=bash]
+sudo apt update
+sudo apt install git make python3 python3-venv python3-pip \
+  podman podman-compose plantuml graphviz curl jq
+git --version
+python3 --version
+podman --version
+plantuml -version
+\end{lstlisting}
+
+Las herramientas que no estén en el repositorio se instalan desde su publicación oficial, comprobando firma o suma cuando se proporcione. No canalice directamente un script remoto al intérprete en un equipo institucional sin descargarlo, inspeccionarlo y verificar su procedencia.
+
+\section{macOS}
+
+Homebrew es software libre, pero su instalación es una decisión previa del usuario. Si ya está autorizado:
+
+\begin{lstlisting}[language=bash]
+brew install git make python podman podman-compose plantuml graphviz jq
+podman machine init
+podman machine start
+podman info
+\end{lstlisting}
+
+La VM de Podman necesita CPU, memoria y disco. Ajuste esos recursos al crearla si va a ejecutar kind u observabilidad. Las rutas montadas deben estar compartidas con la máquina.
+
+\section{Windows con WSL2}
+
+Active WSL2 mediante la documentación oficial de Microsoft e instale Ubuntu o Debian. Después siga la sección GNU/Linux dentro de la terminal WSL. Mantenga el repositorio en el sistema de archivos Linux, por ejemplo \texttt{/home/usuario/proyecto}, para evitar problemas de permisos y rendimiento. VSCodium puede conectarse a WSL mediante extensiones compatibles; también puede editar desde herramientas Linux.
+
+Podman puede instalarse dentro de WSL o como Podman Desktop. Elija una ruta y documente dónde se ejecuta el motor para no confundir \texttt{localhost}, volúmenes y redes.
+
+\section{Entorno Python reproducible}
+
+\begin{lstlisting}[language=bash]
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements-dev.txt
+python -m pip freeze
+\end{lstlisting}
+
+El archivo bloqueado debe registrar versiones y, en una entrega madura, hashes. Actualizar dependencias es una tarea explícita: se revisan cambios, licencia, vulnerabilidades y pruebas antes de confirmar el nuevo bloqueo.
+
+\section{Comprobación integral}
+
+\begin{lstlisting}[language=bash]
+git --version
+python --version
+podman info
+podman run --rm docker.io/library/alpine:3.22 echo contenedor-ok
+kubectl version --client
+kind version
+trivy --version
+syft version
+gitleaks version
+ollama --version
+\end{lstlisting}
+
+No todos los comandos son necesarios desde el primer capítulo. Un resultado ``comando no encontrado'' indica una instalación pendiente, no que deba instalarse sin revisar. Registre en \texttt{docs/entorno.md}: sistema, arquitectura, RAM, versiones, fecha y desviaciones.
+
+\section{Diagnóstico seguro}
+
+\begin{enumerate}
+  \item Lea el mensaje completo y determine si el fallo es versión, permiso, red, puerto o recurso.
+  \item Consulte la documentación oficial de la versión instalada.
+  \item Reduzca el caso: compruebe primero una herramienta, luego su integración.
+  \item No resuelva permisos usando \texttt{sudo} de forma indiscriminada ni cambie a usuario \texttt{root} dentro de la imagen.
+  \item No desactive TLS, firmas o escaneos para ``hacer funcionar'' una descarga.
+  \item Registre causa, corrección y prueba de que el arreglo funciona.
+\end{enumerate}
+
+\begin{validacion}
+La instalación está terminada cuando un segundo integrante, usando \texttt{docs/entorno.md}, puede crear el entorno, ejecutar pruebas y levantar el servicio sin recibir credenciales personales. Una captura no reemplaza el comando reproducible ni su salida esperada.
+\end{validacion}

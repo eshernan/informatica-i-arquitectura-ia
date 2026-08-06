@@ -1,0 +1,17 @@
+.DS_Store
+.idea/
+.vscode/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+*.log
+.env
+!.env.example
+dist/
+build/
+docs/libro/latex/build/
+security-results/

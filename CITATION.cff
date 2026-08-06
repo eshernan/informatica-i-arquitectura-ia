@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "Si utiliza este curso, cite este repositorio."
+title: "Informática I: arquitectura de software moderna e IA"
+type: software
+authors:
+  - family-names: "Montenegro Marin"
+    given-names: "Carlos"
+  - family-names: "Hernández Barragán"
+    given-names: "Esteban"
+year: 2026
+license: MIT
+repository-code: "https://github.com/eshernan/informatica-i-arquitectura-ia"

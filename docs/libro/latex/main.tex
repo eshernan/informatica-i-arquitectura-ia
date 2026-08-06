@@ -1,0 +1,239 @@
+\documentclass[11pt,openany]{book}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,inner=2.7cm,outer=2.3cm,top=2.5cm,bottom=2.6cm,headheight=25pt]{geometry}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,fit,calc,backgrounds,matrix}
+\tikzset{
+  arrow/.style={-{Latex},thick,draw=AzulUD},
+  activity/.style={draw=AzulUD,fill=AzulClaro,rounded corners,align=center,
+    minimum height=9mm,text width=2.6cm},
+  decision/.style={draw=Naranja,fill=NaranjaClaro,rounded corners,align=center,
+    minimum height=9mm,text width=2.8cm},
+  evidence/.style={draw=Verde,fill=VerdeClaro,rounded corners,align=center,
+    minimum height=9mm,text width=2.5cm},
+  system/.style={draw=AzulUD,fill=white,very thick,rounded corners,align=center,
+    minimum height=10mm,text width=2.5cm},
+  actor/.style={draw=Gris,fill=GrisClaro,ellipse,align=center,
+    minimum height=10mm,text width=2.0cm}
+}
+\usepackage{listings}
+\usepackage{tcolorbox}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{fancyhdr}
+\usepackage{etoolbox}
+
+\definecolor{AzulUD}{HTML}{163A5F}
+\definecolor{AzulClaro}{HTML}{EAF2F8}
+\definecolor{Verde}{HTML}{18794E}
+\definecolor{VerdeClaro}{HTML}{EAF7F0}
+\definecolor{Naranja}{HTML}{B45309}
+\definecolor{NaranjaClaro}{HTML}{FFF4E5}
+\definecolor{Rojo}{HTML}{A61B1B}
+\definecolor{RojoClaro}{HTML}{FDECEC}
+\definecolor{Gris}{HTML}{4B5563}
+\definecolor{GrisClaro}{HTML}{F3F4F6}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=AzulUD,
+  citecolor=Verde,
+  urlcolor=AzulUD,
+  pdftitle={Arquitectura de Software Moderna y Desarrollo Asistido por IA},
+  pdfauthor={Dr. Carlos Montenegro Marin y Dr. Esteban Hernández Barragán},
+  pdfsubject={Arquitectura, cloud native, seguridad, observabilidad e IA generativa},
+  pdfkeywords={arquitectura de software, IA generativa, software libre, DevOps, seguridad}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE]{\small\thepage\quad\textcolor{Gris}{Informática I}}
+\fancyhead[RO]{\small\textcolor{Gris}{\leftmark}\quad\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\thepage}\renewcommand{\headrulewidth}{0pt}}
+
+\setlist[itemize]{topsep=4pt,itemsep=2pt,leftmargin=1.5em}
+\setlist[enumerate]{topsep=4pt,itemsep=3pt,leftmargin=1.7em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\software}[1]{\texttt{#1}}
+\newcommand{\comando}[1]{\texttt{#1}}
+\newcommand{\resultado}[1]{\textbf{Resultado esperado:} #1}
+\newcommand{\criterio}[1]{\textbf{Criterio de aceptación:} #1}
+
+\newtcolorbox{objetivos}[1][]{
+  colback=AzulClaro,colframe=AzulUD,
+  title={Objetivos del capítulo},fonttitle=\bfseries,#1}
+\newtcolorbox{instalacion}[1][]{
+  colback=NaranjaClaro,colframe=Naranja,
+  title={Instalación requerida},fonttitle=\bfseries,#1}
+\newtcolorbox{validacion}[1][]{
+  colback=VerdeClaro,colframe=Verde,
+  title={Validación},fonttitle=\bfseries,#1}
+\newtcolorbox{ejercicio}[1][]{
+  colback=GrisClaro,colframe=Gris,
+  title={Ejercicio propuesto},fonttitle=\bfseries,#1}
+\newtcolorbox{riesgo}[1][]{
+  colback=RojoClaro,colframe=Rojo,
+  title={Riesgo o error frecuente},fonttitle=\bfseries,#1}
+\newtcolorbox{politicaia}[1][]{
+  colback=AzulClaro,colframe=AzulUD,
+  title={Uso responsable de IA},fonttitle=\bfseries,#1}
+\newtcolorbox{caso}[1][]{
+  colback=white,colframe=AzulUD,
+  title={Caso conductor: LibreReserva},fonttitle=\bfseries,#1}
+
+\lstdefinelanguage{yaml}{
+  keywords={true,false,null,y,n,services,image,ports,environment,volumes,networks,apiVersion,kind,metadata,spec,selector,template,containers,name,steps,jobs,on,run,uses},
+  sensitive=false,
+  comment=[l]{\#},
+  morestring=[b]",
+  morestring=[b]'
+}
+\lstdefinelanguage{json}{
+  string=[s]{"}{"},
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  literate=*{:}{{{\color{Gris}:}}}{1}{,}{{{\color{Gris},}}}{1}
+}
+\lstdefinelanguage{bash}{
+  morekeywords={cd,cp,curl,export,git,kind,kubectl,make,mkdir,ollama,pip,
+    podman,python,python3,source,trivy,syft,gitleaks,pytest},
+  sensitive=true,
+  morecomment=[l]{\#},
+  morestring=[b]",
+  morestring=[b]'
+}
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{AzulUD}\bfseries,
+  commentstyle=\color{Verde},
+  stringstyle=\color{Naranja},
+  backgroundcolor=\color{GrisClaro},
+  frame=single,
+  rulecolor=\color{Gris!45},
+  breaklines=true,
+  breakatwhitespace=false,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  tabsize=2,
+  numbers=left,
+  numberstyle=\tiny\color{Gris},
+  xleftmargin=1.5em,
+  framexleftmargin=1em,
+  aboveskip=8pt,
+  belowskip=8pt
+}
+\renewcommand{\lstlistingname}{Código}
+
+\begin{document}
+
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+  \centering
+  \vspace*{1.7cm}
+  {\Large Especialización en Ingeniería de Software\par}
+  \vspace{1.6cm}
+  {\Huge\bfseries\color{AzulUD} Arquitectura de Software Moderna\par}
+  \vspace{0.35cm}
+  {\LARGE y desarrollo asistido por inteligencia artificial\par}
+  \vspace{1.2cm}
+  {\Large Libro de Informática I\par}
+  \vfill
+  \begin{tikzpicture}[node distance=1.1cm]
+    \node[draw=AzulUD,fill=AzulClaro,rounded corners,minimum width=3.2cm,minimum height=1.1cm] (d) {Diseñar};
+    \node[draw=AzulUD,fill=AzulClaro,rounded corners,right=of d,minimum width=3.2cm,minimum height=1.1cm] (c) {Construir};
+    \node[draw=Verde,fill=VerdeClaro,rounded corners,below=of c,minimum width=3.2cm,minimum height=1.1cm] (o) {Operar};
+    \node[draw=Verde,fill=VerdeClaro,rounded corners,left=of o,minimum width=3.2cm,minimum height=1.1cm] (e) {Evolucionar};
+    \draw[-{Latex},thick,AzulUD] (d) -- (c);
+    \draw[-{Latex},thick,AzulUD] (c) -- (o);
+    \draw[-{Latex},thick,Verde] (o) -- (e);
+    \draw[-{Latex},thick,Verde] (e) -- (d);
+    \node[font=\bfseries,align=center] at ($(d)!0.5!(o)$) {Validar\ y aprender};
+  \end{tikzpicture}
+  \vfill
+  {\large Preparado por los profesores\par}
+  \vspace{0.25cm}
+  {\large Dr. Carlos Montenegro Marin\par}
+  {\large Dr. Esteban Hernández Barragán\par}
+  \vspace{0.8cm}
+  {\large Enfoque práctico con herramientas de software libre\par}
+  \vspace{0.4cm}
+  {\large Bogotá, 2026\par}
+  \vspace{1cm}
+\end{titlepage}
+\thispagestyle{empty}
+
+\frontmatter
+\hypersetup{pageanchor=true}
+
+\chapter*{Presentación}
+\addcontentsline{toc}{chapter}{Presentación}
+Este libro desarrolla el syllabus actualizado de \emph{Informática I}. Su propósito no es convertir al lector en operador de un catálogo de herramientas, sino formar criterio para tomar decisiones arquitectónicas, producir evidencia verificable y asumir responsabilidad por sistemas que deben funcionar en condiciones reales.
+
+Los capítulos utilizan un caso conductor llamado \textbf{LibreReserva}: una plataforma para reservar espacios y recursos compartidos de una institución educativa. El caso comienza como un monolito modular, incorpora una API, persistencia, mensajería, automatización, observabilidad, seguridad y, finalmente, asistencia de inteligencia artificial (IA). La evolución permite comparar alternativas sin presentar los microservicios, la nube o la IA como soluciones universales.
+
+Las herramientas privilegiadas son de software libre o de código abierto. Algunas imágenes de contenedor y modelos de IA poseen licencias propias; por ello, antes de usarlos en un proyecto real se debe revisar la licencia concreta, la política institucional y las restricciones sobre datos.
+
+\begin{politicaia}
+La IA puede apoyar análisis, generación de código, pruebas, refactorización y documentación. Toda contribución generada debe ser declarada, revisada, probada y comprendida. El estudiante conserva la autoría académica y la responsabilidad técnica. No deben enviarse credenciales, datos personales, código confidencial o propiedad institucional a servicios no autorizados.
+\end{politicaia}
+
+\section*{Cómo usar el libro}
+Cada capítulo contiene cuatro elementos recurrentes:
+\begin{itemize}
+  \item \textbf{Explicación}: fundamentos, decisiones y límites.
+  \item \textbf{Representación}: diagramas y modelos que hacen explícito el razonamiento.
+  \item \textbf{Laboratorio}: práctica acumulativa sobre LibreReserva.
+  \item \textbf{Validación}: comandos, pruebas y criterios de aceptación que permiten demostrar el resultado.
+\end{itemize}
+
+Los comandos se muestran para GNU/Linux y macOS. En Windows se recomienda WSL2 para mantener un entorno compatible. No ejecute comandos de instalación con privilegios administrativos sin revisar antes su procedencia y efecto.
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\mainmatter
+
+\include{chapters/01_entorno}
+\include{chapters/02_calidad}
+\include{chapters/03_comunicacion}
+\include{chapters/04_modularidad}
+\include{chapters/05_distribucion}
+\include{chapters/06_integracion}
+\include{chapters/07_implementacion}
+\include{chapters/08_entrega}
+\include{chapters/09_observabilidad}
+\include{chapters/10_seguridad}
+\include{chapters/11_ia}
+\include{chapters/12_proyecto}
+
+\appendix
+\include{chapters/A_instalacion}
+\include{chapters/B_plantillas}
+
+\backmatter
+\include{chapters/referencias}
+
+\end{document}

@@ -1,0 +1,143 @@
+\chapter{Implementación evolutiva y pruebas automatizadas}
+\label{chap:implementacion}
+
+\begin{objetivos}
+Al finalizar este capítulo, el estudiante podrá construir un incremento vertical pequeño, separar pruebas unitarias, de integración y de aceptación, medir cobertura sin confundirla con calidad y definir puertas automáticas de validación.
+\end{objetivos}
+
+\section{Construir por incrementos verificables}
+
+Una arquitectura solo existe de manera útil cuando sus decisiones pueden verse en código ejecutable. Un \emph{incremento vertical} atraviesa interfaz, lógica de aplicación y persistencia para entregar una capacidad observable. Es preferible implementar una reserva completa y pequeña que crear, por separado, muchas capas aún inconexas.
+
+El ciclo recomendado es: formular una hipótesis, escribir una prueba que represente el comportamiento, implementar lo mínimo, refactorizar y registrar la evidencia. La prueba no sustituye el razonamiento de diseño; lo vuelve repetible.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[node distance=1.4cm and 1.0cm, every node/.style={font=\small}]
+\node[decision] (h) {Hipótesis de comportamiento};
+\node[activity, right=of h] (p) {Prueba que falla};
+\node[activity, right=of p] (i) {Implementación mínima};
+\node[activity, below=of i] (r) {Refactorización};
+\node[evidence, left=of r] (e) {Evidencia reproducible};
+\draw[arrow] (h)--(p); \draw[arrow] (p)--(i); \draw[arrow] (i)--(r);
+\draw[arrow] (r)--(e); \draw[arrow] (e.west) -| (h.south);
+\end{tikzpicture}
+\caption{Ciclo corto de implementación y validación.}
+\end{figure}
+
+\section{Una estrategia de pruebas por riesgo}
+
+La pirámide de pruebas es una guía económica, no una cuota fija. Las pruebas unitarias aíslan reglas rápidas; las de integración verifican contratos con base de datos, cola o sistema de archivos; las de extremo a extremo recorren el sistema desplegado. Cuanto más amplia sea la prueba, mayor suele ser su costo de preparación, tiempo y diagnóstico.
+
+\begin{table}[htbp]
+\centering
+\caption{Selección de pruebas según el riesgo.}
+\begin{tabularx}{\textwidth}{p{2.7cm}X X}
+\toprule
+\textbf{Nivel} & \textbf{Pregunta principal} & \textbf{Ejemplo en LibreReserva}\\
+\midrule
+Unitaria & ¿La regla produce el resultado correcto? & Rechazar un intervalo que termina antes de comenzar.\\
+Integración & ¿La colaboración real cumple el contrato? & Guardar una reserva y detectar solapamiento en PostgreSQL.\\
+Contrato & ¿Consumidor y proveedor interpretan igual la interfaz? & Verificar esquema y códigos de la API.\\
+Aceptación & ¿El flujo entrega valor desde fuera? & Crear, consultar y cancelar una reserva por HTTP.\\
+Rendimiento & ¿Se mantiene el objetivo bajo carga? & Percentil 95 menor al umbral con concurrencia definida.\\
+Seguridad & ¿Los controles resisten usos adversos? & Negar acceso a reservas de otro usuario.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Dobles, propiedades y datos de prueba}
+
+Un doble de prueba reemplaza una dependencia para controlar el entorno. Un \emph{stub} responde valores preparados, un \emph{fake} ofrece una implementación simplificada y un \emph{mock} verifica interacciones. Deben usarse en los bordes; simular cada objeto interno acopla las pruebas a la implementación.
+
+Las pruebas basadas en propiedades expresan invariantes para muchos datos generados. Por ejemplo: toda reserva aceptada tiene duración positiva y ninguna secuencia de creación puede dejar dos reservas activas solapadas para el mismo recurso. En Python, Hypothesis es una opción libre para generar casos y reducir automáticamente un fallo al ejemplo mínimo.
+
+\begin{instalacion}
+Se requiere Python 3.11 o superior. En un entorno virtual instale las herramientas libres:
+\begin{lstlisting}[language=bash]
+python3 -m venv .venv
+source .venv/bin/activate          # Windows PowerShell: .venv\Scripts\Activate.ps1
+python -m pip install fastapi uvicorn pytest pytest-cov httpx hypothesis
+\end{lstlisting}
+No use \texttt{sudo pip}. El entorno virtual hace reproducible el laboratorio y evita modificar el Python del sistema.
+\end{instalacion}
+
+\section{Ejemplo: contrato HTTP comprobable}
+
+\begin{lstlisting}[language=Python,caption={API mínima con validación explícita.}]
+from datetime import datetime
+from fastapi import FastAPI, HTTPException, status
+from pydantic import BaseModel, model_validator
+
+app = FastAPI(title="LibreReserva")
+reservas: list[dict] = []
+
+class ReservaEntrada(BaseModel):
+    recurso: str
+    inicio: datetime
+    fin: datetime
+
+    @model_validator(mode="after")
+    def intervalo_valido(self):
+        if self.fin <= self.inicio:
+            raise ValueError("fin debe ser posterior a inicio")
+        return self
+
+@app.post("/reservas", status_code=status.HTTP_201_CREATED)
+def crear(entrada: ReservaEntrada):
+    hay_cruce = any(
+        r["recurso"] == entrada.recurso
+        and entrada.inicio < r["fin"] and r["inicio"] < entrada.fin
+        for r in reservas
+    )
+    if hay_cruce:
+        raise HTTPException(status_code=409, detail="intervalo ocupado")
+    nueva = {"id": len(reservas) + 1, **entrada.model_dump()}
+    reservas.append(nueva)
+    return nueva
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python,caption={Pruebas externas del comportamiento HTTP.}]
+from fastapi.testclient import TestClient
+from app import app, reservas
+
+cliente = TestClient(app)
+
+def setup_function():
+    reservas.clear()
+
+def test_crea_y_rechaza_solapamiento():
+    datos = {"recurso": "A-101",
+             "inicio": "2026-08-10T08:00:00Z",
+             "fin": "2026-08-10T09:00:00Z"}
+    assert cliente.post("/reservas", json=datos).status_code == 201
+    assert cliente.post("/reservas", json=datos).status_code == 409
+
+def test_rechaza_intervalo_invertido():
+    datos = {"recurso": "A-101",
+             "inicio": "2026-08-10T10:00:00Z",
+             "fin": "2026-08-10T09:00:00Z"}
+    assert cliente.post("/reservas", json=datos).status_code == 422
+\end{lstlisting}
+
+\section{Cobertura, mutación y calidad}
+
+La cobertura indica qué código fue ejecutado, no si fue correctamente comprobado. Una cobertura alta puede coexistir con aserciones débiles. La prueba de mutación cambia deliberadamente operadores o constantes: si la suite no detecta el cambio, falta sensibilidad. Para un curso corto es suficiente combinar cobertura de ramas, revisión de aserciones y una mutación manual de una regla crítica.
+
+\begin{validacion}
+Ejecute \texttt{pytest --cov=. --cov-branch --cov-report=term-missing}. Deben aprobarse todas las pruebas y cubrirse ambas decisiones del solapamiento. Cambie temporalmente \texttt{entrada.inicio < r["fin"]} por \texttt{<=}; documente qué prueba falla. Restaure el código antes de confirmar cambios.
+\end{validacion}
+
+\begin{ejercicio}
+\textbf{Laboratorio 7.1 --- incremento vertical.} En Git y FastAPI implemente consulta y cancelación. Añada pruebas unitarias de dominio, integración HTTP y al menos una propiedad con Hypothesis. Entregue código, informe de cobertura y una nota sobre un defecto descubierto por las pruebas.
+
+\textbf{Laboratorio 7.2 --- presupuesto de rendimiento.} Instale Locust con \texttt{python -m pip install locust}. Modele una carga reproducible, mida tasa de solicitudes, errores y p95, y grafique el resultado. Declare máquina, versión, datos y duración: sin esas condiciones la cifra no es comparable.
+\end{ejercicio}
+
+\section{Preguntas de revisión}
+
+\begin{enumerate}
+  \item ¿Qué riesgo quedaría invisible si solo se escribieran pruebas unitarias?
+  \item ¿Por qué un porcentaje de cobertura no debe convertirse por sí solo en objetivo de aprendizaje?
+  \item ¿Qué evidencia distingue una prueba inestable de un defecto intermitente real?
+\end{enumerate}

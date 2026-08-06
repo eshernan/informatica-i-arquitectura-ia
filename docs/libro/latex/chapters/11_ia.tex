@@ -1,0 +1,107 @@
+\chapter{Desarrollo asistido por inteligencia artificial}
+\label{chap:ia}
+
+\begin{objetivos}
+El estudiante podrá usar modelos generativos como colaboradores no confiables, diseñar contexto y criterios de aceptación, operar un modelo local cuando sea viable, evaluar código generado y mantener trazabilidad, privacidad y responsabilidad humana.
+\end{objetivos}
+
+\section{Qué cambia y qué permanece}
+
+Un modelo de lenguaje produce continuaciones probables a partir de instrucciones y contexto. Puede resumir, proponer código, generar pruebas, explicar errores y transformar artefactos con gran velocidad. No conoce automáticamente el propósito local, puede inventar APIs, reproducir vulnerabilidades y expresar certeza sin evidencia. Por eso la unidad de trabajo deja de ser ``pedir código'' y pasa a ser ``formular, generar, inspeccionar, ejecutar y decidir''.
+
+Permanece la responsabilidad profesional. Requisitos, arquitectura, seguridad, licencias y aceptación no se delegan al modelo. La fluidez del resultado no es una validación.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[node distance=1.15cm and 1.0cm, every node/.style={font=\small}]
+\node[decision] (obj) {Objetivo y límites};
+\node[activity, right=of obj] (ctx) {Contexto mínimo};
+\node[activity, right=of ctx] (gen) {Propuesta del modelo};
+\node[activity, below=of gen] (rev) {Revisión humana};
+\node[evidence, left=of rev] (val) {Pruebas y escáneres};
+\node[decision, left=of val] (dec) {Aceptar, corregir o descartar};
+\draw[arrow] (obj)--(ctx); \draw[arrow] (ctx)--(gen); \draw[arrow] (gen)--(rev);
+\draw[arrow] (rev)--(val); \draw[arrow] (val)--(dec); \draw[arrow] (dec.west) -| (obj.south);
+\end{tikzpicture}
+\caption{Bucle de asistencia con decisión y evidencia humanas.}
+\end{figure}
+
+\section{Anatomía de una solicitud útil}
+
+Una solicitud técnica debe declarar resultado, contexto relevante, restricciones, formato y criterios de aceptación. Incluir todo el repositorio eleva costo y exposición; omitir contratos induce invenciones. Se seleccionan interfaces, errores, convenciones y pruebas cercanas.
+
+\begin{politicaia}
+Ejemplo: ``En Python 3.13 y FastAPI, complete únicamente la función \texttt{crear\_reserva}. Respete la interfaz adjunta, no añada dependencias, preserve códigos 201/409 y no registre datos personales. Primero enumere supuestos; luego entregue parche y pruebas pytest. Aceptación: suite existente, casos límite y análisis estático aprobados.''
+\end{politicaia}
+
+Pedir que el modelo explique supuestos facilita revisión, pero la explicación también puede ser incorrecta. La verificación decisiva es ejecutar y contrastar con fuentes y contratos. Dividir una tarea limita el radio del error y mejora la posibilidad de atribuir cambios.
+
+\section{Usos y controles}
+
+\begin{table}[htbp]
+\centering
+\caption{Usos de IA y evidencia mínima.}
+\begin{tabularx}{\textwidth}{p{3cm}X X}
+\toprule
+\textbf{Uso} & \textbf{Riesgo característico} & \textbf{Validación mínima}\\
+\midrule
+Generar código & API inexistente, caso límite, licencia incierta & Compilar, probar, revisar dependencia y procedencia.\\
+Generar pruebas & Repetir el mismo error del código & Derivar casos desde requisitos y mutar una regla.\\
+Refactorizar & Cambiar comportamiento silenciosamente & Pruebas caracterizadoras y comparación de contrato.\\
+Documentar & Afirmar capacidades no implementadas & Ejecutar cada comando y enlazar evidencia.\\
+Revisar seguridad & Falso negativo o consejo obsoleto & Modelo de amenazas, herramientas y revisión especializada.\\
+Agente autónomo & Cambios amplios o acciones externas & Entorno aislado, permisos mínimos, límites y aprobación.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Agentes y permisos}
+
+Un agente combina modelo, instrucciones, memoria y herramientas en un ciclo. El riesgo no depende solo del texto que genera, sino de lo que puede leer y modificar. Se aplica mínimo privilegio: repositorio de práctica, secretos ausentes, comandos permitidos, presupuesto de pasos, registro de acciones y aprobación para publicar, desplegar o borrar.
+
+El contenido recuperado desde documentos, incidencias o páginas puede incluir instrucciones maliciosas. Debe tratarse como datos, no como autoridad. Las reglas del curso y del sistema tienen precedencia; una sugerencia encontrada nunca autoriza extraer secretos ni ampliar permisos.
+
+\section{Modelos locales y herramientas libres}
+
+Ollama facilita ejecutar determinados modelos en una estación local; Continue es una interfaz de asistencia de código con código abierto que puede conectarse a modelos locales. ``Local'' mejora control de tránsito de datos, pero no elimina riesgos de licencia, telemetría, vulnerabilidades ni acceso al repositorio. El modelo concreto puede tener una licencia distinta a la herramienta que lo ejecuta: revísela antes de uso institucional o comercial.
+
+\begin{instalacion}
+Instale Ollama desde \url{https://ollama.com/download} y compruebe \texttt{ollama --version}. Instale la extensión Continue desde el mercado de su editor o siga \url{https://docs.continue.dev/guides/ollama-guide}. Descargue un modelo de código cuyo tamaño y licencia sean compatibles con el equipo:
+\begin{lstlisting}[language=bash]
+ollama list
+ollama pull qwen2.5-coder:7b
+ollama run qwen2.5-coder:7b
+\end{lstlisting}
+El nombre es un ejemplo reproducible a la fecha de edición, no una recomendación permanente. Verifique catálogo, licencia y hash actuales. Un modelo de 7 mil millones de parámetros cuantizado suele requerir varios GiB de memoria; si el equipo no lo soporta, use el servicio institucional autorizado o realice el ejercicio por parejas sin subir información restringida.
+\end{instalacion}
+
+\section{Protocolo de evaluación}
+
+Una comparación válida congela tarea, contexto, versión del modelo, parámetros, entorno y pruebas. Evalúa corrección, seguridad, mantenibilidad, tiempo total y cantidad de intervención humana. Una sola demostración exitosa no permite concluir superioridad.
+
+\begin{validacion}
+Prepare cinco tareas pequeñas con pruebas ocultas al modelo. Ejecute una línea base humana y una asistida. Registre versión, solicitud, archivos compartidos, salida, ediciones, pruebas, escaneos, tiempo y resultado. Revise manualmente una muestra de afirmaciones. No use datos personales ni código cuya política prohíba compartir.
+\end{validacion}
+
+\section{Riesgos y gobernanza}
+
+El perfil de IA generativa del NIST organiza riesgos y acciones de gestión; la guía de UNESCO enfatiza un enfoque centrado en las personas para educación e investigación. En el aula se aplican mediante transparencia, alfabetización, protección de datos, acceso equitativo y evaluación auténtica.
+
+\begin{politicaia}
+Toda entrega declara herramienta y modelo, propósito, fragmentos afectados y validación humana. Se conserva un registro de solicitudes relevantes, no cadenas de pensamiento privadas. Está prohibido ingresar secretos, datos personales o material restringido. El estudiante debe explicar y modificar su solución sin asistencia. La calificación se basa en decisiones y evidencia, no en ocultar o maximizar uso de IA.
+\end{politicaia}
+
+Los principales fallos son alucinación, código inseguro, sesgo, exposición de datos, dependencia de proveedor y pérdida de comprensión. Se enfrentan con fuentes, suites independientes, escaneo, minimización de contexto, alternativas interoperables, documentación y defensa oral.
+
+\begin{ejercicio}
+\textbf{Laboratorio 11.1 --- experimento controlado.} Con Ollama y Continue, solicite implementar una regla y pruebas de LibreReserva. Compare con una solución sin asistente bajo el protocolo anterior. Entregue registro, diferencias, defectos encontrados y conclusión limitada por la muestra.
+
+\textbf{Laboratorio 11.2 --- agente confinado.} Configure un agente solo sobre una copia del proyecto, sin credenciales ni red externa si la plataforma lo permite. Autorícelo a proponer un refactor, no a confirmar ni desplegar. Revise el parche, ejecute validaciones y catalogue acciones que exigirían aprobación.
+\end{ejercicio}
+
+\section{Preguntas de revisión}
+\begin{enumerate}
+  \item ¿Qué evidencia falsaría la afirmación de que la IA mejoró la productividad?
+  \item ¿Qué parte del repositorio no necesita ver el modelo para resolver una tarea concreta?
+  \item ¿Cómo se mantiene autonomía intelectual cuando la generación es casi instantánea?
+\end{enumerate}

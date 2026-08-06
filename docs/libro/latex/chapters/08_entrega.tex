@@ -1,0 +1,156 @@
+\chapter{Entrega continua, contenedores e infraestructura reproducible}
+\label{chap:entrega}
+
+\begin{objetivos}
+El estudiante podrá convertir una revisión de código en un artefacto trazable, construir imágenes sin privilegios con Podman, expresar una canalización en Forgejo Actions y desplegar un servicio en un clúster local creado con kind.
+\end{objetivos}
+
+\section{Del cambio al servicio operable}
+
+La entrega continua mantiene el sistema en estado desplegable. Cada cambio pequeño atraviesa las mismas verificaciones, produce un artefacto inmutable y deja una relación entre confirmación, imagen, configuración y despliegue. Automatizar no significa desplegar sin criterio: producción puede conservar una aprobación humana basada en evidencia.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=0.82,transform shape,node distance=0.75cm and 0.55cm, every node/.style={font=\scriptsize}]
+\node[activity] (c) {Cambio Git};
+\node[activity, right=of c] (t) {Pruebas};
+\node[activity, right=of t] (s) {Análisis};
+\node[activity, right=of s] (b) {Imagen OCI};
+\node[activity, right=of b] (d) {Despliegue};
+\node[evidence, below=of t] (r) {Resultados};
+\node[evidence, below=of b] (a) {SBOM y digest};
+\draw[arrow] (c)--(t); \draw[arrow] (t)--(s); \draw[arrow] (s)--(b); \draw[arrow] (b)--(d);
+\draw[arrow] (t)--(r); \draw[arrow] (b)--(a);
+\end{tikzpicture}
+\caption{Cadena mínima de evidencia de entrega.}
+\end{figure}
+
+\section{Git como protocolo de colaboración}
+
+Una rama corta reduce divergencia. La solicitud de cambio explica intención, riesgo y validación; la revisión examina comportamiento y decisiones, no solo estilo. Una confirmación debe representar una unidad coherente. Etiquetas y versiones semánticas comunican compatibilidad, pero no reemplazan notas de cambio.
+
+\begin{validacion}
+Antes de integrar: el árbol está limpio; las pruebas son verdes; no hay secretos; la documentación del contrato cambió cuando correspondía; la decisión arquitectónica significativa tiene ADR; otra persona puede reproducir el resultado desde el repositorio.
+\end{validacion}
+
+\section{Contenedores sin demonio privilegiado}
+
+Una imagen OCI empaqueta sistema de archivos y metadatos; un contenedor es un proceso aislado iniciado desde ella. La imagen debe ser pequeña, ejecutarse con usuario no privilegiado y recibir configuración en tiempo de ejecución. No deben hornearse secretos ni archivos de desarrollo.
+
+\begin{instalacion}
+Instale Podman desde los repositorios de su distribución o desde \url{https://podman.io/docs/installation}. En macOS y Windows, Podman usa una máquina Linux:
+\begin{lstlisting}[language=bash]
+podman machine init       # solo la primera vez
+podman machine start
+podman info
+\end{lstlisting}
+Para alojamiento Git libre, Forgejo publica imágenes de contenedor e instrucciones en \url{https://forgejo.org/docs/v16.0/admin/installation/docker/}. El laboratorio puede utilizar una instancia institucional existente o una local; no exige GitHub.
+\end{instalacion}
+
+\begin{lstlisting}[caption={Containerfile reproducible para la API.}]
+FROM docker.io/library/python:3.13-slim
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir --require-hashes -r requirements.txt
+COPY app ./app
+USER 10001:10001
+EXPOSE 8000
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+\end{lstlisting}
+
+La opción \texttt{--require-hashes} requiere fijar versión y hash de cada dependencia. Si el equipo aún no mantiene un archivo bloqueado, debe generarlo conscientemente antes de activar esta puerta; retirar la opción sin documentarlo debilita la reproducibilidad.
+
+\begin{lstlisting}[language=bash]
+podman build -t localhost/librereserva:0.1.0 .
+podman run --rm -p 8000:8000 localhost/librereserva:0.1.0
+curl -fsS http://localhost:8000/docs >/dev/null
+podman image inspect localhost/librereserva:0.1.0 --format '{{.Digest}}'
+\end{lstlisting}
+
+\section{Integración continua con Forgejo Actions}
+
+Forgejo Actions interpreta flujos declarativos compatibles en buena medida con el formato conocido de GitHub Actions, pero requiere un \emph{runner}. Las acciones de terceros son código: se fijan a una versión o, para mayor control, a una confirmación revisada.
+
+\begin{lstlisting}[language=yaml,caption={.forgejo/workflows/validar.yml}]
+name: validar
+on: [push, pull_request]
+jobs:
+  pruebas:
+    runs-on: docker
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python -m pip install -r requirements-dev.txt
+      - run: pytest --cov=app --cov-branch
+      - run: podman build -t localhost/librereserva:${{ forgejo.sha }} .
+\end{lstlisting}
+
+El ejemplo debe ajustarse a las etiquetas y capacidades del \emph{runner}: no todos exponen Podman. En entornos compartidos conviene separar construcción de imágenes en un ejecutor aislado.
+
+\section{Despliegue local con Kubernetes}
+
+Kubernetes reconcilia estado deseado y observado. No corrige una aplicación sin límites ni buenas señales; añade mecanismos de programación, aislamiento y recuperación. Para aprender el modelo sin depender de una nube, kind crea nodos Kubernetes como contenedores.
+
+\begin{instalacion}
+Instale \texttt{kubectl} y \texttt{kind} siguiendo \url{https://kind.sigs.k8s.io/docs/user/quick-start/}. Con Podman, kind puede detectar el proveedor; si hay ambigüedad use \texttt{KIND\_EXPERIMENTAL\_PROVIDER=podman}. Verifique versiones antes de crear el clúster.
+\end{instalacion}
+
+\begin{lstlisting}[language=yaml,caption={Recursos mínimos de despliegue.}]
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: librereserva}
+spec:
+  replicas: 2
+  selector: {matchLabels: {app: librereserva}}
+  template:
+    metadata: {labels: {app: librereserva}}
+    spec:
+      containers:
+        - name: api
+          image: localhost/librereserva:0.1.0
+          ports: [{containerPort: 8000}]
+          resources:
+            requests: {cpu: 100m, memory: 128Mi}
+            limits: {cpu: 500m, memory: 256Mi}
+          readinessProbe:
+            httpGet: {path: /salud/lista, port: 8000}
+          livenessProbe:
+            httpGet: {path: /salud/viva, port: 8000}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: librereserva}
+spec:
+  selector: {app: librereserva}
+  ports: [{port: 80, targetPort: 8000}]
+\end{lstlisting}
+
+\begin{lstlisting}[language=bash]
+kind create cluster --name informatica1
+kind load docker-image localhost/librereserva:0.1.0 --name informatica1
+kubectl apply -f despliegue.yml
+kubectl rollout status deployment/librereserva --timeout=120s
+kubectl get pods,service
+\end{lstlisting}
+
+Aunque el subcomando se llama \texttt{docker-image}, kind lo conserva por compatibilidad. Si la integración con Podman de su plataforma no carga la imagen, utilice un registro local documentado en la guía de kind.
+
+\section{Configuración, secretos e infraestructura como código}
+
+Código, configuración no secreta y secretos tienen ciclos distintos. Los secretos se entregan por un gestor o mecanismo de la plataforma, se rotan y nunca se confirman en Git. La infraestructura como código expresa recursos revisables y repetibles; OpenTofu es una alternativa libre para provisión declarativa y Ansible para configuración. En el curso se evalúa la intención, el plan y la revisión, no el gasto en una nube comercial.
+
+\begin{ejercicio}
+\textbf{Laboratorio 8.1 --- canalización local.} Aloje LibreReserva en Forgejo, active un runner aislado y configure pruebas, cobertura y construcción OCI. Entregue registro de ejecución, digest de imagen y explicación de una puerta fallida.
+
+\textbf{Laboratorio 8.2 --- despliegue reproducible.} Cree un clúster kind, despliegue dos réplicas, elimine un pod y observe la reconciliación. Pruebe por separado \emph{readiness} y \emph{liveness}; explique por qué no deben apuntar necesariamente al mismo criterio.
+\end{ejercicio}
+
+\section{Preguntas de revisión}
+\begin{enumerate}
+  \item ¿Qué evidencia permite reconstruir qué código está ejecutándose?
+  \item ¿Por qué una imagen que funciona como \texttt{root} sigue siendo un riesgo?
+  \item ¿Qué costo introduce Kubernetes que un monolito sencillo quizá no justifique?
+\end{enumerate}

@@ -1,0 +1,67 @@
+\chapter{Estilos arquitectónicos y sistemas distribuidos}
+
+\begin{objetivos}
+El lector podrá comparar monolito modular, microservicios, arquitectura orientada a eventos y serverless; identificar costos de distribución; y diseñar una evolución incremental basada en señales observables.
+\end{objetivos}
+
+\section{Los estilos son restricciones deliberadas}
+Un estilo arquitectónico define un conjunto de elementos, relaciones y restricciones. Capas controla la dirección de dependencias; hexagonal separa política de adaptadores; microservicios agrega autonomía de despliegue y datos; eventos desacopla temporalmente productores y consumidores. Combinar estilos es normal, pero cada combinación añade reglas que deben verificarse.
+
+\section{Monolito modular}
+Un monolito modular se despliega como una unidad y contiene límites internos explícitos. Sus ventajas son depuración, transacciones y operación simples. Sus riesgos aparecen cuando los límites se ignoran, la base de datos se convierte en interfaz informal y cada cambio exige comprender todo el sistema.
+
+Para un equipo pequeño y un dominio en aprendizaje, suele ser un punto de partida prudente. La modularidad crea opciones: un módulo puede extraerse después si existe evidencia de que necesita escalar, desplegarse o gobernarse de forma independiente.
+
+\section{Microservicios}
+Un microservicio posee una responsabilidad coherente, despliegue independiente y control de sus datos. Dividir por entidades produce servicios anémicos y conversaciones excesivas. El límite debe reflejar capacidad de negocio, equipo y ciclo de cambio.
+
+La distribución introduce latencia, fallos parciales, versionamiento de contratos, observabilidad, seguridad entre servicios, consistencia eventual y automatización. Si dos servicios siempre cambian y se despliegan juntos, la separación puede ser accidental.
+
+\section{Eventos y mensajería}
+Un evento declara un hecho ocurrido: \software{ReservaConfirmada}. No debe ser una orden disfrazada ni incluir el modelo interno completo. Los consumidores pueden reaccionar de forma independiente, pero se deben manejar duplicados, orden, reintentos y evolución del esquema.
+
+\section{Serverless}
+Serverless delega infraestructura a una plataforma y factura por uso o capacidad. Puede reducir operación para cargas intermitentes, pero introduce límites de ejecución, arranques, observabilidad distribuida y dependencia del proveedor. Las alternativas libres, como OpenFaaS o Knative, también requieren operar una plataforma subyacente; por tanto, no eliminan el costo, lo redistribuyen.
+
+\section{Árbol de decisión}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=0.88,transform shape,node distance=1.05cm,every node/.style={align=center,font=\small}]
+  \node[draw=AzulUD,fill=AzulClaro,rounded corners] (start) {¿Existe necesidad demostrable\\de despliegue independiente?};
+  \node[draw=Verde,fill=VerdeClaro,rounded corners,below left=of start] (mono) {No: fortalecer\\monolito modular};
+  \node[draw=AzulUD,fill=AzulClaro,rounded corners,below right=of start] (team) {Sí: ¿hay equipo y\\plataforma operativa?};
+  \node[draw=Naranja,fill=NaranjaClaro,rounded corners,below left=of team] (prep) {No: crear capacidades\\antes de distribuir};
+  \node[draw=Verde,fill=VerdeClaro,rounded corners,below right=of team] (svc) {Sí: extraer una\\capacidad delimitada};
+  \draw[-{Latex},thick] (start) -- node[above left]{no} (mono);
+  \draw[-{Latex},thick] (start) -- node[above right]{sí} (team);
+  \draw[-{Latex},thick] (team) -- node[above left]{no} (prep);
+  \draw[-{Latex},thick] (team) -- node[above right]{sí} (svc);
+\end{tikzpicture}
+\caption{Decisión conservadora antes de distribuir.}
+\label{fig:decision-distribucion}
+\end{figure}
+
+\section{Patrones de evolución}
+\begin{itemize}
+  \item \textbf{Strangler}: enrutar gradualmente capacidades hacia un componente nuevo.
+  \item \textbf{Anti-corruption layer}: traducir modelos para proteger un dominio de un legado.
+  \item \textbf{Outbox}: guardar cambio de negocio y mensaje en una transacción local, publicándolo después.
+  \item \textbf{Saga}: coordinar transacciones locales con compensaciones; no restaura automáticamente el estado exacto anterior.
+  \item \textbf{Circuit breaker}: detener llamadas a una dependencia fallida para permitir recuperación; no sustituye límites de tiempo.
+\end{itemize}
+
+\begin{ejercicio}[title={Laboratorio. Simulación de fallos}]
+Modele la confirmación de una reserva y el envío de correo como dos procesos. Simule que el correo falla en 30\% de los intentos. Compare: transacción síncrona, reintento inmediato, cola con reintento y outbox. Registre reservas confirmadas, correos duplicados y tiempo total.
+\end{ejercicio}
+
+\begin{validacion}
+La estrategia propuesta debe demostrar: ninguna reserva confirmada se pierde; un fallo de correo no revierte indebidamente la reserva; los mensajes duplicados no producen efectos duplicados; los fallos agotados quedan visibles para operación.
+\end{validacion}
+
+\begin{ejercicio}[title={Ejercicio de arquitectura}]
+Seleccione un módulo candidato a extracción. Defina señal de activación, contrato, propiedad de datos, plan de migración, observabilidad y estrategia de reversión. Si no puede identificar una señal medible, argumente por qué debe permanecer en el monolito.
+\end{ejercicio}
+
+\begin{riesgo}
+Microservicios no son una medida de madurez. La madurez consiste en poder justificar límites, operar fallos y cambiar con seguridad. Distribuir antes de dominar pruebas, entrega y observabilidad amplifica los problemas existentes.
+\end{riesgo}

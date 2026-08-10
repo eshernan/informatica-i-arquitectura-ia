@@ -23,6 +23,37 @@ flowchart LR
 
 ## Ruta del curso
 
+### UNIDAD 1: Informática y conceptos básicos
+
+Modelo de software vs.  arquitectura de software, evolución de las arquitecturas de software, arquitecturas cliente-servidor, arquitecturas multicapas, arquitectura en la web.
+
+UML y su papel en el proceso de desarrollo de SW
+
+El Paradigma de la Programación Orientada a Objetos: Principios de la POO, UML y POO, Lenguajes modernos OO: C#, C++, Java
+
+El metapatrón MVC
+
+Concurrencia
+
+Manejo de comunicaciones
+
+Integración capa de negocio y capa de datos: Patrón DAO
+
+#### UNIDAD 2: Arquitectura de software
+
+Concepto, Estilos y patrones Arquitecturales, Descripción de la arquitectura, Puntos de vista y Vistas
+
+Arquitectura  .Net:  Características,  Plataforma  de  desarrollo,  FrameWork  .NET,  Librerías.NET, Lenguajes .NET
+
+Arquitectura por componentes JEE: Conceptos Básicos de la arquitectura JEE, Niveles de una arquitectura multicapas, contenedores, componentes y APIs JEE, Servidor de Aplicaciones: contenedor web y contenedor de componentes, Tipos de componentes EJB
+
+Arquitectura en aplicaciones con PHP : Instalación y configuración del entorno de desarrollo, Diseño e implementación en torno a casos de uso.
+
+Arquitectura orientada a WebServices: Entornos de aplicación usando .NET, Java, PHP.
+
+Arquitectura orientada a  MicroServices (REST): Entornos de aplicación usando .NET, Java, PHP.
+
+
 | # | Módulo | Laboratorio principal | Software |
 |---:|---|---|---|
 | 1 | [Entorno reproducible](modules/01_entorno/README.md) | Preparar y verificar estación | Git, Python, Make, Podman |
@@ -37,6 +68,9 @@ flowchart LR
 | 10 | [Seguridad](modules/10_seguridad/README.md) | Amenazas y cadena de suministro | Gitleaks, Syft, Trivy, OWASP ZAP |
 | 11 | [IA para desarrollo](modules/11_ia/README.md) | Evaluación controlada de asistencia | Ollama, Continue, Jupyter |
 | 12 | [Proyecto integrador](modules/12_proyecto/README.md) | LibreReserva operable | Toda la plataforma |
+
+
+Reflección: creo que podemos enfocar el curso a dar los temas planteados en el Syllabus, y como valor agregado miramos como le agregamos la propuesta a cada punto sin perder los contenidos que nos piden.
 
 ## Inicio rápido
 

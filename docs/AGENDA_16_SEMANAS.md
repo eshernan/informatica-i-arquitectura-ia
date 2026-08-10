@@ -94,3 +94,5 @@ La sesión 9 comienza con la reproducción de ese paquete bajo la dirección del
 ## Evidencia final
 
 El repositorio debe permitir que un evaluador parta de un clon limpio y pueda ejecutar pruebas, construir la imagen, generar la SBOM, desplegar LibreReserva, realizar una reserva, observar su traza y relacionar el artefacto con una decisión arquitectónica.
+
+Última actualización: 2026-08-10

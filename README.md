@@ -24,38 +24,40 @@ flowchart LR
 ## Ruta del curso
 
 ### UNIDAD 1: Informática y conceptos básicos
+# Hoja1
 
-Modelo de software vs.  arquitectura de software, evolución de las arquitecturas de software, arquitecturas cliente-servidor, arquitecturas multicapas, arquitectura en la web.
+|Semana|Fecha Clase|Instructor|Tema|
+|---|---|---|---|
+|1|12-Aug|Carlos|Modelo de software vs.  arquitectura de software, evolución de las arquitecturas de software, arquitecturas cliente-servidor, arquitecturas multicapas, arquitectura en la web|
+|2|19-Aug|Carlos|UML y su papel en el proceso de desarrollo de SW, repositorio|
+|3|26-Aug|Carlos|El Paradigma de la Programación Orientada a Objetos: Principios de la POO, UML y POO|
+|4|2-Sep|Carlos|Lenguajes modernos OO: Python, Java.|
+|5|9-Sep|Carlos|Lenguajes modernos OO: Python, Java.|
+|6|16-Sep|Carlos|Lenguajes modernos OO: Python, Java.|
+|7|23-Sep|Carlos|El metapatrón MVC, Manejo de comunicaciones.|
+|8|30-Sep|Carlos|Evaluación|
+| |7-Oct|Semana Universitaria| |
 
-UML y su papel en el proceso de desarrollo de SW
 
-El Paradigma de la Programación Orientada a Objetos: Principios de la POO, UML y POO, Lenguajes modernos OO: C#, C++, Java
-
-El metapatrón MVC
-
-Concurrencia
-
-Manejo de comunicaciones
-
-Integración capa de negocio y capa de datos: Patrón DAO
 
 #### UNIDAD 2: Arquitectura de software
 
-Concepto, Estilos y patrones Arquitecturales, Descripción de la arquitectura, Puntos de vista y Vistas
-
-Arquitectura  .Net:  Características,  Plataforma  de  desarrollo,  FrameWork  .NET,  Librerías.NET, Lenguajes .NET
-
-Arquitectura por componentes JEE: Conceptos Básicos de la arquitectura JEE, Niveles de una arquitectura multicapas, contenedores, componentes y APIs JEE, Servidor de Aplicaciones: contenedor web y contenedor de componentes, Tipos de componentes EJB
-
-Arquitectura en aplicaciones con PHP : Instalación y configuración del entorno de desarrollo, Diseño e implementación en torno a casos de uso.
-
-Arquitectura orientada a WebServices: Entornos de aplicación usando .NET, Java, PHP.
-
-Arquitectura orientada a  MicroServices (REST): Entornos de aplicación usando .NET, Java, PHP.
+|Semana|Fecha Clase|Instructor|Tema|
+|---|---|---|---|
+|1|14-Oct|Esteban|Entorno reproducible (Preparar y verificar estación )|
+|2|21-Oct|Esteban - Virtual|Atributos de calidad (Escenarios y funciones de aptitud)|
+|3|28-Oct|Esteban|Atributos de calidad (Núcleo hexagonal)|
+|4|4-Nov|Esteban|Sistemas distribuidos (Decidir antes de distribuir)|
+|5|11-Nov|Esteban|API, datos y eventos (Persistencia, idempotencia y outbox )|
+|6|18-Nov|Esteban|Implementación y pruebas (Pirámide de pruebas y propiedades) - Entrega y plataforma (OCI, CI y Kubernetes local)|
+|7|25-Nov|Trabajo En proyecto (No hay sesión)| |
+|8|2-Dec|Esteban|Despliegue proyecto|
 
 
 | # | Módulo | Laboratorio principal | Software |
 |---:|---|---|---|
+|  | [Modelo de software vs.  arquitectura de software](modules/00_Modelos-Arquitecturas/README.md) | Diseño y Modelado del Sistema, Arquitectura, Tdcnicas y Herramientas, Características de un buen Diseño, Documentando el Diseño |
+|  | [Lenguajes modernos OO](modules/01_Lenguajes_Modernos/README.md) | Diseño y Modelado del Sistema, Arquitectura, Tdcnicas y Herramientas, Características de un buen Diseño, Documentando el Diseño |
 | 1 | [Entorno reproducible](modules/01_entorno/README.md) | Preparar y verificar estación | Git, Python, Make, Podman |
 | 2 | [Atributos de calidad](modules/02_calidad/README.md) | Escenarios y funciones de aptitud | Jupyter, Python |
 | 3 | [C4, UML y ADR](modules/03_c4_uml_adr/README.md) | Arquitectura como código | PlantUML, Graphviz |

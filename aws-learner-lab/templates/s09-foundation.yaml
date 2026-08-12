@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: LibreReserva S09 - bucket privado y efimero para comprobar Learner Lab.
+Resources:
+  EvidenceBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      Tags:
+        - Key: Course
+          Value: InformaticaI
+        - Key: Project
+          Value: LibreReserva
+        - Key: Session
+          Value: S09
+Outputs:
+  BucketName:
+    Description: Bucket temporal; debe quedar vacio antes de borrar la pila.
+    Value: !Ref EvidenceBucket

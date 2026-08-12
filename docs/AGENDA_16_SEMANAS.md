@@ -10,7 +10,7 @@
 - Primera sesión: miércoles 12 de agosto de 2026.
 - Última sesión: miércoles 2 de diciembre de 2026.
 - Semana Universitaria: miércoles 7 de octubre, sin sesión ordinaria.
-- Caso conductor del segundo bloque: LibreReserva.
+- Caso conductor y práctica exclusiva del bloque del Dr. Esteban Hernández: LibreReserva. No se exige en las sesiones del Dr. Carlos Montenegro.
 
 La institución debe confirmar si las cuatro horas de proyecto del 25 de noviembre se reconocen como trabajo directo. Si no es así, se requiere una actividad de recuperación para completar 64 horas de trabajo directo.
 
@@ -47,7 +47,7 @@ El primer bloque desarrolla los temas definidos por el profesor titular. El segu
 
 ## Uso de AWS Academy
 
-AWS Academy Learner Lab se utiliza como entorno para ejercicios seleccionados, siempre que la institución, el educador, la clase y los servicios estén habilitados antes del inicio del segundo bloque.
+AWS Academy Learner Lab se utiliza en las semanas 9 a 16 como entorno de las prácticas de LibreReserva del Dr. Esteban Hernández, siempre que la institución, el educador, la clase y los servicios estén habilitados antes del inicio del segundo bloque. La [ruta operativa de las ocho sesiones](../aws-learner-lab/README.md) y la [preparación previa](../aws-learner-lab/PREPARACION_ANTES_SESION_9.md) forman parte del material del curso.
 
 - Cloud Foundations, o conocimiento equivalente, es preparación previa.
 - No se incorpora un curso Associate completo de AWS Academy dentro de estas 64 horas.
@@ -55,6 +55,7 @@ AWS Academy Learner Lab se utiliza como entorno para ejercicios seleccionados, s
 - Los servicios y cuotas se validan antes de publicar el ejercicio.
 - Cada equipo registra consumo y elimina sus recursos al terminar.
 - Las credenciales nunca se almacenan en el repositorio.
+- La semana 15 se monta como actividad autónoma de cuatro horas en la clase de AWS Academy; no se presenta como encuentro sincrónico.
 
 ## Estructura de un encuentro de cuatro horas
 

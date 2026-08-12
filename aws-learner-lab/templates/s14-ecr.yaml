@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: LibreReserva S14 - registro OCI opcional para una imagen efimera.
+Resources:
+  ContainerRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      EmptyOnDelete: true
+      EncryptionConfiguration:
+        EncryptionType: AES256
+      ImageScanningConfiguration:
+        ScanOnPush: true
+      ImageTagMutability: IMMUTABLE
+      LifecyclePolicy:
+        LifecyclePolicyText: |
+          {
+            "rules": [{
+              "rulePriority": 1,
+              "description": "Conservar solo las cinco imagenes mas recientes",
+              "selection": {
+                "tagStatus": "any",
+                "countType": "imageCountMoreThan",
+                "countNumber": 5
+              },
+              "action": {"type": "expire"}
+            }]
+          }
+      Tags:
+        - Key: Course
+          Value: InformaticaI
+        - Key: Project
+          Value: LibreReserva
+        - Key: Session
+          Value: S14
+Outputs:
+  RepositoryUri:
+    Value: !GetAtt ContainerRepository.RepositoryUri

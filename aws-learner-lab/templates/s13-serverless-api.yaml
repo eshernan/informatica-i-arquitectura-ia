@@ -1,0 +1,151 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: LibreReserva S13 - API HTTP, Lambda, DynamoDB y SQS sin crear roles IAM.
+Parameters:
+  LabRoleArn:
+    Type: String
+    Description: ARN del rol de ejecucion Lambda habilitado por Learner Lab.
+    AllowedPattern: '^arn:[^:]+:iam::[0-9]{12}:role/.+$'
+Resources:
+  ReservationsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: reservation_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: reservation_id
+          KeyType: HASH
+      SSESpecification:
+        SSEEnabled: true
+      Tags:
+        - Key: Course
+          Value: InformaticaI
+        - Key: Project
+          Value: LibreReserva
+        - Key: Session
+          Value: S13
+  ReservationEventsQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      MessageRetentionPeriod: 86400
+      SqsManagedSseEnabled: true
+      Tags:
+        - Key: Course
+          Value: InformaticaI
+        - Key: Project
+          Value: LibreReserva
+        - Key: Session
+          Value: S13
+  ReservationsFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Runtime: python3.12
+      Handler: index.handler
+      Role: !Ref LabRoleArn
+      Timeout: 10
+      MemorySize: 128
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref ReservationsTable
+          QUEUE_URL: !Ref ReservationEventsQueue
+      Code:
+        ZipFile: |
+          import json
+          import os
+          import uuid
+          import boto3
+          from botocore.exceptions import ClientError
+
+          table = boto3.resource("dynamodb").Table(os.environ["TABLE_NAME"])
+          sqs = boto3.client("sqs")
+
+          def reply(status, body):
+              return {
+                  "statusCode": status,
+                  "headers": {"content-type": "application/json"},
+                  "body": json.dumps(body),
+              }
+
+          def handler(event, context):
+              method = event.get("requestContext", {}).get("http", {}).get("method")
+              if method == "GET":
+                  return reply(200, table.scan(Limit=50).get("Items", []))
+              try:
+                  body = json.loads(event.get("body") or "{}")
+              except json.JSONDecodeError:
+                  return reply(400, {"error": "JSON invalido"})
+              required = ("recurso", "inicio", "fin")
+              if any(not body.get(field) for field in required):
+                  return reply(422, {"error": "recurso, inicio y fin son obligatorios"})
+              headers = {key.lower(): value for key, value in event.get("headers", {}).items()}
+              reservation_id = headers.get("idempotency-key") or str(uuid.uuid4())
+              item = {
+                  "reservation_id": reservation_id,
+                  "recurso": body["recurso"],
+                  "inicio": body["inicio"],
+                  "fin": body["fin"],
+              }
+              try:
+                  table.put_item(
+                      Item=item,
+                      ConditionExpression="attribute_not_exists(reservation_id)",
+                  )
+              except ClientError as error:
+                  if error.response.get("Error", {}).get("Code") == "ConditionalCheckFailedException":
+                      return reply(409, {"error": "clave de idempotencia repetida"})
+                  raise
+              sqs.send_message(
+                  QueueUrl=os.environ["QUEUE_URL"],
+                  MessageBody=json.dumps({"type": "ReservaCreada", "data": item}),
+              )
+              return reply(201, item)
+  ReservationsLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${ReservationsFunction}'
+      RetentionInDays: 1
+  HttpApi:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: !Sub '${AWS::StackName}-api'
+      ProtocolType: HTTP
+  ApiIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref HttpApi
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !GetAtt ReservationsFunction.Arn
+      PayloadFormatVersion: '2.0'
+  GetReservationsRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref HttpApi
+      RouteKey: 'GET /reservas'
+      Target: !Sub 'integrations/${ApiIntegration}'
+  PostReservationsRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref HttpApi
+      RouteKey: 'POST /reservas'
+      Target: !Sub 'integrations/${ApiIntegration}'
+  DefaultStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId: !Ref HttpApi
+      StageName: '$default'
+      AutoDeploy: true
+  InvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref ReservationsFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*'
+Outputs:
+  ApiUrl:
+    Value: !Sub 'https://${HttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}'
+  TableName:
+    Value: !Ref ReservationsTable
+  QueueUrl:
+    Value: !Ref ReservationEventsQueue

@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: LibreReserva S11 - adaptador de persistencia DynamoDB de capacidad bajo demanda.
+Resources:
+  ReservationsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: resource_id
+          AttributeType: S
+        - AttributeName: start_reservation_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: resource_id
+          KeyType: HASH
+        - AttributeName: start_reservation_id
+          KeyType: RANGE
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: false
+      SSESpecification:
+        SSEEnabled: true
+      Tags:
+        - Key: Course
+          Value: InformaticaI
+        - Key: Project
+          Value: LibreReserva
+        - Key: Session
+          Value: S11
+Outputs:
+  TableName:
+    Value: !Ref ReservationsTable

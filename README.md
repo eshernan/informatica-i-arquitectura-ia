@@ -28,7 +28,7 @@ flowchart LR
 - Profesor titular: Dr. Carlos Montenegro Marín.
 - Primer bloque: ocho sesiones a cargo del Dr. Carlos Montenegro Marín.
 - Segundo bloque: ocho semanas académicas a cargo del Dr. Esteban Hernández Barragán.
-- Caso conductor del segundo bloque: **LibreReserva**.
+- Caso conductor y práctica del segundo bloque del Dr. Esteban Hernández: **LibreReserva**. No se asigna como práctica obligatoria en las sesiones del Dr. Carlos Montenegro.
 
 La secuencia conserva los contenidos definidos por el profesor titular. Los materiales adicionales del repositorio se relacionan con cada tema cuando aportan evidencia, práctica o actualización tecnológica.
 
@@ -88,7 +88,14 @@ El alcance evaluable de estos materiales será indicado por los profesores. Su u
 
 ## Integración con AWS Academy
 
-El curso utilizará **AWS Academy Learner Lab** para prácticas seleccionadas cuando el acceso institucional, los servicios y las cuotas hayan sido verificados. AWS complementa el caso LibreReserva y no sustituye la ruta reproducible con software libre.
+Las sesiones 9 a 16, orientadas por el Dr. Esteban Hernández, utilizarán **AWS Academy Learner Lab** para desarrollar progresivamente LibreReserva cuando el acceso institucional, los servicios y las cuotas hayan sido verificados. Esta práctica corresponde exclusivamente a ese bloque. AWS no sustituye la ruta reproducible con software libre.
+
+El paquete [LibreReserva en AWS Academy Learner Lab](aws-learner-lab/README.md) incluye:
+
+- [preparación obligatoria antes de la sesión 9](aws-learner-lab/PREPARACION_ANTES_SESION_9.md);
+- [guía docente para crear la clase y publicar cada actividad](aws-learner-lab/GUIA_DOCENTE_AWS_ACADEMY.md);
+- ocho guías, una por semana, con taller, evidencia, contingencia y limpieza;
+- plantillas CloudFormation efímeras y scripts conservadores de comprobación y despliegue.
 
 - AWS Academy Cloud Foundations, o conocimientos equivalentes, se considera preparación previa.
 - No se pretende completar dentro de Informática I un curso Associate de AWS Academy; Cloud Architecting, Cloud Developing y Cloud Operations tienen una duración aproximada de 40 horas cada uno.
@@ -96,6 +103,7 @@ El curso utilizará **AWS Academy Learner Lab** para prácticas seleccionadas cu
 - Cada práctica dependiente de AWS debe tener una alternativa local con las herramientas del repositorio.
 - Los estudiantes deben eliminar los recursos al finalizar el laboratorio y no registrar credenciales ni secretos.
 - La disponibilidad real de servicios se valida en el portal de AWS Academy antes de publicar cada ejercicio.
+- Las plantillas no crean roles IAM ni almacenan credenciales; usan únicamente capacidades previamente habilitadas por Learner Lab.
 
 ## Inicio rápido
 

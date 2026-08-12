@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: LibreReserva S12 - cola de eventos con cola de mensajes no procesables.
+Resources:
+  DeadLetterQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      MessageRetentionPeriod: 1209600
+      SqsManagedSseEnabled: true
+      Tags:
+        - Key: Course
+          Value: InformaticaI
+        - Key: Project
+          Value: LibreReserva
+        - Key: Session
+          Value: S12
+  ReservationEventsQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      VisibilityTimeout: 30
+      MessageRetentionPeriod: 86400
+      ReceiveMessageWaitTimeSeconds: 10
+      SqsManagedSseEnabled: true
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt DeadLetterQueue.Arn
+        maxReceiveCount: 3
+      Tags:
+        - Key: Course
+          Value: InformaticaI
+        - Key: Project
+          Value: LibreReserva
+        - Key: Session
+          Value: S12
+Outputs:
+  QueueUrl:
+    Value: !Ref ReservationEventsQueue
+  DeadLetterQueueUrl:
+    Value: !Ref DeadLetterQueue

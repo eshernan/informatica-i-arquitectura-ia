@@ -4,12 +4,12 @@ Curso práctico de la Especialización en Ingeniería de Software. El repositori
 
 Preparado por los profesores:
 
-- Dr. Carlos Montenegro Marin
+- Dr. Carlos Montenegro Marín
 - Dr. Esteban Hernández Barragán
 
 ## Propósito
 
-El curso enseña a tomar decisiones arquitectónicas verificables, construir incrementos pequeños, entregar y operar software con herramientas libres, gestionar seguridad y utilizar IA generativa como colaborador no confiable. El caso conductor es **LibreReserva**, una API para reservar recursos institucionales.
+El curso desarrolla los contenidos definidos para Informática I y los relaciona con prácticas contemporáneas de arquitectura y construcción de software. La agenda oficial prioriza la secuencia establecida por el profesor titular; los laboratorios reproducibles, la seguridad, la observabilidad y el uso responsable de IA se incorporan como apoyo o valor agregado, sin sustituir los temas del syllabus. El caso conductor es **LibreReserva**, una API para reservar recursos institucionales.
 
 ```mermaid
 flowchart LR
@@ -21,58 +21,81 @@ flowchart LR
   IA[IA asistiva] -. revisión y validación .-> B
 ```
 
-## Ruta del curso
+## Agenda oficial del curso
 
-### UNIDAD 1: Informática y conceptos básicos
-# Hoja1
+- Periodo: segundo semestre de 2026.
+- Horario de los encuentros: miércoles de 6:00 p. m. a 10:00 p. m.
+- Profesor titular: Dr. Carlos Montenegro Marín.
+- Primer bloque: ocho sesiones a cargo del Dr. Carlos Montenegro Marín.
+- Segundo bloque: ocho semanas académicas a cargo del Dr. Esteban Hernández Barragán.
+- Caso conductor del segundo bloque: **LibreReserva**.
 
-|Semana|Fecha Clase|Instructor|Tema|
-|---|---|---|---|
-|1|12-Aug|Carlos|Modelo de software vs.  arquitectura de software, evolución de las arquitecturas de software, arquitecturas cliente-servidor, arquitecturas multicapas, arquitectura en la web|
-|2|19-Aug|Carlos|UML y su papel en el proceso de desarrollo de SW, repositorio|
-|3|26-Aug|Carlos|El Paradigma de la Programación Orientada a Objetos: Principios de la POO, UML y POO|
-|4|2-Sep|Carlos|Lenguajes modernos OO: Python, Java.|
-|5|9-Sep|Carlos|Lenguajes modernos OO: Python, Java.|
-|6|16-Sep|Carlos|Lenguajes modernos OO: Python, Java.|
-|7|23-Sep|Carlos|El metapatrón MVC, Manejo de comunicaciones.|
-|8|30-Sep|Carlos|Evaluación|
-| |7-Oct|Semana Universitaria| |
+La secuencia conserva los contenidos definidos por el profesor titular. Los materiales adicionales del repositorio se relacionan con cada tema cuando aportan evidencia, práctica o actualización tecnológica.
 
+### Unidad 1. Informática y conceptos básicos
 
-
-#### UNIDAD 2: Arquitectura de software
-
-|Semana|Fecha Clase|Instructor|Tema|
-|---|---|---|---|
-|1|14-Oct|Esteban|Entorno reproducible (Preparar y verificar estación )|
-|2|21-Oct|Esteban - Virtual|Atributos de calidad (Escenarios y funciones de aptitud)|
-|3|28-Oct|Esteban|Atributos de calidad (Núcleo hexagonal)|
-|4|4-Nov|Esteban|Sistemas distribuidos (Decidir antes de distribuir)|
-|5|11-Nov|Esteban|API, datos y eventos (Persistencia, idempotencia y outbox )|
-|6|18-Nov|Esteban|Implementación y pruebas (Pirámide de pruebas y propiedades) - Entrega y plataforma (OCI, CI y Kubernetes local)|
-|7|25-Nov|Trabajo En proyecto (No hay sesión)| |
-|8|2-Dec|Esteban|Despliegue proyecto|
-
-
-| # | Módulo | Laboratorio principal | Software |
+| Semana | Fecha | Profesor | Tema |
 |---:|---|---|---|
-|  | [Modelo de software vs.  arquitectura de software](modules/00_Modelos-Arquitecturas/README.md) | Diseño y Modelado del Sistema, Arquitectura, Tdcnicas y Herramientas, Características de un buen Diseño, Documentando el Diseño |
-|  | [Lenguajes modernos OO](modules/01_Lenguajes_Modernos/README.md) | Diseño y Modelado del Sistema, Arquitectura, Tdcnicas y Herramientas, Características de un buen Diseño, Documentando el Diseño |
-| 1 | [Entorno reproducible](modules/01_entorno/README.md) | Preparar y verificar estación | Git, Python, Make, Podman |
-| 2 | [Atributos de calidad](modules/02_calidad/README.md) | Escenarios y funciones de aptitud | Jupyter, Python |
-| 3 | [C4, UML y ADR](modules/03_c4_uml_adr/README.md) | Arquitectura como código | PlantUML, Graphviz |
-| 4 | [Modularidad y dominio](modules/04_modularidad/README.md) | Núcleo hexagonal | Python, FastAPI |
-| 5 | [Sistemas distribuidos](modules/05_distribucion/README.md) | Decidir antes de distribuir | Podman |
-| 6 | [API, datos y eventos](modules/06_apis_datos_eventos/README.md) | Persistencia, idempotencia y outbox | PostgreSQL, RabbitMQ |
-| 7 | [Implementación y pruebas](modules/07_pruebas/README.md) | Pirámide de pruebas y propiedades | pytest, Hypothesis |
-| 8 | [Entrega y plataforma](modules/08_entrega_plataforma/README.md) | OCI, CI y Kubernetes local | Forgejo, Podman, kind |
-| 9 | [Observabilidad](modules/09_observabilidad/README.md) | SLI/SLO y diagnóstico correlacionado | OpenTelemetry, Prometheus, Grafana, Jaeger |
-| 10 | [Seguridad](modules/10_seguridad/README.md) | Amenazas y cadena de suministro | Gitleaks, Syft, Trivy, OWASP ZAP |
-| 11 | [IA para desarrollo](modules/11_ia/README.md) | Evaluación controlada de asistencia | Ollama, Continue, Jupyter |
-| 12 | [Proyecto integrador](modules/12_proyecto/README.md) | LibreReserva operable | Toda la plataforma |
+| 1 | 12 ago. | Carlos Montenegro | Modelo de software frente a arquitectura de software; evolución de las arquitecturas; cliente-servidor, multicapas y arquitectura web |
+| 2 | 19 ago. | Carlos Montenegro | UML y su papel en el desarrollo de software; introducción al repositorio |
+| 3 | 26 ago. | Carlos Montenegro | Paradigma de programación orientada a objetos; principios de POO y relación entre UML y POO |
+| 4 | 2 sep. | Carlos Montenegro | Lenguajes modernos orientados a objetos: Python y Java |
+| 5 | 9 sep. | Carlos Montenegro | Lenguajes modernos orientados a objetos: Python y Java |
+| 6 | 16 sep. | Carlos Montenegro | Lenguajes modernos orientados a objetos: Python y Java |
+| 7 | 23 sep. | Carlos Montenegro | Metapatrón MVC y manejo de comunicaciones |
+| 8 | 30 sep. | Carlos Montenegro | Evaluación del primer bloque |
 
+El miércoles 7 de octubre corresponde a la Semana Universitaria y no se programa una sesión ordinaria del curso.
 
-Reflección: creo que podemos enfocar el curso a dar los temas planteados en el Syllabus, y como valor agregado miramos como le agregamos la propuesta a cada punto sin perder los contenidos que nos piden.
+### Unidad 2. Arquitectura de software
+
+| Semana | Fecha | Profesor | Tema y práctica asociada |
+|---:|---|---|---|
+| 9 | 14 oct. | Esteban Hernández | Entorno reproducible: preparación y verificación de la estación de trabajo |
+| 10 | 21 oct. | Esteban Hernández · virtual | Atributos de calidad: escenarios medibles y funciones de aptitud |
+| 11 | 28 oct. | Esteban Hernández | Atributos de calidad aplicados a modularidad, dominio y núcleo hexagonal |
+| 12 | 4 nov. | Esteban Hernández | Sistemas distribuidos: decidir antes de distribuir |
+| 13 | 11 nov. | Esteban Hernández | API, datos y eventos: persistencia, idempotencia y patrón outbox |
+| 14 | 18 nov. | Esteban Hernández | Implementación y pruebas; entrega y plataforma con OCI, CI y Kubernetes local |
+| 15 | 25 nov. | Trabajo de proyecto | Jornada de trabajo autónomo; no hay encuentro sincrónico |
+| 16 | 2 dic. | Esteban Hernández | Despliegue, demostración y cierre del proyecto |
+
+La descripción institucional completa se encuentra en la [agenda del segundo semestre de 2026](docs/AGENDA_16_SEMANAS.md). Si existe una diferencia entre una guía de laboratorio y la agenda, prevalecen el syllabus y las orientaciones del profesor titular.
+
+## Correspondencia entre la agenda y los materiales
+
+| Semana | Material principal | Evidencia esperada | Software de apoyo |
+|---:|---|---|---|
+| 9 | [Entorno reproducible](modules/01_entorno/README.md) | Estación verificada y registro del entorno | Git, Python, Make, Podman |
+| 10 | [Atributos de calidad](modules/02_calidad/README.md) | Escenarios con unidad, umbral y condiciones | Jupyter, Python |
+| 11 | [Atributos de calidad](modules/02_calidad/README.md) y [modularidad y dominio](modules/04_modularidad/README.md) | Función de aptitud, límites y núcleo hexagonal | Python, FastAPI |
+| 12 | [Sistemas distribuidos](modules/05_distribucion/README.md) | Matriz de decisión y experimento de fallo | Podman |
+| 13 | [API, datos y eventos](modules/06_apis_datos_eventos/README.md) | Contrato, persistencia, prueba concurrente y evento | PostgreSQL, RabbitMQ |
+| 14 | [Implementación y pruebas](modules/07_pruebas/README.md) y [entrega y plataforma](modules/08_entrega_plataforma/README.md) | Suite de pruebas, imagen OCI y despliegue local | pytest, Podman, Forgejo, kind |
+| 15 | [Proyecto integrador](modules/12_proyecto/README.md) | Incremento autónomo y registro de decisiones pendientes | Herramientas seleccionadas por el equipo |
+| 16 | [Entrega y plataforma](modules/08_entrega_plataforma/README.md) y [proyecto integrador](modules/12_proyecto/README.md) | Despliegue reproducible, demostración y paquete final | Podman, Kubernetes local |
+
+### Material complementario y transversal
+
+Estos módulos permanecen disponibles como apoyo. No crean sesiones adicionales ni reemplazan los temas de la agenda:
+
+- [C4, UML y ADR](modules/03_c4_uml_adr/README.md): complementa UML y documenta decisiones arquitectónicas.
+- [Observabilidad](modules/09_observabilidad/README.md): aporta evidencia operativa al despliegue y al proyecto.
+- [Seguridad](modules/10_seguridad/README.md): integra amenazas, dependencias y cadena de suministro en API y entrega.
+- [IA para desarrollo](modules/11_ia/README.md): apoya análisis, código, pruebas y documentación bajo revisión humana y trazabilidad.
+
+El alcance evaluable de estos materiales será indicado por los profesores. Su uso debe reforzar los resultados del syllabus y no ampliar informalmente la carga del curso.
+
+## Integración con AWS Academy
+
+El curso utilizará **AWS Academy Learner Lab** para prácticas seleccionadas cuando el acceso institucional, los servicios y las cuotas hayan sido verificados. AWS complementa el caso LibreReserva y no sustituye la ruta reproducible con software libre.
+
+- AWS Academy Cloud Foundations, o conocimientos equivalentes, se considera preparación previa.
+- No se pretende completar dentro de Informática I un curso Associate de AWS Academy; Cloud Architecting, Cloud Developing y Cloud Operations tienen una duración aproximada de 40 horas cada uno.
+- Learner Lab se emplea para asignaciones propias, despliegue controlado, observación de consumo y evidencia del proyecto.
+- Cada práctica dependiente de AWS debe tener una alternativa local con las herramientas del repositorio.
+- Los estudiantes deben eliminar los recursos al finalizar el laboratorio y no registrar credenciales ni secretos.
+- La disponibilidad real de servicios se valida en el portal de AWS Academy antes de publicar cada ejercicio.
 
 ## Inicio rápido
 

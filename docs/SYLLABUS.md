@@ -7,7 +7,7 @@
 - Enfoque: arquitectura moderna y desarrollo asistido por IA.
 - Caso conductor: LibreReserva.
 - Modalidad: explicación breve, laboratorio acumulativo, validación y defensa.
-- Agenda: [16 miércoles, cuatro horas por sesión](AGENDA_16_SEMANAS.md).
+- Agenda: [16 semanas académicas: 15 encuentros y una jornada de proyecto](AGENDA_16_SEMANAS.md).
 
 ## Unidades
 

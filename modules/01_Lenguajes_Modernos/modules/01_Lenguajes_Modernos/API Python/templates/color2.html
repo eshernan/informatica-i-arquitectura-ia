@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <style>
+        body {
+            background-color: {{ color }};
+        }
+    </style>
+    <div id="color-code">{{ color }}</div>
+    <button id="copy-button">Copiar Hex</button>
+
+    {% if saludo %}
+        <div id="saludo">{{ saludo }}</div>
+    {% endif %}
+
+    <form action="/" method="post">
+        <input type="text" name="nombre" placeholder="Escribe tu nombre" required>
+        <button type="submit">Saludar</button>
+    </form>
+{% endblock %}

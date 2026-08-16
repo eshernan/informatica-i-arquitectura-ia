@@ -1,0 +1,49 @@
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: monospace;
+    transition: background-color 0.3s ease;
+    background-color: black;
+}
+
+#color-code {
+    font-size: 120px;
+    margin-bottom: 20px;
+}
+
+#saludo {
+    font-size: 60px;
+    margin: 20px;
+    min-height: 70px; /* para evitar saltos al aparecer */
+}
+
+button, input {
+    font-size: 30px;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 8px;
+    border: none;
+}
+
+button {
+    background-color: rgba(255,255,255,0.2);
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: rgba(255,255,255,0.4);
+}
+
+input {
+    background-color: rgba(255,255,255,0.3);
+    color: white;
+}
+
+input::placeholder {
+    color: rgba(255,255,255,0.7);
+}

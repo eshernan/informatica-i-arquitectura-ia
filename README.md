@@ -66,6 +66,14 @@ La descripción institucional completa se encuentra en la [agenda del segundo se
 
 | Semana | Material principal | Evidencia esperada | Software de apoyo |
 |---:|---|---|---|
+| 1 | [Modelo de software frente a arquitectura de software](modules/00_Modelos-Arquitecturas/README.md) | Modelo de software frente a arquitectura de software; evolución de las arquitecturas; cliente-servidor, multicapas y arquitectura web |
+| 2 | [UML y su papel en el desarrollo de software](modules/00_Modelos-Arquitecturas/README.md) | UML y su papel en el desarrollo de software; introducción al repositorio |
+| 3 | [Paradigma de programación orientada a objetos](modules/00_Modelos-Arquitecturas/README.md) | Paradigma de programación orientada a objetos; principios de POO y relación entre UML y POO |
+| 4 | [Lenguajes modernos orientados a objetos: Python](modules/01_Lenguajes_Modernos/README.md) | Python POO |
+| 5 | [Lenguajes modernos orientados a objetos: Python](modules/01_Lenguajes_Modernos/README.md) | Python POO |
+| 6 | [Lenguajes modernos orientados a objetos: Java](modules/01_Lenguajes_Modernos/README.md) | Java POO |
+| 7 | [Lenguajes modernos orientados a objetos: Java](modules/01_Lenguajes_Modernos/README.md) | Java POO |
+| 8 | [Metapatrón MVC y manejo de comunicaciones](modules/01_Lenguajes_Modernos/README.md) | Aplicacion Web con Python-FastApi y java-SpringBoots |
 | 9 | [Entorno reproducible](modules/01_entorno/README.md) | Estación verificada y registro del entorno | Git, Python, Make, Podman |
 | 10 | [Atributos de calidad](modules/02_calidad/README.md) | Escenarios con unidad, umbral y condiciones | Jupyter, Python |
 | 11 | [Atributos de calidad](modules/02_calidad/README.md) y [modularidad y dominio](modules/04_modularidad/README.md) | Función de aptitud, límites y núcleo hexagonal | Python, FastAPI |

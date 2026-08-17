@@ -19,6 +19,8 @@
 - [Clases y Atributos] (https://www.w3schools.com/java/java_class_attributes.asp)
 - [Clases y Metodos] (https://www.w3schools.com/java/java_class_methods.asp)
 
+## API Python
+[Guia Completa](<modules/01_Lenguajes_Modernos/API Python/README.md>)
 
-
-
+## API Java
+[Guia Completa](<modules/01_Lenguajes_Modernos/API Java/README.md>)

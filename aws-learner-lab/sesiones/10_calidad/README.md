@@ -82,7 +82,7 @@ for intento in 1 2 3 4 5 6; do
 done
 ```
 
-El resultado puede alternar entre una lista con la reserva y `[]`. Caddy distribuye las solicitudes, pero `api_a` y `api_b` tienen objetos `Agenda` diferentes. La regla de no solapamiento tampoco se protege entre procesos.
+El resultado puede alternar entre una lista con la reserva y `[]`. Caddy distribuye las solicitudes, pero `api_a` y `api_b` usan repositorios en memoria diferentes. La regla de no solapamiento tampoco se protege entre procesos.
 
 Detenga este primer ensayo antes de reutilizar el puerto 8080:
 

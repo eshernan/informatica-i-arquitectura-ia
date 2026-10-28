@@ -16,5 +16,52 @@ services:
       timeout: 3s
       retries: 10
 
+  migracion:
+    image: docker.io/library/postgres:17-alpine
+    environment:
+      PGPASSWORD: solo-laboratorio
+    volumes:
+      - ../../labs/librereserva/migrations:/migrations:ro
+    command:
+      - psql
+      - postgresql://curso@postgres:5432/reservas
+      - --set=ON_ERROR_STOP=1
+      - --file=/migrations/001_crear_reservas.sql
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  api_a:
+    image: localhost/librereserva:0.1.0
+    environment:
+      LIBRERESERVA_REPOSITORY: postgres
+      DATABASE_URL: postgresql://curso:solo-laboratorio@postgres:5432/reservas
+    expose:
+      - "8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  api_b:
+    image: localhost/librereserva:0.1.0
+    environment:
+      LIBRERESERVA_REPOSITORY: postgres
+      DATABASE_URL: postgresql://curso:solo-laboratorio@postgres:5432/reservas
+    expose:
+      - "8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  balanceador:
+    image: docker.io/library/caddy:2-alpine
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+    depends_on:
+      - api_a
+      - api_b
+
 volumes:
   reservas_pg:

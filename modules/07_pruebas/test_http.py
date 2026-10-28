@@ -1,13 +1,13 @@
 from fastapi.testclient import TestClient
 
-from labs.librereserva.app.main import agenda, app
+from labs.librereserva.app.main import app, repositorio
 
 
 client = TestClient(app)
 
 
 def setup_function() -> None:
-    agenda.limpiar()
+    repositorio.limpiar()
 
 
 def test_api_crea_y_rechaza_solapamiento() -> None:

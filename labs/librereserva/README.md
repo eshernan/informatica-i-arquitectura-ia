@@ -8,7 +8,7 @@ Consulte la [documentación de la API](API.md) para ver el diagrama de arquitect
 
 ![Sketch del recorrido desde el repositorio hasta una imagen desplegada](../../docs/imagenes/desarrollo-moderno.jpg)
 
-Este laboratorio cubre código, pruebas, imagen y ejecución local. La [visión moderna del curso](../../README.md#visión-moderna-del-desarrollo-y-despliegue) explica cómo continuar hacia ejecución sin estado y almacenamiento separado. La API actual conserva las reservas en RAM; esa parte del modelo sigue pendiente y se desarrolla por incrementos.
+Este laboratorio cubre código, pruebas, imagen y ejecución local. La [visión moderna del curso](../../README.md#visión-moderna-del-desarrollo-y-despliegue) explica cómo continuar hacia ejecución sin estado y almacenamiento separado. La ejecución directa usa memoria para conservar la línea base de la sesión 9. El laboratorio de la sesión 11 selecciona PostgreSQL mediante variables de ambiente y ejecuta dos réplicas con el mismo almacén.
 
 ## Instalación
 
@@ -40,4 +40,8 @@ El segundo POST con el mismo intervalo debe responder `409`. Un intervalo invert
 
 ## Evolución esperada
 
-Los módulos añaden puertos de persistencia, PostgreSQL, eventos, autenticación, telemetría, contenedor y despliegue. No incorpore todo desde el comienzo: cada cambio debe responder a un riesgo o resultado de aprendizaje.
+El puerto `RepositorioReservas` permite ejecutar la API con el adaptador en
+memoria o con PostgreSQL. Consulte el
+[laboratorio acumulativo](../../modules/06_apis_datos_eventos/LABORATORIO.md)
+para aplicar la migración, iniciar dos instancias detrás de Caddy y comprobar
+durabilidad e integridad concurrente.

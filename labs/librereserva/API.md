@@ -1,6 +1,6 @@
 # API de LibreReserva
 
-LibreReserva permite crear, consultar y borrar reservas de recursos institucionales. La API local, versión `0.1.0`, ofrece un servicio de reservas y un servicio de salud. Las reservas se almacenan en la memoria del proceso y se pierden al reiniciarlo.
+LibreReserva permite crear, consultar y borrar reservas de recursos institucionales. La API local, versión `0.1.0`, ofrece un servicio de reservas y un servicio de salud. La ejecución directa usa memoria para reproducir la línea base. La sesión 11 selecciona PostgreSQL para compartir datos entre dos réplicas y conservarlos al reiniciar la API.
 
 Esta guía describe la implementación de [app/main.py](app/main.py) y las reglas de [app/domain.py](app/domain.py). La plantilla Lambda de los laboratorios AWS contiene una implementación independiente con un contrato diferente.
 
@@ -15,10 +15,12 @@ flowchart TB
     reservas --> crear["POST /reservas · crear"]
     reservas --> consultar["GET /reservas · listar"]
     reservas --> borrar["DELETE /reservas/{id} · borrar"]
-    crear --> dominio["Dominio Python · Intervalo, Reserva y Agenda"]
+    crear --> dominio["Dominio Python · Intervalo y Reserva"]
     consultar --> dominio
     borrar --> dominio
-    dominio --> memoria["Reservas en memoria del proceso"]
+    dominio --> puerto["Puerto RepositorioReservas"]
+    puerto --> memoria["Adaptador en memoria"]
+    puerto --> postgres["Adaptador PostgreSQL"]
     salud --> viva["GET /salud/viva"]
     salud --> lista["GET /salud/lista"]
     contrato --> swagger["GET /docs · Swagger UI"]
@@ -109,7 +111,7 @@ Repetir el POST del ejemplo produce `409` mientras la reserva siga en la memoria
 
 ### Listar reservas
 
-`GET /reservas` devuelve todas las reservas de la agenda actual. No recibe cuerpo ni define parámetros de filtrado o paginación.
+`GET /reservas` devuelve todas las reservas del repositorio seleccionado. No recibe cuerpo ni define parámetros de filtrado o paginación.
 
 ```bash
 curl -fsS http://127.0.0.1:8000/reservas
@@ -174,7 +176,7 @@ Ambos endpoints devuelven estados fijos cuando la petición alcanza la aplicaci�
 
 ## Documentación interactiva y contrato
 
-Abra `http://127.0.0.1:8000/docs` para consultar los modelos y ejecutar solicitudes. Las operaciones de escritura realizadas desde Swagger UI crean reservas reales en la agenda del proceso.
+Abra `http://127.0.0.1:8000/docs` para consultar los modelos y ejecutar solicitudes. Las operaciones de escritura realizadas desde Swagger UI modifican el repositorio configurado para esa instancia.
 
 `http://127.0.0.1:8000/redoc` ofrece una vista de referencia. El contrato JSON se obtiene con:
 
@@ -201,9 +203,9 @@ podman build -f labs/librereserva/Containerfile -t localhost/librereserva:0.1.0 
 podman run --rm -p 127.0.0.1:8000:8000 localhost/librereserva:0.1.0
 ```
 
-Cada proceso conserva una agenda independiente. Recrear el contenedor elimina sus reservas; ejecutar varias réplicas no comparte los datos ni garantiza la ausencia de solapamientos entre réplicas. La comprobación y creación tampoco tienen protección explícita frente a solicitudes concurrentes dentro de un proceso.
+Con `LIBRERESERVA_REPOSITORY=memory`, cada proceso conserva un repositorio independiente y pierde sus reservas al reiniciar. Esta ruta se mantiene para pruebas unitarias y para repetir la evidencia de la sesión 9.
 
-PostgreSQL y RabbitMQ están definidos en el [Compose del módulo 6](../../modules/06_apis_datos_eventos/compose.yml), pero la API local aún no se conecta a ellos. Persistencia, publicación de eventos, autenticación y un ciclo de cancelación auditable forman parte de la evolución prevista. El borrado actual retira definitivamente la reserva de la memoria del proceso.
+Con `LIBRERESERVA_REPOSITORY=postgres` y `DATABASE_URL`, las réplicas usan el adaptador PostgreSQL. El [Compose del módulo 6](../../modules/06_apis_datos_eventos/compose.yml) incluye PostgreSQL, una operación de migración, dos API y Caddy. La restricción `EXCLUDE` protege el no solapamiento dentro de la misma escritura y la API traduce su violación a `409`.
 
 ## Comprobación práctica
 
@@ -214,6 +216,8 @@ PostgreSQL y RabbitMQ están definidos en el [Compose del módulo 6](../../modul
 5. Liste las reservas y compruebe que la primera sigue presente.
 6. Borre la reserva, compruebe `204` y verifique que ya no aparece en la lista.
 7. Repita el borrado y compruebe `404`.
-8. Reinicie el proceso o recree el contenedor y compruebe que la lista vuelve a estar vacía.
+8. Con memoria, reinicie el proceso y compruebe que la lista vuelve a estar vacía.
+9. Con PostgreSQL, repita la prueba mediante Caddy y compruebe que los datos sobreviven al reinicio de una API.
+10. Envíe dos solicitudes incompatibles en paralelo y compruebe un `201` y un `409`.
 
 Las pruebas automatizadas del dominio se ejecutan con `make test`. Las pruebas HTTP y de propiedades están en `modules/07_pruebas` y se incluyen en `make test-all` cuando el entorno de desarrollo está instalado.

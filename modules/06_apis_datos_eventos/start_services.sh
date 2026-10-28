@@ -18,7 +18,7 @@ done
 module_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 printf 'Plan: iniciar PostgreSQL definido en %s/compose.yml\n' "$module_dir"
-printf 'Motor: %s. Comando: %s compose -f %s/compose.yml up -d\n' "$motor" "$motor" "$module_dir"
+printf 'Motor: %s. Comando: %s compose -f %s/compose.yml up -d postgres\n' "$motor" "$motor" "$module_dir"
 [[ "$mode" == apply ]] || {
   printf 'Use %s --apply después de revisar imágenes, puertos y credenciales.\n' "$0"
   exit 0
@@ -35,5 +35,5 @@ command -v "$motor" >/dev/null 2>&1 || {
   exit 1
 }
 "$motor" compose -f "$module_dir/compose.yml" config >/dev/null
-"$motor" compose -f "$module_dir/compose.yml" up -d
+"$motor" compose -f "$module_dir/compose.yml" up -d postgres
 "$motor" ps --filter name=librereserva

@@ -63,9 +63,9 @@ No forman parte de la ruta evaluable: RabbitMQ, SQS, Lambda, una segunda API ser
 |---|---|---|
 | API Docker con agenda en RAM | Implementado | Se conserva como línea base de la sesión 9 |
 | Parquet compartido | Experimento de sesión 10 | Evidencia de carreras y límites del bloqueo local; no es el almacén final |
-| PostgreSQL con volumen | Configuración disponible | Se integra a la API mediante puerto y adaptador |
-| Migraciones | Por implementar | Esquema reproducible y versionado |
-| Exclusión concurrente | Por implementar | Dos reservas incompatibles no se confirman a la vez |
+| PostgreSQL con volumen | Integrado mediante puerto y adaptador | Se conserva como almacén de las sesiones siguientes |
+| Migraciones | Implementada la versión `001` | El esquema se prepara antes de las réplicas |
+| Exclusión concurrente | Implementada en PostgreSQL | Dos reservas incompatibles producen `201` y `409` |
 | Idempotencia | Por implementar | Una repetición no crea un segundo efecto |
 | Salud de disponibilidad | Respuesta fija | Comprueba realmente PostgreSQL |
 | CI e imagen | Flujo base disponible | Ejecuta pruebas y relaciona imagen con commit |

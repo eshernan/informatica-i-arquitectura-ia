@@ -2,12 +2,12 @@ from datetime import UTC, datetime, timedelta
 import unittest
 
 from labs.librereserva.app.domain import (
-    Agenda,
     Intervalo,
     IntervaloInvalido,
     IntervaloOcupado,
     ReservaNoEncontrada,
 )
+from labs.librereserva.app.adapters.memory import RepositorioMemoria
 
 
 class IntervaloTest(unittest.TestCase):
@@ -27,10 +27,10 @@ class IntervaloTest(unittest.TestCase):
         self.assertFalse(primero.se_solapa(segundo))
 
 
-class AgendaTest(unittest.TestCase):
+class RepositorioMemoriaTest(unittest.TestCase):
     def test_rechaza_solapamiento_del_mismo_recurso(self) -> None:
         inicio = datetime(2026, 8, 10, 8, tzinfo=UTC)
-        agenda = Agenda()
+        agenda = RepositorioMemoria()
         agenda.crear("A-101", Intervalo(inicio, inicio + timedelta(hours=1)))
 
         with self.assertRaises(IntervaloOcupado):
@@ -42,14 +42,14 @@ class AgendaTest(unittest.TestCase):
     def test_permite_mismo_intervalo_en_otro_recurso(self) -> None:
         inicio = datetime(2026, 8, 10, 8, tzinfo=UTC)
         intervalo = Intervalo(inicio, inicio + timedelta(hours=1))
-        agenda = Agenda()
+        agenda = RepositorioMemoria()
         agenda.crear("A-101", intervalo)
         agenda.crear("B-202", intervalo)
         self.assertEqual(2, len(agenda.listar()))
 
     def test_borra_una_reserva_por_id(self) -> None:
         inicio = datetime(2026, 8, 10, 8, tzinfo=UTC)
-        agenda = Agenda()
+        agenda = RepositorioMemoria()
         primera = agenda.crear(
             "A-101", Intervalo(inicio, inicio + timedelta(hours=1))
         )
@@ -62,7 +62,7 @@ class AgendaTest(unittest.TestCase):
         self.assertEqual((segunda,), agenda.listar())
 
     def test_informa_si_la_reserva_que_se_borra_no_existe(self) -> None:
-        agenda = Agenda()
+        agenda = RepositorioMemoria()
 
         with self.assertRaisesRegex(
             ReservaNoEncontrada, "No existe una reserva con id 99"
@@ -72,7 +72,7 @@ class AgendaTest(unittest.TestCase):
     def test_no_reutiliza_ids_despues_de_borrar(self) -> None:
         inicio = datetime(2026, 8, 10, 8, tzinfo=UTC)
         intervalo = Intervalo(inicio, inicio + timedelta(hours=1))
-        agenda = Agenda()
+        agenda = RepositorioMemoria()
         primera = agenda.crear("A-101", intervalo)
         agenda.crear("B-202", intervalo)
 

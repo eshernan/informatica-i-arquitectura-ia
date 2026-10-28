@@ -65,7 +65,7 @@ exit 0
                 self.assertEqual(lines[0], f"{motor} info")
                 self.assertEqual(lines[1], f"{motor} compose version")
                 self.assertTrue(lines[2].endswith("compose.yml config"))
-                self.assertTrue(lines[3].endswith("compose.yml up -d"))
+                self.assertTrue(lines[3].endswith("compose.yml up -d postgres"))
                 self.assertEqual(lines[4], f"{motor} ps --filter name=librereserva")
 
     def test_failed_prerequisite_does_not_start_services(self):

@@ -1,20 +1,41 @@
 """Adaptador HTTP de LibreReserva."""
 
 from datetime import datetime
+import os
 
 from fastapi import FastAPI, HTTPException, Response, status
 from pydantic import BaseModel, ConfigDict
 
+from .adapters.memory import RepositorioMemoria
+from .adapters.postgres import RepositorioPostgreSQL
 from .domain import (
-    Agenda,
     Intervalo,
     IntervaloInvalido,
     IntervaloOcupado,
     ReservaNoEncontrada,
 )
+from .ports import RepositorioReservas
 
 app = FastAPI(title="LibreReserva", version="0.1.0")
-agenda = Agenda()
+
+
+def crear_repositorio() -> RepositorioReservas:
+    adaptador = os.getenv("LIBRERESERVA_REPOSITORY", "memory")
+    if adaptador == "memory":
+        return RepositorioMemoria()
+    if adaptador == "postgres":
+        dsn = os.environ.get("DATABASE_URL")
+        if not dsn:
+            raise RuntimeError(
+                "DATABASE_URL es obligatoria con LIBRERESERVA_REPOSITORY=postgres"
+            )
+        return RepositorioPostgreSQL(dsn)
+    raise RuntimeError(
+        "LIBRERESERVA_REPOSITORY debe ser 'memory' o 'postgres'"
+    )
+
+
+repositorio = crear_repositorio()
 
 
 class ReservaEntrada(BaseModel):
@@ -47,7 +68,7 @@ def listar_reservas() -> list[ReservaSalida]:
             inicio=reserva.intervalo.inicio,
             fin=reserva.intervalo.fin,
         )
-        for reserva in agenda.listar()
+        for reserva in repositorio.listar()
     ]
 
 
@@ -58,7 +79,7 @@ def listar_reservas() -> list[ReservaSalida]:
 )
 def crear_reserva(entrada: ReservaEntrada) -> ReservaSalida:
     try:
-        reserva = agenda.crear(
+        reserva = repositorio.crear(
             entrada.recurso,
             Intervalo(entrada.inicio, entrada.fin),
         )
@@ -80,7 +101,7 @@ def crear_reserva(entrada: ReservaEntrada) -> ReservaSalida:
 )
 def borrar_reserva(reserva_id: int) -> Response:
     try:
-        agenda.borrar(reserva_id)
+        repositorio.borrar(reserva_id)
     except ReservaNoEncontrada as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     return Response(status_code=status.HTTP_204_NO_CONTENT)

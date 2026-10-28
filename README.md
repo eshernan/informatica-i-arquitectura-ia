@@ -33,7 +33,7 @@ Para crecer sin depender de una instancia concreta, la aplicación procesa solic
 
 Un proveedor cloud puede aportar cómputo gestionado, balanceo, autoescalado, bases de datos y almacenamiento de objetos. El equipo sigue siendo responsable de las reglas, consistencia, permisos, límites, recuperación y costos. Escalar la API no elimina los cuellos de botella de sus datos ni exige adoptar Kubernetes.
 
-En LibreReserva esta es una **arquitectura objetivo**. La API base guarda la agenda en RAM: todavía no permite reemplazar réplicas conservando reservas ni compartirlas entre procesos. La [ruta por sesiones](docs/RUTA_CONTENEDORES.md) desarrolla esa evolución gradualmente, sin exigir toda la arquitectura en sesión 9.
+En LibreReserva esta arquitectura se desarrolla por incrementos. La ejecución base conserva memoria para reproducir la sesión 9; la sesión 11 incorpora un puerto de repositorio, PostgreSQL, migración y dos réplicas detrás de Caddy. La [ruta por sesiones](docs/RUTA_CONTENEDORES.md) distingue la línea base de memoria del ambiente integrado, sin exigir toda la arquitectura desde la primera práctica.
 
 Referencias: [procesos sin estado](https://12factor.net/processes), [diseño para escalar horizontalmente](https://learn.microsoft.com/en-us/azure/architecture/guide/design-principles/scale-out) y [elasticidad en cloud](https://docs.cloud.google.com/architecture/framework/performance-optimization).
 

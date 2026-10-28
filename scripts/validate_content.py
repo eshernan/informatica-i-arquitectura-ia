@@ -125,10 +125,29 @@ def validate_teaching_route() -> None:
     compose = (ROOT / "modules/06_apis_datos_eventos/compose.yml").read_text(
         encoding="utf-8"
     )
-    if "  postgres:" not in compose:
-        failures.append("compose.yml: falta el servicio PostgreSQL")
+    for service in ("postgres", "migracion", "api_a", "api_b", "balanceador"):
+        if f"  {service}:" not in compose:
+            failures.append(f"compose.yml: falta el servicio {service}")
     if "rabbitmq" in compose.lower():
         failures.append("compose.yml: RabbitMQ no pertenece a la ruta evaluable")
+
+    for relative in (
+        "labs/librereserva/app/ports.py",
+        "labs/librereserva/app/adapters/memory.py",
+        "labs/librereserva/app/adapters/postgres.py",
+        "labs/librereserva/migrations/001_crear_reservas.sql",
+        "labs/librereserva/tests/test_repository_contract.py",
+        "modules/06_apis_datos_eventos/Caddyfile",
+    ):
+        if not (ROOT / relative).exists():
+            failures.append(f"Sesión 11: falta {relative}")
+
+    migration = (
+        ROOT / "labs/librereserva/migrations/001_crear_reservas.sql"
+    ).read_text(encoding="utf-8")
+    for phrase in ("CHECK (fin > inicio)", "EXCLUDE USING gist", "'[)'"):
+        if phrase not in migration:
+            failures.append(f"Migración de reservas: falta {phrase}")
 
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     for phrase in (

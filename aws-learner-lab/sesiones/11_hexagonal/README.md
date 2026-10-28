@@ -23,12 +23,22 @@ Se conserva FastAPI, Caddy y las dos instancias del experimento anterior. Postgr
 Desde la raíz, revise el plan y levante PostgreSQL con un solo motor:
 
 ```bash
+docker build -f labs/librereserva/Containerfile \
+  -t localhost/librereserva:0.1.0 labs/librereserva
 ./modules/06_apis_datos_eventos/start_services.sh --motor docker
 ./modules/06_apis_datos_eventos/start_services.sh --motor docker --apply
 docker exec librereserva-postgres pg_isready -U curso -d reservas
 ```
 
 Sustituya `docker` por `podman` si esa es la ruta preparada por el equipo.
+Después ejecute la migración una sola vez y levante las réplicas:
+
+```bash
+docker compose -f modules/06_apis_datos_eventos/compose.yml \
+  run --rm migracion
+docker compose -f modules/06_apis_datos_eventos/compose.yml \
+  up -d api_a api_b balanceador
+```
 
 ## Taller
 
@@ -42,6 +52,9 @@ Sustituya `docker` por `podman` si esa es la ruta preparada por el equipo.
 8. Ejecute una sola vez la migración antes de iniciar o actualizar las réplicas; no permita que cada instancia compita por modificar el esquema.
 9. Cree una reserva mediante Caddy, reinicie una instancia y compruebe que la reserva continúa disponible.
 10. Envíe mediante Caddy dos solicitudes concurrentes incompatibles y compruebe que solo una se confirma.
+
+Los comandos de migración, reinicio, prueba de contrato y concurrencia se
+encuentran en el [laboratorio PostgreSQL](../../../modules/06_apis_datos_eventos/LABORATORIO.md).
 
 ## Validación
 

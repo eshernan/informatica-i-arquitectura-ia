@@ -7,6 +7,8 @@ La API inicial guarda reservas en la memoria del proceso. La sesión 10 mostró 
 Desde la raíz del repositorio, elija un motor:
 
 ```bash
+docker build -f labs/librereserva/Containerfile \
+  -t localhost/librereserva:0.1.0 labs/librereserva
 ./modules/06_apis_datos_eventos/start_services.sh --motor docker
 ./modules/06_apis_datos_eventos/start_services.sh --motor docker --apply
 docker exec librereserva-postgres pg_isready -U curso -d reservas
@@ -18,29 +20,83 @@ Con Podman, sustituya `docker` por `podman`. Revise antes la imagen, el volumen,
 
 ### Incremento 1. Puerto y adaptadores
 
-1. Defina un protocolo `RepositorioReservas` que exprese las operaciones requeridas por el dominio.
-2. Extraiga el almacenamiento actual a un adaptador en memoria.
-3. Implemente un adaptador PostgreSQL sin importar el cliente de base de datos desde el dominio.
-4. Ejecute la misma prueba de contrato contra los dos adaptadores.
+Revise el puerto en `labs/librereserva/app/ports.py` y los adaptadores en
+`labs/librereserva/app/adapters/`. La variable `LIBRERESERVA_REPOSITORY`
+selecciona `memory` o `postgres`; el dominio no importa `psycopg`.
+
+Ejecute la misma prueba de contrato contra memoria y PostgreSQL:
+
+```bash
+LIBRERESERVA_TEST_DATABASE_URL=\
+'postgresql://curso:solo-laboratorio@127.0.0.1:5432/reservas' \
+  .venv/bin/python -m unittest \
+  labs.librereserva.tests.test_repository_contract -v
+```
 
 ### Incremento 2. Migración
 
-La migración debe crear la tabla de reservas, validar que `fin > inicio` y proteger el solapamiento del mismo recurso entre todas las instancias. El archivo `demo_persistencia.sql` muestra una posible restricción PostgreSQL; convierta el diseño elegido en una migración real de la aplicación.
+La migración `labs/librereserva/migrations/001_crear_reservas.sql` crea la
+tabla, valida que `fin > inicio` y protege el solapamiento del mismo recurso
+entre todas las instancias mediante una restricción `EXCLUDE`.
 
-Pruebe la migración sobre una base vacía. Ejecútela una vez como operación separada antes de las réplicas; no use el arranque simultáneo de cada API para competir por cambios de esquema. No edite manualmente una base ya preparada para ocultar un paso faltante.
+Ejecútela como una operación separada antes de iniciar las réplicas:
+
+```bash
+docker compose -f modules/06_apis_datos_eventos/compose.yml \
+  run --rm migracion
+docker compose -f modules/06_apis_datos_eventos/compose.yml \
+  up -d api_a api_b balanceador
+docker compose -f modules/06_apis_datos_eventos/compose.yml ps
+```
+
+No haga que cada API modifique el esquema durante su arranque.
 
 ### Incremento 3. Durabilidad
 
-1. Inicie PostgreSQL, dos instancias de la API y Caddy.
-2. Cree una reserva mediante `http://127.0.0.1:8080`.
-3. Consulte repetidamente mediante Caddy y compruebe que ambas instancias observan los mismos datos.
-4. Reinicie únicamente una API.
-5. Consulte nuevamente mediante Caddy.
-6. Compruebe que la reserva continúa.
+Cree una reserva mediante Caddy:
+
+```bash
+curl -i -X POST http://127.0.0.1:8080/reservas \
+  -H 'content-type: application/json' \
+  -d '{"recurso":"A-101","inicio":"2026-10-28T18:00:00-05:00","fin":"2026-10-28T19:00:00-05:00"}'
+curl -fsS http://127.0.0.1:8080/reservas
+```
+
+Reinicie únicamente una réplica y vuelva a consultar por el balanceador:
+
+```bash
+docker compose -f modules/06_apis_datos_eventos/compose.yml restart api_a
+for intento in 1 2 3 4; do
+  curl -fsS http://127.0.0.1:8080/reservas
+  echo
+done
+```
+
+La reserva debe conservar el mismo identificador, recurso e intervalo.
 
 ### Incremento 4. Concurrencia
 
-Envíe mediante Caddy dos solicitudes simultáneas para el mismo recurso y un intervalo incompatible. La evidencia debe mostrar exactamente una confirmación `201` y un conflicto `409`. Una comprobación `SELECT` seguida de `INSERT` sin protección en PostgreSQL no es suficiente. La restricción debe seguir funcionando aunque cada solicitud llegue a una instancia diferente.
+Prepare el cuerpo fuera del repositorio y envíe dos solicitudes simultáneas:
+
+```bash
+printf '%s\n' \
+  '{"recurso":"B-202","inicio":"2026-10-28T18:30:00-05:00","fin":"2026-10-28T19:30:00-05:00"}' \
+  > /tmp/solicitud-conflictiva.json
+
+for intento in 1 2; do
+  curl -sS -o /tmp/respuesta-$intento.json \
+    -w '%{http_code}\n' \
+    -X POST http://127.0.0.1:8080/reservas \
+    -H 'content-type: application/json' \
+    -d @/tmp/solicitud-conflictiva.json &
+done
+wait
+```
+
+El resultado debe contener exactamente un `201` y un `409`. Una comprobación
+`SELECT` seguida de `INSERT` sin protección en PostgreSQL no es suficiente.
+La restricción debe funcionar aunque cada solicitud llegue a una réplica
+diferente.
 
 **Evidencia de sesión 11:** puerto, adaptadores, migración única, prueba de contrato, consultas consistentes mediante Caddy, reinicio con datos y prueba concurrente `201`/`409`.
 

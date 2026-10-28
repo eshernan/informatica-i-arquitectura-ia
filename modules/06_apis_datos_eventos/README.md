@@ -27,6 +27,9 @@ sed -n '1,200p' modules/06_apis_datos_eventos/compose.yml
 ./modules/06_apis_datos_eventos/start_services.sh --motor docker
 ./modules/06_apis_datos_eventos/start_services.sh --motor docker --apply
 docker exec librereserva-postgres pg_isready -U curso -d reservas
+docker compose -f modules/06_apis_datos_eventos/compose.yml run --rm migracion
+docker compose -f modules/06_apis_datos_eventos/compose.yml \
+  up -d api_a api_b balanceador
 ```
 
 Use `podman` en los tres comandos si ese es el motor preparado por el equipo. El puerto se publica solo en `127.0.0.1`; las credenciales son exclusivamente de laboratorio.
@@ -44,6 +47,15 @@ Use `podman` en los tres comandos si ese es el motor preparado por el equipo. El
 ## Ejercicio
 
 Implemente el puerto de repositorio, el adaptador PostgreSQL y las migraciones. Demuestre persistencia después de reiniciar la API y una sola confirmación ante solicitudes concurrentes incompatibles. Después implemente la clave de idempotencia y haga que `/salud/lista` consulte realmente PostgreSQL.
+
+La referencia ejecutable de la sesión 11 está distribuida así:
+
+- `labs/librereserva/app/ports.py`: puerto del dominio.
+- `labs/librereserva/app/adapters/memory.py`: adaptador de pruebas.
+- `labs/librereserva/app/adapters/postgres.py`: adaptador integrado.
+- `labs/librereserva/migrations/001_crear_reservas.sql`: esquema y exclusión.
+- `labs/librereserva/tests/test_repository_contract.py`: contrato común y concurrencia.
+- `compose.yml` y `Caddyfile`: PostgreSQL, dos API y balanceador.
 
 ## Validación
 

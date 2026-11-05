@@ -1,7 +1,11 @@
-# Sesión 14 — Operación y recuperación
+# Sesión 14 — Diagnóstico y recuperación de datos
 
 **Fecha:** 18 de noviembre de 2026, 6:00–10:00 p. m.
 **Resultado:** diagnosticar una solicitud, detectar la indisponibilidad de PostgreSQL y restaurar los datos en un volumen limpio.
+
+## Alcance
+
+Se utiliza la imagen verificada en sesión 12 y la configuración preparada en sesión 13. Vida/disponibilidad y recuperación de PostgreSQL ya se trataron el 28 de octubre, por lo que hoy se usan como señales de diagnóstico, sin volver a implementar los endpoints. La novedad es relacionar solicitudes con logs, medir bajo condiciones declaradas y demostrar una restauración de datos.
 
 ## Relación con AWS Academy
 

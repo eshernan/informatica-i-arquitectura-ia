@@ -38,10 +38,10 @@ El primer bloque desarrolla los temas definidos por el profesor titular. El segu
 | — | 7 oct. | Semana Universitaria | No se programa una sesión ordinaria |
 | 9 | 14 oct. | Esteban Hernández | Docker: construcción de imagen, ejecución de LibreReserva y pruebas de despliegue local |
 | 10 | 27 oct. | Esteban Hernández · virtual | Balanceo y persistencia en archivos: dos instancias, Parquet compartido, concurrencia y bloqueo local |
-| 11 | 28 oct. | Esteban Hernández | Persistencia e integridad: puerto de repositorio, PostgreSQL, migraciones y concurrencia |
-| 12 | 4 nov. | Esteban Hernández | API confiable: idempotencia, errores, disponibilidad y recuperación de dependencias |
-| 13 | 11 nov. | Esteban Hernández | Entrega segura y trazable: pruebas, CI, imagen OCI, configuración y secretos |
-| 14 | 18 nov. | Esteban Hernández | Operación y recuperación: logs, salud real, medición, respaldo y restauración |
+| 11 | 28 oct. | Esteban Hernández | Persistencia e integridad y temas de API confiable ya trabajados: idempotencia, errores, salud y recuperación |
+| 12 | 4 nov. | Esteban Hernández | Pruebas automatizadas, CI e imagen trazable al commit |
+| 13 | 11 nov. | Esteban Hernández | Configuración segura, secretos y despliegue reproducible |
+| 14 | 18 nov. | Esteban Hernández | Diagnóstico, logs, medición, respaldo y restauración |
 | 15 | 25 nov. | Trabajo de proyecto | Integración desde un clon limpio; jornada autónoma sin temas nuevos |
 | 16 | 2 dic. | Esteban Hernández | Demostración de robustez, defensa de decisiones y cierre |
 
@@ -72,14 +72,22 @@ Las instalaciones extensas y las lecturas se realizan en las horas de trabajo co
 
 ## Ruta acumulativa de LibreReserva
 
+### Cobertura confirmada y ajuste del 2 de noviembre
+
+El docente confirmó que idempotencia, errores, vida/disponibilidad y caída/recuperación de PostgreSQL ya se trabajaron el miércoles 28 de octubre. Esos contenidos dejan de ser el tema nuevo del 4 de noviembre. La primera revisión comprueba el avance de cada equipo durante 10 minutos y continúa con 40 minutos de fundamentos antes del caso, sin repetir la clase anterior.
+
+La cobertura docente y el estado de la implementación se registran por separado. Aunque un tema ya se haya explicado, cada equipo debe presentar evidencia de su implementación. En la referencia actual del repositorio, la idempotencia y la disponibilidad real aún requieren completar código y pruebas. Esas brechas se registran como pendientes de integración, no se convierten de nuevo en una clase completa.
+
+### Próximos incrementos
+
 La [ruta por sesiones](RUTA_CONTENEDORES.md) conserva una sola arquitectura y una sola entrega:
 
 - Sesión 9: imagen Docker, contenedor, API local y pérdida del estado al reiniciar.
 - Sesión 10: balanceador local, dos instancias, Parquet compartido y comparación de escrituras con y sin bloqueo.
-- Sesión 11: PostgreSQL, migraciones, puerto/adaptador y prueba concurrente.
-- Sesión 12: idempotencia, errores, salud real y recuperación de PostgreSQL.
-- Sesión 13: pruebas, CI, imagen trazable y configuración segura.
-- Sesión 14: logs, medición, respaldo, restauración y runbook.
+- Sesión 11: PostgreSQL, migraciones, puerto/adaptador y concurrencia, junto con los temas de API confiable ya trabajados.
+- Sesión 12: convertir riesgos y casos conocidos en pruebas, ejecutar CI y relacionar commit e imagen.
+- Sesión 13: separar configuración y secretos de la imagen, revisar permisos y reproducir el despliegue con migraciones.
+- Sesión 14: diagnosticar con logs, medir bajo condiciones declaradas y demostrar respaldo/restauración.
 - Sesión 15: integración desde un clon limpio, sin tecnologías nuevas.
 - Sesión 16: demostración de caso feliz, fallo, recuperación y decisiones.
 
@@ -104,4 +112,4 @@ Como mínimo, un evaluador debe poder partir de un clon limpio, ejecutar pruebas
 
 La entrega incluye los ADR, logs del caso de fallo, respaldo restaurado y trazabilidad entre commit e imagen. Si se usó Learner Lab para los módulos oficiales de AWS Academy, el cierre incluye además consumo y confirmación de eliminación de recursos.
 
-Última actualización metodológica: 14 de octubre de 2026.
+Última actualización metodológica: 4 de noviembre de 2026.

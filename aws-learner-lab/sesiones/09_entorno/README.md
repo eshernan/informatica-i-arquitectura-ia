@@ -53,7 +53,7 @@ La pérdida de datos no es un defecto del motor de contenedores: la implementaci
 ## Continuidad
 
 - Sesión 10: ejecutar dos instancias, introducir el balanceador y experimentar con un Parquet compartido.
-- Sesión 11: conservar reservas en PostgreSQL.
-- Sesión 12: proteger repeticiones y fallos.
-- Sesión 13: automatizar pruebas y construcción.
+- Sesión 11: persistencia PostgreSQL y temas de API confiable ya trabajados el 28 de octubre.
+- Sesión 12: automatizar pruebas, comprobar CI y relacionar commit e imagen.
+- Sesión 13: separar configuración y secretos y reproducir el despliegue.
 - Sesión 14: diagnosticar, respaldar y restaurar.

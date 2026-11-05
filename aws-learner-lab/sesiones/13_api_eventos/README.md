@@ -1,31 +1,38 @@
-# Sesión 13 — Entrega segura y trazable
+# Sesión 13 — Configuración segura y despliegue reproducible
 
 **Fecha:** 11 de noviembre de 2026, 6:00–10:00 p. m.
-**Resultado:** relacionar un cambio revisado con pruebas, una imagen OCI identificable y una configuración que no exponga secretos.
+**Resultado:** ejecutar la imagen identificada en sesión 12 con configuración externa, sin secretos incorporados y con un procedimiento reproducible de migración y arranque.
+
+## Alcance
+
+Pruebas y CI se trabajaron el 4 de noviembre. Esta sesión utiliza esa entrega y se concentra en configuración, secretos, permisos y reproducción del despliegue. Aunque la imagen sea la misma, cada ambiente debe aportar su configuración sin incorporar credenciales al artefacto ni al repositorio.
+
+Se conserva FastAPI, Caddy, Compose y PostgreSQL. No se incorpora un gestor de secretos externo, TLS público ni otra plataforma. Logs detallados y respaldo/restauración se reservan a sesión 14.
 
 ## Secuencia de cuatro horas
 
 | Hora | Tema y acción |
 |---|---|
-| 6:00–6:20 | revisar el incremento persistente e idempotente |
-| 6:20–7:10 | estrategia de pruebas por riesgo |
-| 7:10–7:50 | pipeline, imagen y configuración por ambiente |
-| 8:00–9:25 | completar pruebas y flujo CI |
-| 9:25–9:50 | inspeccionar imagen, secretos y ejecución no privilegiada |
-| 9:50–10:00 | identificar versión candidata |
+| 6:00–6:20 | identificar el commit y la imagen aprobados en sesión 12 |
+| 6:20–7:10 | separar código, configuración no secreta y secretos |
+| 7:10–7:50 | demostrar variables externas, permisos y secuencia de migración/arranque |
+| 7:50–8:00 | pausa |
+| 8:00–9:25 | preparar configuración documentada y reproducir el despliegue |
+| 9:25–9:50 | comprobar ausencia de secretos y ejecutar el caso funcional |
+| 9:50–10:00 | entregar instrucciones y pendientes para operación |
 
 ## Taller
 
-1. Conserve pruebas unitarias del dominio.
-2. Ejecute pruebas de contrato para los dos adaptadores.
-3. Ejecute pruebas de integración con PostgreSQL.
-4. Añada pruebas HTTP para persistencia, concurrencia, idempotencia y disponibilidad.
-5. Configure el flujo CI para ejecutar todas las pruebas antes de construir la imagen.
-6. Etiquete la imagen con el commit y registre su identificador.
-7. Obtenga la conexión a PostgreSQL mediante variable de entorno.
-8. Incluya un `.env.example` sin credenciales reales.
-9. Compruebe que la imagen no contiene archivos `.env`, claves ni tokens.
-10. Ejecute el proceso del contenedor como usuario no privilegiado.
+1. Use la imagen y el commit identificados en la sesión anterior.
+2. Documente las variables obligatorias, su significado y el comportamiento si faltan.
+3. Obtenga la conexión a PostgreSQL mediante configuración externa.
+4. Prepare un `.env.example` con valores ficticios, sin credenciales reales.
+5. Compruebe que archivos con secretos no se versionan ni se copian a la imagen.
+6. Separe los valores públicos de laboratorio de cualquier configuración real.
+7. Ejecute el proceso del contenedor como usuario no privilegiado.
+8. Ejecute las migraciones una sola vez antes de las réplicas.
+9. Pida a otro integrante reproducir el arranque con las instrucciones y la configuración de ejemplo.
+10. Cree y consulte una reserva, y registre los permisos o variables que impidieron el arranque si los hubo.
 
 ## Validación
 
@@ -35,6 +42,6 @@ make test-all
 git status --short
 ```
 
-La ejecución debe partir de una revisión identificable. Una captura de un pipeline anterior o una imagen etiquetada solamente como `latest` no demuestra trazabilidad.
+La misma imagen debe poder arrancar con su configuración documentada. No copie secretos reales en logs, capturas, README o historial de comandos. Las pruebas siguen ejecutándose como comprobación del despliegue, sin repetir el taller de CI.
 
-**Evidencia:** pull request, pruebas, ejecución CI, identificador de imagen, variables documentadas y comprobación de secretos.
+**Evidencia:** commit e imagen utilizados, variables documentadas, configuración de ejemplo, revisión de secretos, usuario de ejecución y procedimiento de migración/arranque reproducido por otra persona.

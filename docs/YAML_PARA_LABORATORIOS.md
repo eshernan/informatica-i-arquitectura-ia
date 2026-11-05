@@ -44,14 +44,14 @@ Una clave inventada puede ser YAML válido y no ser una configuración aceptada 
 
 ## Comprobación por etapa
 
-En sesión 12, con el motor elegido y Compose preparado:
+Como consulta del ambiente PostgreSQL ya preparado, con el motor elegido:
 
 ```bash
 podman compose -f modules/06_apis_datos_eventos/compose.yml config
 # Alternativa: docker compose -f modules/06_apis_datos_eventos/compose.yml config
 ```
 
-En sesión 14, con el clúster local activo:
+La siguiente comparación con Kubernetes pertenece a la biblioteca complementaria, no a las sesiones evaluables. Solo si ya dispone de un clúster local:
 
 ```bash
 kubectl apply --dry-run=server -f modules/08_entrega_plataforma/k8s.yml

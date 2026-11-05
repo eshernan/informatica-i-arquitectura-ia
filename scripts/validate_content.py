@@ -26,13 +26,13 @@ TEACHING_GUIDES = {
         "Persistencia e integridad", "PostgreSQL", "prueba concurrente",
     ),
     "aws-learner-lab/sesiones/12_distribuidos/README.md": (
-        "API confiable", "idempotencia", "/salud/lista",
+        "Pruebas automatizadas y entrega trazable", "4 de noviembre", "flujo CI",
     ),
     "aws-learner-lab/sesiones/13_api_eventos/README.md": (
-        "Entrega segura y trazable", "flujo CI", "usuario no privilegiado",
+        "Configuración segura y despliegue reproducible", "11 de noviembre", "usuario no privilegiado",
     ),
     "aws-learner-lab/sesiones/14_pruebas_entrega/README.md": (
-        "Operación y recuperación", "respaldo", "restauración",
+        "Diagnóstico y recuperación de datos", "respaldo", "restauración",
     ),
     "aws-learner-lab/sesiones/15_proyecto/README.md": (
         "Jornada autónoma de integración", "clon limpio", "versión candidata",

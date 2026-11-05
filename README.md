@@ -69,10 +69,10 @@ El miércoles 7 de octubre corresponde a la Semana Universitaria y no se program
 |---:|---|---|---|
 | 9 | 14 oct. | Esteban Hernández | Docker: construcción de imagen, ejecución de LibreReserva y pruebas de despliegue local |
 | 10 | 27 oct. | Esteban Hernández · virtual | Balanceo y persistencia en archivos: dos instancias, Parquet compartido, concurrencia y bloqueo local |
-| 11 | 28 oct. | Esteban Hernández | Persistencia e integridad: puerto de repositorio, PostgreSQL, migraciones y concurrencia |
-| 12 | 4 nov. | Esteban Hernández | API confiable: idempotencia, errores, disponibilidad y recuperación de dependencias |
-| 13 | 11 nov. | Esteban Hernández | Entrega segura y trazable: pruebas, CI, imagen OCI, configuración y secretos |
-| 14 | 18 nov. | Esteban Hernández | Operación y recuperación: logs, salud real, medición, respaldo y restauración |
+| 11 | 28 oct. | Esteban Hernández | Persistencia e integridad y temas de API confiable ya trabajados: idempotencia, errores, salud y recuperación |
+| 12 | 4 nov. | Esteban Hernández | Pruebas automatizadas, CI e imagen trazable al commit |
+| 13 | 11 nov. | Esteban Hernández | Configuración segura, secretos y despliegue reproducible |
+| 14 | 18 nov. | Esteban Hernández | Diagnóstico, logs, medición, respaldo y restauración |
 | 15 | 25 nov. | Trabajo de proyecto | Integración desde un clon limpio; jornada autónoma sin temas nuevos |
 | 16 | 2 dic. | Esteban Hernández | Demostración de robustez, defensa de decisiones y cierre |
 
@@ -82,7 +82,7 @@ La descripción institucional completa se encuentra en la [agenda del segundo se
 
 La [ruta por sesiones](docs/RUTA_CONTENEDORES.md) parte del despliegue Docker alcanzado el 14 de octubre y evoluciona una sola aplicación. LibreReserva continúa como monolito modular en contenedor, PostgreSQL conserva los datos y Compose describe el ambiente local. Las semanas siguientes añaden garantías verificables: integridad, idempotencia, pruebas, trazabilidad, diagnóstico y recuperación.
 
-No se incorporan colas, una segunda implementación serverless ni Kubernetes en la ruta evaluable. Esas tecnologías no corrigen la limitación inmediata de la API: las reservas todavía viven en la memoria del proceso y se pierden al reemplazar el contenedor.
+No se incorporan colas, una segunda implementación serverless ni Kubernetes en la ruta evaluable. El ambiente integrado ya dispone de un adaptador PostgreSQL, mientras el adaptador en memoria se conserva para pruebas. La agenda registra idempotencia, errores, salud y recuperación como temas trabajados el 28 de octubre, según confirmación docente. Aunque esos temas ya se hayan enseñado, los equipos deben demostrar su implementación; la referencia todavía tiene pendientes de idempotencia y disponibilidad real.
 
 ## Dos recorridos que no comparten numeración
 
@@ -107,9 +107,9 @@ Las rutas internas se presentan por propósito. El número histórico de la carp
 | 8 | Evaluación del primer bloque | Material definido por el profesor titular | Evidencia del primer bloque |
 | 9 | ENV · ejecución reproducible | [Entorno](modules/01_entorno/README.md) y [práctica Docker](modules/01_entorno/PRACTICA_CONTENEDORES.md) | Imagen, contenedor, API local y pérdida de estado demostrada |
 | 10 | ARC · persistencia en archivos | [Sesión 10](aws-learner-lab/sesiones/10_calidad/README.md) y [laboratorio Parquet](aws-learner-lab/sesiones/10_calidad/LABORATORIO_PARQUET.md) | Balanceo, archivo compartido, carrera de escritura y bloqueo local |
-| 11 | DAT · persistencia e integridad | [Modularidad](modules/04_modularidad/README.md) y [laboratorio PostgreSQL](modules/06_apis_datos_eventos/LABORATORIO.md) | Puerto, adaptador, migración, reinicio y concurrencia |
-| 12 | RES · comportamiento confiable | [Laboratorio PostgreSQL](modules/06_apis_datos_eventos/LABORATORIO.md) | Idempotencia, salud real y recuperación de la dependencia |
-| 13 | TST · entrega trazable | [Pruebas](modules/07_pruebas/README.md) y [flujo CI](.github/workflows/validate.yml) | Pruebas, imagen asociada al commit y configuración segura |
+| 11 | DAT/RES · persistencia y API confiable | [Modularidad](modules/04_modularidad/README.md) y [laboratorio PostgreSQL](modules/06_apis_datos_eventos/LABORATORIO.md) | Cobertura registrada y evidencia disponible por equipo |
+| 12 | TST · pruebas y entrega trazable | [Guía del 4 de noviembre](aws-learner-lab/sesiones/12_distribuidos/README.md), [ejercicios](modules/07_pruebas/EJERCICIOS_SESION12.md), [evidencia](modules/07_pruebas/EVIDENCIA_SESION12.md) y [CI](.github/workflows/validate.yml) | Prueba que detecta una regresión, pipeline e imagen asociada al commit |
+| 13 | CFG · configuración y despliegue seguro | [Guía del 11 de noviembre](aws-learner-lab/sesiones/13_api_eventos/README.md) | Variables documentadas, revisión de secretos y despliegue reproducible |
 | 14 | OPS · operación y recuperación | [Observabilidad](modules/09_observabilidad/README.md) | Logs, medición, respaldo, restauración y runbook |
 | 15 | INT · integración | [Proyecto integrador](modules/12_proyecto/README.md) | Versión candidata reproducida desde un clon limpio |
 | 16 | CIE · defensa | [Guía de cierre](aws-learner-lab/sesiones/16_cierre/README.md) | Caso feliz, fallo, recuperación y decisiones defendidas |

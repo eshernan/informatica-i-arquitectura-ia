@@ -4,7 +4,7 @@
 
 Convertir LibreReserva en una aplicación durable y confiable mediante PostgreSQL, migraciones, integridad concurrente, idempotencia y señales reales de disponibilidad.
 
-El [laboratorio acumulativo](LABORATORIO.md) cubre dos sesiones: la sesión 11 conecta la API a PostgreSQL y la sesión 12 trata repeticiones y fallos. No introduce mensajería ni una segunda implementación de la API.
+El [laboratorio acumulativo](LABORATORIO.md) conserva persistencia y API confiable como material de los temas ya trabajados el 28 de octubre, según confirmación docente. Los equipos verifican sus pendientes de implementación al inicio del 4 de noviembre y después continúan con [pruebas y CI](../../aws-learner-lab/sesiones/12_distribuidos/README.md). No introduce mensajería ni una segunda implementación de la API.
 
 ## Arquitectura
 

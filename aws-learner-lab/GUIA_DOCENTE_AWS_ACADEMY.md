@@ -44,14 +44,16 @@ Antes de publicar:
 |---:|---|---|
 | 9 | Docker y despliegue local | imagen, API y pérdida de estado al reiniciar |
 | 10 | persistencia en archivos con múltiples instancias | balanceo, carrera sobre Parquet y bloqueo local |
-| 11 | persistencia e integridad | migración limpia, reinicio con datos y concurrencia |
-| 12 | API confiable | idempotencia, vida/disponibilidad y recuperación |
-| 13 | entrega trazable | pruebas, CI, imagen por commit y configuración segura |
-| 14 | operación y recuperación | logs, medición, respaldo, restauración y runbook |
+| 11 | persistencia y API confiable, ya trabajadas | registrar cobertura docente y evidencia de implementación por equipo |
+| 12 | pruebas y entrega trazable | prueba que detecta una regresión, CI e imagen por commit |
+| 13 | configuración y despliegue seguro | variables, ausencia de secretos, permisos y arranque reproducible |
+| 14 | diagnóstico y recuperación de datos | logs, medición, respaldo, restauración y runbook |
 | 15 | integración autónoma | recorrido completo desde clon limpio |
 | 16 | cierre | demostración, decisiones y deuda reconocida |
 
 ## 5. Uso de AWS Academy
+
+El ajuste del 2 de noviembre reconoce que idempotencia, errores, salud y recuperación ya se trabajaron el 28 de octubre. Publique para el 4 de noviembre la actividad de pruebas/CI. Reserve 10 minutos iniciales para comprobar pendientes por equipo y 40 minutos para explicar fundamentos antes del caso. No cambie fechas ni añada nuevas plataformas para ocupar el espacio liberado.
 
 - Módulo 9: relacionar sus principios con los escenarios y ADR de la semana 10.
 - Módulo 10: relacionar monitoreo, balanceo y escalado con las señales y el runbook de la semana 14.

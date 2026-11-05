@@ -5,6 +5,8 @@
 
 ## Alcance
 
+**Cobertura registrada el 2 de noviembre:** el docente confirmó que el 28 de octubre también se trabajaron idempotencia, errores, vida/disponibilidad y recuperación de PostgreSQL. Se consideran contenidos ya dictados, aunque cada equipo deba completar o demostrar su implementación. El material de la secuencia siguiente se conserva como referencia del trabajo de persistencia. El 4 de noviembre avanza hacia [pruebas y CI](../12_distribuidos/README.md), sin repetir la clase de API confiable.
+
 Se conserva FastAPI, Caddy y las dos instancias del experimento anterior. PostgreSQL pasa a ser el único almacén operacional. Parquet queda como evidencia comparativa; no se mantiene como adaptador de producción ni se implementa una segunda API.
 
 ## Secuencia de cuatro horas

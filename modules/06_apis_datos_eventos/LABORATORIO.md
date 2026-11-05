@@ -26,9 +26,16 @@ selecciona `memory` o `postgres`; el dominio no importa `psycopg`.
 
 Ejecute la misma prueba de contrato contra memoria y PostgreSQL:
 
+Utilice una base exclusiva: estas pruebas vacían la tabla de reservas. Con el PostgreSQL local activo, cree `reservas_pruebas` una sola vez si aún no existe:
+
+```bash
+docker exec librereserva-postgres psql -U curso -d postgres \
+  -c 'CREATE DATABASE reservas_pruebas OWNER curso;'
+```
+
 ```bash
 LIBRERESERVA_TEST_DATABASE_URL=\
-'postgresql://curso:solo-laboratorio@127.0.0.1:5432/reservas' \
+'postgresql://curso:solo-laboratorio@127.0.0.1:5432/reservas_pruebas' \
   .venv/bin/python -m unittest \
   labs.librereserva.tests.test_repository_contract -v
 ```
@@ -100,7 +107,9 @@ diferente.
 
 **Evidencia de sesión 11:** puerto, adaptadores, migración única, prueba de contrato, consultas consistentes mediante Caddy, reinicio con datos y prueba concurrente `201`/`409`.
 
-## Sesión 12: idempotencia y recuperación
+## Referencia de idempotencia y recuperación ya trabajadas
+
+Estos contenidos se trabajaron el 28 de octubre, según confirmación docente del 2 de noviembre. Se conservan para completar y comprobar la implementación de cada equipo. La clase del 4 de noviembre dedica 10 minutos a revisar esa evidencia y luego explica fundamentos antes de avanzar hacia [pruebas y CI](../../aws-learner-lab/sesiones/12_distribuidos/README.md).
 
 ### Incremento 5. Clave de idempotencia
 
@@ -131,7 +140,7 @@ diferente.
 | PostgreSQL detenido | vida diferenciada de disponibilidad |
 | PostgreSQL iniciado nuevamente | disponibilidad recuperada y datos conservados |
 
-**Evidencia de sesión 12:** migración de idempotencia, pruebas, respuestas HTTP y logs de caída/recuperación.
+**Evidencia de API confiable:** migración de idempotencia, pruebas, respuestas HTTP y logs de caída/recuperación. Su estado se registra por equipo, sin presentar nuevamente estos contenidos como el tema nuevo de sesión 12.
 
 ## Cierre del laboratorio
 

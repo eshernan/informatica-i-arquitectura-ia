@@ -26,14 +26,16 @@ LibreReserva no se reimplementa con Lambda, DynamoDB o SQS. Learner Lab se usa s
 |---:|---|---|---|---|
 | 9 | 14 oct. | [Docker y despliegue local](sesiones/09_entorno/README.md) | Imagen, contenedor y pérdida de estado demostrada | Conocimientos de cómputo del módulo 6 |
 | 10 | 27 oct. | [Persistencia en archivos](sesiones/10_calidad/README.md) | Dos instancias, Parquet compartido y bloqueo local | Módulo 9: arquitectura en la nube |
-| 11 | 28 oct. | [Persistencia e integridad](sesiones/11_hexagonal/README.md) | PostgreSQL, migración y concurrencia | Módulo 8: bases de datos |
-| 12 | 4 nov. | [API confiable](sesiones/12_distribuidos/README.md) | Idempotencia, salud real y recuperación | Fiabilidad del módulo 9 |
-| 13 | 11 nov. | [Entrega segura y trazable](sesiones/13_api_eventos/README.md) | Pruebas, CI, imagen y configuración | Excelencia operacional y seguridad |
-| 14 | 18 nov. | [Operación y recuperación](sesiones/14_pruebas_entrega/README.md) | Logs, medición, respaldo y restauración | Módulo 10: monitoreo y escalado |
+| 11 | 28 oct. | [Persistencia y API confiable](sesiones/11_hexagonal/README.md) | Persistencia, integridad y contenidos de idempotencia/salud ya trabajados | Bases de datos y fiabilidad |
+| 12 | 4 nov. | [Pruebas y entrega trazable](sesiones/12_distribuidos/README.md) | Pruebas, CI e imagen asociada al commit | Excelencia operacional |
+| 13 | 11 nov. | [Configuración y despliegue seguro](sesiones/13_api_eventos/README.md) | Variables, secretos, permisos y reproducción del despliegue | Seguridad |
+| 14 | 18 nov. | [Diagnóstico y recuperación de datos](sesiones/14_pruebas_entrega/README.md) | Logs, medición, respaldo y restauración | Módulo 10: monitoreo y escalado |
 | 15 | 25 nov. | [Integración autónoma](sesiones/15_proyecto/README.md) | Versión candidata desde clon limpio | Aplicación de módulos 9–10 |
 | 16 | 2 dic. | [Demostración y cierre](sesiones/16_cierre/README.md) | Fallo, recuperación y defensa | Cierre y limpieza |
 
 ## Convenciones
+
+Según confirmación docente del 2 de noviembre, los temas de idempotencia, errores, vida/disponibilidad y recuperación de PostgreSQL ya se trabajaron el 28 de octubre. La sesión 12 no repite esa clase: revisa brevemente la evidencia y avanza hacia pruebas/CI. Las carpetas conservan sus nombres históricos para no romper enlaces. El tema vigente es el de esta matriz y el README de cada sesión.
 
 - Una rama corta y un pull request por incremento.
 - Ninguna credencial se almacena en Git, la imagen o las evidencias.

@@ -13,9 +13,15 @@ Se añadieron únicamente dos imágenes nuevas, generadas con la herramienta int
 
 Los dibujos describen principios y una arquitectura objetivo. No afirman que la API base ya tenga persistencia compartida o autoescalado. Los proveedores pueden gestionar cómputo y almacenamiento mediante servicios distintos; el contorno cloud del segundo dibujo enfatiza el cómputo, no una obligación de alojar los datos fuera del proveedor.
 
-## Criterio de redacción
+## Esquemas de la sesión del 4 de noviembre
+
+La clase de pruebas y entrega utiliza cinco esquemas sketch: [pruebas y construcción de la imagen](pruebas-entrega-trazable.jpg), [consulta concatenada frente a parametrizada](consulta-parametrizada.jpg), [tipos según alcance](tipos-pruebas-alcance.jpg), [propósitos](tipos-pruebas-proposito.jpg) y [elementos de las pruebas de hoy](pruebas-sesion12.jpg). Mantienen líneas azules, acentos cian y púrpura, fondo blanco y recorte compacto para continuar el estilo de los materiales CyberColombia. Las copias se exportan a JPEG de 1100 píxeles de ancho y calidad 84. Los [prompts iniciales](PROMPTS_SESION12.md) y las [especificaciones de los gráficos actuales](PROMPTS_SESION12_V3.json) documentan su elaboración con la herramienta integrada. El título del flujo actual es «Pruebas y construcción de la imagen».
+
+## Criterio de redacción docente
 
 En las explicaciones docentes se debe relacionar la condición con lo que el diseño necesita garantizar. La formulación acordada es: «Aunque las réplicas puedan reemplazarse, los datos deben permanecer». Evite presentar la permanencia de datos como una consecuencia automática de reemplazar réplicas. Este criterio también se aplica a los textos de las imágenes.
+
+Los títulos deben nombrar el concepto de forma directa. No utilizar las fórmulas «De X a Y», «Del X al Y» ni variantes equivalentes. La preferencia se aplica también a los títulos incorporados en sketches y a los materiales que se elaboren en adelante.
 
 ## Prompts de generación
 

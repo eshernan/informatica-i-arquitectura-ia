@@ -48,12 +48,15 @@ Las pruebas de integración requieren PostgreSQL y las migraciones del increment
 | HTTP | [test_http.py](test_http.py) | Creación, conflicto, borrado e inexistencia |
 | Seguridad didáctica | [test_consulta_segura.py](test_consulta_segura.py) | Valores separados del SQL sobre datos ficticios |
 | Propiedades | [test_properties.py](test_properties.py) | Intervalos contiguos con distintas duraciones generadas |
+| Rendimiento opcional | [performance_test.py](performance_test.py) | Prepara 100 reservas y consulta en tandas concurrentes de 1.000, 2.000, 5.000 y 6.000 solicitudes; registra respuestas y tiempos |
 
 `make test-sesion12` ejecuta 13 pruebas sin servicios externos. `make test-all` añade contrato y propiedades; omite las tres de PostgreSQL si no está configurado. El [workflow](../../.github/workflows/validate.yml) ejecuta la suite antes de construir la imagen.
 
+La [guía de rendimiento](PRUEBA_RENDIMIENTO.md) explica cómo iniciar una API nueva y ejecutar `make test-rendimiento`. El archivo `performance_test.py` se ejecuta directamente con Python; está excluido de la colección pytest porque genera carga sobre una API encendida y utiliza una dependencia opcional. El log conserva cada respuesta y su tiempo; el CSV compara las cuatro tandas.
+
 ## Ampliaciones del proyecto
 
-Las pruebas de idempotencia y disponibilidad real requieren completar esas capacidades de la API. La suite E2E automatizada y las pruebas de rendimiento todavía no están implementadas. Configuración y secretos se trabajan el 11 de noviembre; diagnóstico y recuperación, el 18. Estas ampliaciones no se añaden como ejercicios obligatorios de la sesión 12.
+Las pruebas de idempotencia y disponibilidad real requieren completar esas capacidades de la API. La suite E2E automatizada todavía no está implementada. La prueba de rendimiento está disponible como ampliación opcional. Configuración y secretos se trabajan el 11 de noviembre; diagnóstico y recuperación, el 18. Estas ampliaciones no se añaden como ejercicios obligatorios de la sesión 12.
 
 ## Validación
 

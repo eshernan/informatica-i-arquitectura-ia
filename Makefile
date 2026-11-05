@@ -1,6 +1,6 @@
 PYTHON ?= python3
 
-.PHONY: check setup test test-all test-sesion12 run notebooks
+.PHONY: check setup test test-all test-sesion12 test-rendimiento run notebooks
 
 check:
 	./scripts/validate_repository.sh
@@ -19,6 +19,9 @@ test-sesion12:
 		labs/librereserva/tests/test_domain.py \
 		modules/07_pruebas/test_http.py \
 		modules/07_pruebas/test_consulta_segura.py -v
+
+test-rendimiento:
+	.venv/bin/python modules/07_pruebas/performance_test.py
 
 run:
 	.venv/bin/python -m uvicorn labs.librereserva.app.main:app --reload

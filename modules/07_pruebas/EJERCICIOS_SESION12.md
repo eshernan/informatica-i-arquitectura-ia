@@ -188,4 +188,4 @@ Registre el SHA que realmente usó CI. En un pull request puede corresponder a l
 
 Complete la [plantilla de evidencia](EVIDENCIA_SESION12.md) en la rama de su equipo y añada el enlace al pull request. La implementación final debe conservar las consultas parametrizadas y la regla correcta de intervalos.
 
-La revisión comprueba que el equipo puede explicar sus dos riesgos, identificar las aserciones, demostrar un error detectado y reconocer qué quedó fuera del alcance. Las pruebas de rendimiento y una suite E2E automatizada siguen como ampliaciones; no se exigen hoy.
+La revisión comprueba que el equipo puede explicar sus dos riesgos, identificar las aserciones, demostrar un error detectado y reconocer qué quedó fuera del alcance. La [prueba de rendimiento](PRUEBA_RENDIMIENTO.md) está disponible como ampliación opcional con preparación de 100 reservas, tandas concurrentes y registro de respuestas y tiempos. Una suite E2E automatizada sigue pendiente; estas ampliaciones no se exigen hoy.

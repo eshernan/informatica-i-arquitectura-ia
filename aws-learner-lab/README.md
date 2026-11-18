@@ -18,7 +18,7 @@ flowchart LR
   P --> R[Respaldo y restauración]
 ```
 
-LibreReserva no se reimplementa con Lambda, DynamoDB o SQS. Learner Lab se usa solamente para actividades oficiales de Cloud Foundations que hayan sido verificadas por el docente. La evidencia del proyecto debe poder reproducirse con Docker o Podman, Compose y PostgreSQL local.
+La evidencia del proyecto debe poder reproducirse con Docker o Podman, Compose y PostgreSQL local. En la sesión del 18 de noviembre se ejecuta el ambiente de Compose en EC2, con Session Manager para acceder a la instancia.
 
 ## Ruta de ocho sesiones
 
@@ -28,8 +28,8 @@ LibreReserva no se reimplementa con Lambda, DynamoDB o SQS. Learner Lab se usa s
 | 10 | 27 oct. | [Persistencia en archivos](sesiones/10_calidad/README.md) | Dos instancias, Parquet compartido y bloqueo local | Módulo 9: arquitectura en la nube |
 | 11 | 28 oct. | [Persistencia y API confiable](sesiones/11_hexagonal/README.md) | Persistencia, integridad y contenidos de idempotencia/salud ya trabajados | Bases de datos y fiabilidad |
 | 12 | 4 nov. | [Pruebas y entrega trazable](sesiones/12_distribuidos/README.md) | Pruebas, CI e imagen asociada al commit | Excelencia operacional |
-| 13 | 11 nov. | [Configuración y despliegue seguro](sesiones/13_api_eventos/README.md) | Variables, secretos, permisos y reproducción del despliegue | Seguridad |
-| 14 | 18 nov. | [Diagnóstico y recuperación de datos](sesiones/14_pruebas_entrega/README.md) | Logs, medición, respaldo y restauración | Módulo 10: monitoreo y escalado |
+| 13 | 11 nov. | [Plan de configuración y despliegue](sesiones/13_api_eventos/README.md) | Clase suspendida. Contenidos integrados en la sesión 14 | Seguridad |
+| 14 | 18 nov. | [Clase integrada](sesiones/14_pruebas_entrega/README.md) y [preparación de EC2](sesiones/14_pruebas_entrega/PREPARACION_AWS_LEARNER_LAB.md) | Despliegue, logs, respaldo y restauración | Módulo 10: monitoreo y escalado |
 | 15 | 25 nov. | [Integración autónoma](sesiones/15_proyecto/README.md) | Versión candidata desde clon limpio | Aplicación de módulos 9–10 |
 | 16 | 2 dic. | [Demostración y cierre](sesiones/16_cierre/README.md) | Fallo, recuperación y defensa | Cierre y limpieza |
 

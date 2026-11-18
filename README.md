@@ -108,9 +108,9 @@ Las rutas internas se presentan por propósito. El número histórico de la carp
 | 9 | ENV · ejecución reproducible | [Entorno](modules/01_entorno/README.md) y [práctica Docker](modules/01_entorno/PRACTICA_CONTENEDORES.md) | Imagen, contenedor, API local y pérdida de estado demostrada |
 | 10 | ARC · persistencia en archivos | [Sesión 10](aws-learner-lab/sesiones/10_calidad/README.md) y [laboratorio Parquet](aws-learner-lab/sesiones/10_calidad/LABORATORIO_PARQUET.md) | Balanceo, archivo compartido, carrera de escritura y bloqueo local |
 | 11 | DAT/RES · persistencia y API confiable | [Modularidad](modules/04_modularidad/README.md) y [laboratorio PostgreSQL](modules/06_apis_datos_eventos/LABORATORIO.md) | Cobertura registrada y evidencia disponible por equipo |
-| 12 | TST · pruebas y entrega trazable | [Guía del 4 de noviembre](aws-learner-lab/sesiones/12_distribuidos/README.md), [ejercicios](modules/07_pruebas/EJERCICIOS_SESION12.md), [evidencia](modules/07_pruebas/EVIDENCIA_SESION12.md) y [CI](.github/workflows/validate.yml) | Prueba que detecta una regresión, pipeline e imagen asociada al commit |
-| 13 | CFG · configuración y despliegue seguro | [Guía del 11 de noviembre](aws-learner-lab/sesiones/13_api_eventos/README.md) | Variables documentadas, revisión de secretos y despliegue reproducible |
-| 14 | OPS · operación y recuperación | [Observabilidad](modules/09_observabilidad/README.md) | Logs, medición, respaldo, restauración y runbook |
+| 12 | TST · pruebas y entrega trazable | [Guía del 4 de noviembre](aws-learner-lab/sesiones/12_distribuidos/README.md), [ejercicios](modules/07_pruebas/EJERCICIOS_SESION12.md), [desempeño](modules/07_pruebas/PRUEBA_RENDIMIENTO.md), [evidencia](modules/07_pruebas/EVIDENCIA_SESION12.md) y [CI](.github/workflows/validate.yml) | Regresión detectada, medición de desempeño, pipeline e imagen asociada al commit |
+| 13 | CFG · configuración y despliegue seguro | [Plan del 11 de noviembre](aws-learner-lab/sesiones/13_api_eventos/README.md) | Clase suspendida. Contenidos integrados en la sesión 14 |
+| 14 | OPS · operación y recuperación | [Clase del 18 de noviembre](aws-learner-lab/sesiones/14_pruebas_entrega/README.md) y [preparación de EC2](aws-learner-lab/sesiones/14_pruebas_entrega/PREPARACION_AWS_LEARNER_LAB.md) | Despliegue, diagnóstico, respaldo y restauración verificada |
 | 15 | INT · integración | [Proyecto integrador](modules/12_proyecto/README.md) | Versión candidata reproducida desde un clon limpio |
 | 16 | CIE · defensa | [Guía de cierre](aws-learner-lab/sesiones/16_cierre/README.md) | Caso feliz, fallo, recuperación y decisiones defendidas |
 
@@ -120,7 +120,7 @@ Los demás módulos se conservan como biblioteca del repositorio, pero no forman
 
 AWS Academy Cloud Foundations y el proyecto de Informática I son recorridos paralelos. Los módulos 1–8 de Cloud Foundations ya proporcionan el vocabulario de infraestructura y servicios; el módulo 9 acompaña la revisión arquitectónica de la semana 10 y el módulo 10 acompaña operación y recuperación en la semana 14. La numeración AWS no determina la estructura del repositorio.
 
-AWS Academy publica consignas, evidencias y evaluaciones. LibreReserva se construye y valida con Docker, Compose y PostgreSQL local para que toda persona pueda reproducirla sin depender de permisos temporales. Learner Lab se utiliza únicamente cuando la actividad oficial de Cloud Foundations lo requiera; no se crea una arquitectura AWS alternativa para cada semana.
+AWS Academy publica consignas, evidencias y evaluaciones. LibreReserva se puede reproducir con Docker, Compose y PostgreSQL local. La [clase del 18 de noviembre](aws-learner-lab/sesiones/14_pruebas_entrega/README.md) lleva ese mismo ambiente a EC2 en Learner Lab.
 
 El paquete [LibreReserva en AWS Academy Learner Lab](aws-learner-lab/README.md) incluye:
 

@@ -4,6 +4,10 @@ Esta ruta parte de lo que se alcanzó el 14 de octubre: construir una imagen Doc
 
 Actualización del 2 de noviembre: el docente confirmó que idempotencia, errores, vida/disponibilidad y recuperación de PostgreSQL ya se trabajaron el 28 de octubre. El 4 de noviembre continúa con pruebas y CI. Los pendientes de implementación se comprueban al inicio y se registran por equipo, sin volver a dictar la misma clase.
 
+La clase del 4 de noviembre incluyó pruebas de desempeño. El [ejercicio del módulo 7](../modules/07_pruebas/PRUEBA_RENDIMIENTO.md) prepara 100 reservas y lanza tandas de 1.000, 2.000, 5.000 y 6.000 consultas concurrentes con registro de respuestas y tiempos. La sesión 14 usa esa evidencia durante el diagnóstico.
+
+Actualización del 18 de noviembre: la clase del 11 se suspendió. La [clase integrada del 18](../aws-learner-lab/sesiones/14_pruebas_entrega/README.md) reúne configuración, despliegue, diagnóstico y recuperación. Utiliza una restauración lógica en otra base vacía y conserva el origen. Los pendientes de instrumentación y el ensayo en un volumen separado se registran para la integración del 25.
+
 ## Arquitectura de trabajo
 
 ```mermaid
@@ -29,9 +33,9 @@ El objetivo no es declarar la arquitectura robusta, sino demostrar garantías: d
 | 9 · 14 oct. | ¿Puedo ejecutar la misma aplicación en un contenedor? | Imagen, contenedor, API local y reinicio | Construcción, endpoints y pérdida de estado demostrada |
 | 10 · 27 oct. | ¿Qué ocurre cuando dos instancias comparten un archivo? | Caddy, dos API, Parquet compartido y bloqueo local | Carrera observada, mitigación y límites documentados |
 | 11 · 28 oct. | ¿Cómo conservar datos y responder a repeticiones/fallos? | Persistencia e integridad y temas de API confiable ya trabajados | Registrar lo enseñado y la evidencia disponible por equipo |
-| 12 · 4 nov. | ¿Cómo detecto una regresión antes de entregar? | Pruebas por riesgo, CI y etiqueta de commit | Prueba que detecta un fallo, ejecución CI e imagen identificada |
-| 13 · 11 nov. | ¿Cómo despliego sin incorporar secretos a la imagen? | Configuración externa, permisos, migraciones y arranque reproducible | Misma imagen, configuración documentada y ausencia de secretos |
-| 14 · 18 nov. | ¿Cómo diagnostico un fallo y recupero los datos? | Logs, correlación, medición, respaldo y restauración | Caso de fallo diagnosticado, runbook y restauración verificada |
+| 12 · 4 nov. | ¿Cómo compruebo comportamiento y desempeño antes de entregar? | Pruebas por riesgo, desempeño, CI y etiqueta de commit | Prueba que detecta un fallo, medición declarada, ejecución CI e imagen identificada |
+| 13 · 11 nov. | ¿Cómo despliego sin incorporar secretos a la imagen? | Clase suspendida. Se integra en la sesión 14 | Configuración externa, permisos y migraciones |
+| 14 · 18 nov. | ¿Cómo diagnostico un fallo y recupero los datos? | Despliegue en EC2, logs, mediciones previas, respaldo y restauración | Caso de fallo diagnosticado, runbook y restauración verificada |
 | 15 · 25 nov. | ¿Puede otro entorno reproducir todo el sistema? | Integración desde clon limpio | Versión candidata y bitácora de cuatro horas |
 | 16 · 2 dic. | ¿Puede el equipo demostrar y defender las garantías? | Demostración completa | Caso feliz, fallo, recuperación y ADR |
 
@@ -71,6 +75,7 @@ No forman parte de la ruta evaluable: RabbitMQ, SQS, Lambda, una segunda API ser
 | Idempotencia | Tema ya trabajado en clase; implementación pendiente en la referencia | Una repetición no crea un segundo efecto |
 | Salud de disponibilidad | Tema ya trabajado en clase; la referencia todavía responde un valor fijo | Comprueba realmente PostgreSQL |
 | CI e imagen | Flujo base disponible | Ejecuta pruebas y relaciona imagen con commit |
+| Pruebas de desempeño | Implementadas en `performance_test.py`; trabajadas el 4 de noviembre | 100 reservas, cuatro tandas concurrentes, respuestas, tiempos y resumen |
 | Logs y correlación | Por implementar | Permiten seguir una solicitud y diagnosticar un fallo |
 | Respaldo y restauración | Por documentar | Restauración comprobada en un volumen limpio |
 

@@ -39,9 +39,9 @@ El primer bloque desarrolla los temas definidos por el profesor titular. El segu
 | 9 | 14 oct. | Esteban Hernández | Docker: construcción de imagen, ejecución de LibreReserva y pruebas de despliegue local |
 | 10 | 27 oct. | Esteban Hernández · virtual | Balanceo y persistencia en archivos: dos instancias, Parquet compartido, concurrencia y bloqueo local |
 | 11 | 28 oct. | Esteban Hernández | Persistencia e integridad y temas de API confiable ya trabajados: idempotencia, errores, salud y recuperación |
-| 12 | 4 nov. | Esteban Hernández | Pruebas automatizadas, CI e imagen trazable al commit |
-| 13 | 11 nov. | Esteban Hernández | Configuración segura, secretos y despliegue reproducible |
-| 14 | 18 nov. | Esteban Hernández | Diagnóstico, logs, medición, respaldo y restauración |
+| 12 | 4 nov. | Esteban Hernández | Pruebas automatizadas y de desempeño, CI e imagen trazable al commit |
+| 13 | 11 nov. | Esteban Hernández | Clase suspendida. Configuración y despliegue se integran el 18 de noviembre |
+| 14 | 18 nov. | Esteban Hernández | Clase integrada: configuración, despliegue, diagnóstico, respaldo y restauración |
 | 15 | 25 nov. | Trabajo de proyecto | Integración desde un clon limpio; jornada autónoma sin temas nuevos |
 | 16 | 2 dic. | Esteban Hernández | Demostración de robustez, defensa de decisiones y cierre |
 
@@ -49,7 +49,7 @@ El primer bloque desarrolla los temas definidos por el profesor titular. El segu
 
 AWS Academy Cloud Foundations y LibreReserva son recorridos paralelos. Los módulos 1–8 de Cloud Foundations se registran como desarrollados. El módulo 9 acompaña la revisión de arquitectura de la semana 10 y el módulo 10 acompaña operación y recuperación en la semana 14. Los números de AWS Academy no son semanas de Informática I ni números de las carpetas `modules/`.
 
-LibreReserva se construye en un ambiente local reproducible con Docker, Compose y PostgreSQL. AWS Academy publica las consignas y evidencias, y Learner Lab se usa solo para las actividades oficiales que lo requieran. No se implementa una segunda versión de LibreReserva con servicios AWS diferentes.
+LibreReserva se construye en un ambiente reproducible con Docker, Compose y PostgreSQL. AWS Academy publica las consignas y evidencias. La [sesión del 18 de noviembre](../aws-learner-lab/sesiones/14_pruebas_entrega/README.md) ejecuta el mismo ambiente en EC2 dentro de Learner Lab.
 
 - No se incorpora un curso Associate completo de AWS Academy dentro de estas 64 horas.
 - Los servicios y cuotas se validan antes de cualquier actividad oficial de Learner Lab.
@@ -80,14 +80,18 @@ La cobertura docente y el estado de la implementación se registran por separado
 
 ### Próximos incrementos
 
+**Ajuste del 18 de noviembre:** el docente confirmó la suspensión de la clase del día 11. El encuentro del 18 integra configuración y despliegue con diagnóstico y recuperación mediante un solo laboratorio. Incluye cuatro horas con pausa y una práctica de 55 minutos. La restauración guiada utiliza una base vacía separada y conserva el origen. La integración del 25 completa pendientes y el ensayo en un volumen limpio separado. Las pruebas de desempeño del 4 de noviembre se recuperan brevemente como antecedente.
+
+El 4 de noviembre también se trabajaron pruebas de desempeño. El ejercicio crea 100 reservas y consulta en tandas de 1.000, 2.000, 5.000 y 6.000 solicitudes concurrentes. La sesión del 18 aprovecha el resumen de ese ejercicio durante la apertura y el diagnóstico.
+
 La [ruta por sesiones](RUTA_CONTENEDORES.md) conserva una sola arquitectura y una sola entrega:
 
 - Sesión 9: imagen Docker, contenedor, API local y pérdida del estado al reiniciar.
 - Sesión 10: balanceador local, dos instancias, Parquet compartido y comparación de escrituras con y sin bloqueo.
 - Sesión 11: PostgreSQL, migraciones, puerto/adaptador y concurrencia, junto con los temas de API confiable ya trabajados.
-- Sesión 12: convertir riesgos y casos conocidos en pruebas, ejecutar CI y relacionar commit e imagen.
+- Sesión 12: convertir riesgos y casos conocidos en pruebas, evaluar desempeño, ejecutar CI y relacionar commit e imagen.
 - Sesión 13: separar configuración y secretos de la imagen, revisar permisos y reproducir el despliegue con migraciones.
-- Sesión 14: diagnosticar con logs, medir bajo condiciones declaradas y demostrar respaldo/restauración.
+- Sesión 14: diagnosticar con logs y mediciones previas, y demostrar respaldo/restauración.
 - Sesión 15: integración desde un clon limpio, sin tecnologías nuevas.
 - Sesión 16: demostración de caso feliz, fallo, recuperación y decisiones.
 
@@ -112,4 +116,4 @@ Como mínimo, un evaluador debe poder partir de un clon limpio, ejecutar pruebas
 
 La entrega incluye los ADR, logs del caso de fallo, respaldo restaurado y trazabilidad entre commit e imagen. Si se usó Learner Lab para los módulos oficiales de AWS Academy, el cierre incluye además consumo y confirmación de eliminación de recursos.
 
-Última actualización metodológica: 4 de noviembre de 2026.
+Última actualización metodológica: 18 de noviembre de 2026.

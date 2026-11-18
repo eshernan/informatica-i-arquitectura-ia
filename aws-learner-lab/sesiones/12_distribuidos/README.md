@@ -5,6 +5,8 @@
 
 ## Alcance
 
+**Cobertura confirmada el 9 de noviembre:** esta clase también incluyó pruebas de desempeño. El [ejercicio del módulo 7](../../../modules/07_pruebas/PRUEBA_RENDIMIENTO.md) prepara 100 reservas y ejecuta tandas de 1.000, 2.000, 5.000 y 6.000 consultas concurrentes, registrando respuestas y tiempos. Se conserva como material de consulta; las sesiones siguientes aprovechan su evidencia sin volver a dictar la introducción.
+
 Idempotencia, errores, vida/disponibilidad y recuperación de PostgreSQL ya se trabajaron el 28 de octubre, según confirmación docente del 2 de noviembre. Hoy se usan como casos para probar, sin repetir su explicación ni dedicar otra clase a implementarlos desde cero.
 
 La revisión inicial dura 10 minutos. Cada equipo declara qué tiene implementado, qué demuestra y qué sigue pendiente. Después se explican los fundamentos antes de entrar en LibreReserva. Aunque un tema ya se haya enseñado, una prueba debe comprobar que la implementación lo cumple. La referencia del repositorio todavía necesita completar idempotencia y disponibilidad real, por lo que no se debe presentar una suite verde como prueba de garantías que no verifica.

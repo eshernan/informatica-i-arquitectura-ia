@@ -147,7 +147,7 @@ La comprobación mínima es un `GET /reservas` con HTTP 200 desde EC2. Una lista
 
 ## 5. Secretos, registros y evidencias
 
-El ZIP compartido contiene `work/`, la configuración básica de Git y un archivo vacío de `.voc`. La captura muestra `resource/asnlib/lab.policy`, cuyo contenido se revisa desde el editor de autoría cuando el curso da acceso. El README confirma los servicios habilitados y que IAM tiene acceso de lectura para roles ordinarios. Para diagnosticar una denegación registra la operación, región, recurso y la identidad que la ejecutó. El docente autorizado o el administrador del laboratorio revisa la política concreta y el alcance permitido. [Políticas de AWS Cloud Labs en Vocareum](https://help.vocareum.com/en/articles/9425419-creating-an-aws-cloud-lab).
+Consulta en el README del sandbox los servicios habilitados y las restricciones de IAM. Si una operación devuelve `AccessDenied`, registra la acción, la región, el recurso y la identidad que la ejecutó. El docente autorizado o el administrador del laboratorio puede revisar el permiso para esa operación. [Políticas de AWS Cloud Labs en Vocareum](https://help.vocareum.com/en/articles/9425419-creating-an-aws-cloud-lab).
 
 ### Identidades y permisos
 

@@ -24,7 +24,7 @@ Entrega: pull request y evidencia Markdown
 Criterio de cierre: incremento demostrado y entorno local detenido
 ```
 
-Para la semana 15, la ventana corresponde a trabajo autónomo y permanece disponible durante las cuatro horas acordadas.
+El 25 de noviembre la última clase de contenido se desarrolla de 18:00 a 22:00. La plantilla de Vocareum usada el día 18 carecía del permiso para el servicio de secretos. La práctica de apertura usa Python y un archivo local con un valor ficticio.
 
 ## 3. Validación docente
 
@@ -48,8 +48,8 @@ Antes de publicar:
 | 12 | pruebas y entrega trazable | prueba que detecta una regresión, CI e imagen por commit |
 | 13 | configuración y despliegue seguro | variables, ausencia de secretos, permisos y arranque reproducible |
 | 14 | diagnóstico y recuperación de datos | logs, medición, respaldo, restauración y runbook |
-| 15 | integración autónoma | recorrido completo desde clon limpio |
-| 16 | cierre | demostración, decisiones y deuda reconocida |
+| 15 | [Secretos locales y sistemas distribuidos](sesiones/15_proyecto/README.md) | abrir la presentación y probar el ejercicio local antes de clase |
+| 16 | [Ejercicio colectivo](sesiones/16_cierre/README.md) | preparar una revisión común, un volumen de destino vacío y la bitácora de relevos |
 
 ## 5. Uso de AWS Academy
 

@@ -1,38 +1,9 @@
-# Sesión 15 — Jornada autónoma de integración
+# Sesión 15 · Cierre de contenidos
 
-**Fecha:** 25 de noviembre de 2026, cuatro horas de trabajo autónomo, sin encuentro sincrónico.
-**Resultado:** producir una versión candidata de LibreReserva desde un clon limpio, sin introducir tecnologías ni funcionalidades nuevas.
+El 25 de noviembre se desarrolla la última clase de contenido, de 6:00 a 10:00 p. m. La [guía docente](SESION_2026-11-25.md) organiza el ejercicio local de secretos, el bloque de sistemas distribuidos, el trabajo por parejas y la demostración de diagnóstico. Los productos de esta clase se usan en el [ejercicio colectivo del 2 de diciembre](../16_cierre/README.md).
 
-## Plan de cuatro horas
+## Materiales para la clase
 
-| Tiempo | Actividad |
-|---:|---|
-| 0:00–0:30 | clonar la revisión, revisar variables y comprobar prerrequisitos |
-| 0:30–1:15 | ejecutar pruebas y levantar PostgreSQL |
-| 1:15–2:00 | aplicar migraciones, construir imagen y levantar la API |
-| 2:00–2:45 | ejecutar caso feliz, concurrencia e idempotencia |
-| 2:45–3:25 | provocar caída de PostgreSQL y recuperar el servicio |
-| 3:25–3:45 | restaurar el respaldo en un volumen limpio |
-| 3:45–4:00 | registrar resultados, defectos y versión candidata |
-
-## Lista obligatoria
-
-- El repositorio no tiene cambios locales desconocidos al comenzar.
-- Las instrucciones funcionan desde un clon limpio.
-- Todas las pruebas pasan.
-- La imagen se relaciona con un commit.
-- API y PostgreSQL se levantan con comandos documentados.
-- Las migraciones se aplican de manera reproducible.
-- Una reserva sobrevive al reinicio de la API.
-- La prueba concurrente confirma una sola reserva incompatible.
-- La repetición idempotente no duplica efectos.
-- La caída de PostgreSQL cambia la disponibilidad.
-- El servicio se recupera después de iniciar PostgreSQL.
-- El respaldo se restaura en un volumen limpio.
-- Los ADR y el diagrama representan la implementación real.
-
-## Restricción de alcance
-
-No se añaden colas, funciones, Kubernetes, otra base de datos, otra forja ni una pila de observabilidad. Si aparece un defecto, se corrige dentro de la arquitectura existente o se registra como deuda con impacto y responsable.
-
-**Entrega:** versión candidata, bitácora de cuatro horas, pruebas, identificador de imagen, resultados de fallo/recuperación y defectos pendientes.
+- [Descargar las diapositivas en PowerPoint](Configuracion_y_sistemas_distribuidos.pptx). Los diagramas siguen una reserva entre el cliente, Caddy, las réplicas de FastAPI y PostgreSQL.
+- [Abrir el programa del ejercicio](ejercicio_configuracion/app.py). Desde la raíz del repositorio, sigan los comandos de la [guía de la sesión](SESION_2026-11-25.md). Para la apertura se usan Bash, Git y Python 3.
+- [Consultar el módulo de sistemas distribuidos](../../../modules/05_distribucion/README.md) para revisar cómo se comunican las réplicas y dónde se conserva el estado.

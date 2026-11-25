@@ -7,7 +7,7 @@
 - Enfoque: arquitectura moderna y desarrollo asistido por IA.
 - Caso conductor: LibreReserva.
 - Modalidad: explicación breve, laboratorio acumulativo, validación y defensa.
-- Agenda: [16 semanas académicas: 15 encuentros y una jornada de proyecto](AGENDA_16_SEMANAS.md).
+- Agenda: [Programación docente de las 16 semanas](AGENDA_16_SEMANAS.md).
 
 ## Unidades
 
@@ -18,6 +18,8 @@ Requisitos, restricciones, atributos de calidad, compromisos, estilos, modularid
 ### 2. Construcción e integración
 
 Componentes, API, persistencia PostgreSQL, transacciones, concurrencia, idempotencia, control de versiones y pruebas automatizadas. Corresponde a los módulos 4, 6 y 7.
+
+El caso de sistemas distribuidos sigue una reserva entre Caddy, dos réplicas de la API y PostgreSQL. Se estudian los mensajes entre procesos, la latencia, las escrituras concurrentes, los reintentos y los fallos parciales.
 
 ### 3. Entrega, operación y seguridad
 
@@ -39,6 +41,8 @@ Arquitectura objetivo, ADR, integración desde un clon limpio, fallo controlado,
 8. Diagnosticar fallos y ejecutar recuperación y restauración.
 9. Gestionar configuración y secretos sin incorporarlos al código o la imagen.
 10. Defender decisiones y límites con evidencia reproducible.
+
+La [última clase de contenido del 25 de noviembre](../aws-learner-lab/sesiones/15_proyecto/README.md) comienza con un ejercicio local de secretos. El [2 de diciembre](../aws-learner-lab/sesiones/16_cierre/README.md) todo el grupo integra una versión y registra el resultado en una bitácora compartida.
 
 ## Evaluación sugerida
 

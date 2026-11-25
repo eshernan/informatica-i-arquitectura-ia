@@ -46,13 +46,13 @@ LibreReserva permanece como monolito modular. La API ejecuta las reglas; Postgre
 - Un respaldo se restaura en un volumen limpio.
 - Los diagramas y ADR representan la implementación real.
 
-## Jornada autónoma
+## Última clase de contenido
 
-La semana 15 no añade tecnologías ni funcionalidades. Cada equipo clona su versión candidata en un directorio limpio, ejecuta la definición de terminado, corrige defectos dentro de la arquitectura existente y registra la deuda que no pueda cerrar.
+En la [sesión 15](../../aws-learner-lab/sesiones/15_proyecto/SESION_2026-11-25.md) las parejas completan el ejercicio local de secretos, explican los mensajes entre réplicas y base, y preparan una decisión, una prueba y un procedimiento de recuperación.
 
-## Defensa
+## Ejercicio colectivo
 
-Quince minutos por equipo: arquitectura y decisiones; construcción desde revisión identificada; caso feliz; concurrencia e idempotencia; caída y recuperación; logs; respaldo restaurado; deuda. Cada integrante debe poder explicar y modificar el incremento.
+En la [sesión 16](../../aws-learner-lab/sesiones/16_cierre/README.md) el curso trabaja sobre una revisión y una bitácora comunes. Los roles de despliegue, pruebas, operación y verificación se relevan desde el clon limpio hasta la comprobación de los datos restaurados.
 
 **Evidencia:** etiqueta o commit final, identificador de imagen, paquete de pruebas, migraciones, runbook, ADR y matriz requisito–evidencia.
 

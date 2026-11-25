@@ -6,7 +6,7 @@ Actualización del 2 de noviembre: el docente confirmó que idempotencia, errore
 
 La clase del 4 de noviembre incluyó pruebas de desempeño. El [ejercicio del módulo 7](../modules/07_pruebas/PRUEBA_RENDIMIENTO.md) prepara 100 reservas y lanza tandas de 1.000, 2.000, 5.000 y 6.000 consultas concurrentes con registro de respuestas y tiempos. La sesión 14 usa esa evidencia durante el diagnóstico.
 
-Actualización del 18 de noviembre: la clase del 11 se suspendió. La [clase integrada del 18](../aws-learner-lab/sesiones/14_pruebas_entrega/README.md) reúne configuración, despliegue, diagnóstico y recuperación. Utiliza una restauración lógica en otra base vacía y conserva el origen. Los pendientes de instrumentación y el ensayo en un volumen separado se registran para la integración del 25.
+Actualización del 18 de noviembre: la clase del 11 se suspendió. La [clase integrada del 18](../aws-learner-lab/sesiones/14_pruebas_entrega/README.md) reúne configuración, despliegue, diagnóstico y recuperación. Utiliza una restauración lógica en otra base vacía y conserva el origen. El 25 se diseña la verificación del respaldo. El 2 de diciembre el grupo ejecuta la restauración en un volumen separado y registra las brechas de instrumentación.
 
 ## Arquitectura de trabajo
 
@@ -36,8 +36,8 @@ El objetivo no es declarar la arquitectura robusta, sino demostrar garantías: d
 | 12 · 4 nov. | ¿Cómo compruebo comportamiento y desempeño antes de entregar? | Pruebas por riesgo, desempeño, CI y etiqueta de commit | Prueba que detecta un fallo, medición declarada, ejecución CI e imagen identificada |
 | 13 · 11 nov. | ¿Cómo despliego sin incorporar secretos a la imagen? | Clase suspendida. Se integra en la sesión 14 | Configuración externa, permisos y migraciones |
 | 14 · 18 nov. | ¿Cómo diagnostico un fallo y recupero los datos? | Despliegue en EC2, logs, mediciones previas, respaldo y restauración | Caso de fallo diagnosticado, runbook y restauración verificada |
-| 15 · 25 nov. | ¿Puede otro entorno reproducir todo el sistema? | Integración desde clon limpio | Versión candidata y bitácora de cuatro horas |
-| 16 · 2 dic. | ¿Puede el equipo demostrar y defender las garantías? | Demostración completa | Caso feliz, fallo, recuperación y ADR |
+| 15 · 25 nov. | ¿Cómo justificamos las garantías de la arquitectura? | Secretos locales, sistemas distribuidos y decisión arquitectónica | Diagrama, ADR, ficha de prueba y procedimiento |
+| 16 · 2 dic. | ¿Puede todo el curso reproducir las garantías? | Un ejercicio colectivo desde clon limpio | Una bitácora común de pruebas, fallo y recuperación |
 
 ```mermaid
 flowchart LR
@@ -46,8 +46,8 @@ flowchart LR
   S11 --> S12[Pruebas y CI]
   S12 --> S13[Configuración y despliegue seguro]
   S13 --> S14[Diagnóstico y respaldo]
-  S14 --> S15[Integración limpia]
-  S15 --> S16[Defensa]
+  S14 --> S15[Secretos y sistemas distribuidos]
+  S15 --> S16[Integración colectiva]
 ```
 
 ## Alcance técnico fijo
@@ -81,6 +81,6 @@ No forman parte de la ruta evaluable: RabbitMQ, SQS, Lambda, una segunda API ser
 
 ## Control de carga
 
-Cada sesión modifica la misma rama de trabajo y termina con un pull request pequeño. No se instala una plataforma nueva para reemplazar una garantía que todavía falta en la aplicación. La jornada de la semana 15 integra y corrige; no añade funcionalidades ni infraestructura. La sesión 16 no permite cambios de arquitectura: demuestra lo construido y registra la deuda restante.
+Cada sesión modifica la misma rama de trabajo y termina con un pull request pequeño. No se instala una plataforma nueva para reemplazar una garantía que todavía falta en la aplicación. La semana 15 cierra el contenido con secretos locales y sistemas distribuidos. La sesión 16 reúne al curso para ejecutar un caso completo en la arquitectura existente y registrar la deuda restante.
 
 En sesión 12 se seleccionan pocos riesgos para mostrar cómo una prueba los detecta. La revisión inicial de los temas del 28 de octubre dura 10 minutos; después se dedican 40 minutos a fundamentos antes de estudiar LibreReserva. Los equipos con pendientes conservan un registro de implementación y reciben acompañamiento sin detener el avance de todo el grupo. Configuración/secretos se trabajan el 11 de noviembre y respaldo/restauración el 18, en lugar de agregarlos al taller de CI.

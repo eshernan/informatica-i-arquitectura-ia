@@ -4,6 +4,10 @@
 
 Elegir entre monolito modular, microservicios, eventos y funciones a partir de restricciones observadas, no de tendencias.
 
+## Aplicación en la sesión del 25 de noviembre
+
+Siga una solicitud desde Caddy hasta una réplica de la API y PostgreSQL. Compare dos escrituras concurrentes con un reintento después de perder la respuesta. La [presentación y el ejercicio local](../../aws-learner-lab/sesiones/15_proyecto/README.md) incluyen los diagramas de secuencia, el ejemplo de latencia y el caso de fallo parcial.
+
 ## Ejecución reemplazable y datos separados
 
 ![Sketch de réplicas sin estado, balanceo y almacenamiento separado](../../docs/imagenes/despliegue-sin-estado-cloud.jpg)

@@ -79,7 +79,7 @@ Use una instancia institucional o instale Forgejo mediante su [documentación of
 
 El [flujo ya incluido](../../.github/workflows/validate.yml) ejecuta validaciones/pruebas, construye una imagen con etiqueta del commit y guarda un archivo descargable. No publica en un registro ni despliega en un ambiente real. En sesión 14 se usa la forja ya disponible; no se instala otra para cumplir el mismo resultado. El ejemplo Forgejo del libro requiere adaptación al runner y no es un segundo flujo listo para usar.
 
-### 5. Operación y despliegue, sesión 15
+### 5. Lecturas opcionales de operación y despliegue
 
 Elija una continuación: [escalar, actualizar, rollback y configuración](OPERACION.md) o [ambientes y ensayo de proxy TLS](DESPLIEGUE.md). Los objetos ConfigMap/Secret/PVC se muestran en una demo separada, sin atribuir persistencia a la agenda de la API.
 

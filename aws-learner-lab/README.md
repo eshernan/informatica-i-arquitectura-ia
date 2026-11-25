@@ -30,8 +30,8 @@ La evidencia del proyecto debe poder reproducirse con Docker o Podman, Compose y
 | 12 | 4 nov. | [Pruebas y entrega trazable](sesiones/12_distribuidos/README.md) | Pruebas, CI e imagen asociada al commit | Excelencia operacional |
 | 13 | 11 nov. | [Plan de configuración y despliegue](sesiones/13_api_eventos/README.md) | Clase suspendida. Contenidos integrados en la sesión 14 | Seguridad |
 | 14 | 18 nov. | [Clase integrada](sesiones/14_pruebas_entrega/README.md) y [preparación de EC2](sesiones/14_pruebas_entrega/PREPARACION_AWS_LEARNER_LAB.md) | Despliegue, logs, respaldo y restauración | Módulo 10: monitoreo y escalado |
-| 15 | 25 nov. | [Integración autónoma](sesiones/15_proyecto/README.md) | Versión candidata desde clon limpio | Aplicación de módulos 9–10 |
-| 16 | 2 dic. | [Demostración y cierre](sesiones/16_cierre/README.md) | Fallo, recuperación y defensa | Cierre y limpieza |
+| 15 | 25 nov. | [Secretos locales y sistemas distribuidos](sesiones/15_proyecto/README.md) | Diagrama, ADR, ficha de prueba y procedimiento de recuperación | Práctica local con valores ficticios |
+| 16 | 2 dic. | [Ejercicio del grupo completo](sesiones/16_cierre/README.md) | Integración desde clon limpio, fallo y restauración en una bitácora común | Ambiente local |
 
 ## Convenciones
 

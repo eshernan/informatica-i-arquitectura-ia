@@ -50,7 +50,7 @@ Ejecuta los pasos con la [guía práctica en EC2](TALLER_EC2.md). Usa solo la in
 
 La práctica por parejas distribuye 20 minutos para configuración y despliegue, 15 para diagnóstico y 20 para respaldo y verificación. Si no se ejecuta la consulta HTTP del destino, se registra que la comprobación quedó limitada a SQL. Las capturas y logs excluyen credenciales reales, cuerpos sensibles y datos personales.
 
-La restauración en otra base del mismo servidor demuestra recuperación lógica, sin demostrar recuperación del host ni del volumen. El ensayo en un volumen limpio separado queda para la jornada autónoma del 25 de noviembre, junto con los pendientes de disponibilidad real, logs correlacionados y parametrización. No se elimina el volumen de origen durante esta clase integrada.
+La restauración en otra base del mismo servidor demuestra recuperación lógica, sin demostrar recuperación del host ni del volumen. El [25 de noviembre](../15_proyecto/README.md) se retoma el ejercicio de secretos en local y se diseña la verificación del respaldo. El [2 de diciembre](../16_cierre/README.md) el grupo ensaya la restauración en un volumen limpio separado y registra las brechas de disponibilidad y de correlación de logs. No se elimina el volumen de origen durante esta clase integrada.
 
 ## Validación y evidencia
 

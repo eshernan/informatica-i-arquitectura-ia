@@ -2,7 +2,7 @@
 
 ## Alcance del proyecto
 
-Material de lectura después de sesión 14 y ampliación opcional de sesión 15. No se crean cuatro ambientes ni una plataforma de producción para completar la sesión 9.
+Material opcional de consulta sobre ambientes de despliegue. No se crean cuatro ambientes ni una plataforma de producción para completar la sesión 9.
 
 ![Sketch de la misma aplicación en distintos ambientes de despliegue](../../docs/imagenes/ambientes.jpg)
 

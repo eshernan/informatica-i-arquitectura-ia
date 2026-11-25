@@ -1,6 +1,6 @@
-# Operación: ampliaciones de sesión 15
+# Ampliación opcional de operación en Kubernetes
 
-El mínimo de sesión 14 es desplegar, acceder a la API y observar la recuperación de un Pod. Este documento amplía ese recorrido. Elija una etapa para el proyecto; no complete todas como requisito de la misma jornada.
+Esta lectura amplía la práctica opcional de Kubernetes. El [ejercicio colectivo del curso](../../aws-learner-lab/sesiones/16_cierre/README.md) usa Compose y PostgreSQL.
 
 ![Sketch de una aplicación ejecutada en un clúster Kubernetes](../../docs/imagenes/kubernetes.jpg)
 

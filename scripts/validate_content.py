@@ -35,10 +35,13 @@ TEACHING_GUIDES = {
         "Diagnóstico y recuperación de datos", "respaldo", "restauración",
     ),
     "aws-learner-lab/sesiones/15_proyecto/README.md": (
-        "Jornada autónoma de integración", "clon limpio", "versión candidata",
+        "última clase de contenido", "ejercicio local de secretos", "sistemas distribuidos",
+    ),
+    "aws-learner-lab/sesiones/15_proyecto/SESION_2026-11-25.md": (
+        "Distribución de los 240 minutos", "RPO", "RTO",
     ),
     "aws-learner-lab/sesiones/16_cierre/README.md": (
-        "Demostración de robustez", "fallo", "recuperación",
+        "todo el grupo", "clon limpio", "bitácora compartida", "restauración",
     ),
 }
 

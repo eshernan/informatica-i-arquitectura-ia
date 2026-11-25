@@ -73,7 +73,7 @@ El miércoles 7 de octubre corresponde a la Semana Universitaria y no se program
 | 12 | 4 nov. | Esteban Hernández | Pruebas automatizadas, CI e imagen trazable al commit |
 | 13 | 11 nov. | Esteban Hernández | Configuración segura, secretos y despliegue reproducible |
 | 14 | 18 nov. | Esteban Hernández | Diagnóstico, logs, medición, respaldo y restauración |
-| 15 | 25 nov. | Esteban Hernández | Última clase de contenido: secretos locales, CAP, bases de datos y procesamiento distribuido |
+| 15 | 25 nov. | Esteban Hernández | Última clase de contenido: sistemas distribuidos, CAP, datos y procesamiento; aplicación final y secretos locales |
 | 16 | 2 dic. | Esteban Hernández | Ejercicio colectivo de integración, incidente y recuperación |
 
 La descripción institucional completa se encuentra en la [agenda del segundo semestre de 2026](docs/AGENDA_16_SEMANAS.md). Si existe una diferencia entre una guía de laboratorio y la agenda, prevalecen el syllabus y las orientaciones del profesor titular.

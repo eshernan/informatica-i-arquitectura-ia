@@ -24,7 +24,7 @@ Entrega: pull request y evidencia Markdown
 Criterio de cierre: incremento demostrado y entorno local detenido
 ```
 
-El 25 de noviembre la última clase de contenido se desarrolla de 18:00 a 22:00. La plantilla de Vocareum usada el día 18 carecía del permiso para el servicio de secretos. La práctica de apertura usa Python y un archivo local con un valor ficticio.
+El 25 de noviembre la última clase de contenido se desarrolla de 18:00 a 22:00. La plantilla de Vocareum usada el día 18 carecía del permiso para el servicio de secretos. La práctica del bloque final usa Python y un archivo local con un valor ficticio.
 
 ## 3. Validación docente
 

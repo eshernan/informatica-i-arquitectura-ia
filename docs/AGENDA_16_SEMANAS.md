@@ -44,7 +44,7 @@ El primer bloque desarrolla los temas definidos por el profesor titular. El segu
 | 12 | 4 nov. | Esteban Hernández | Pruebas automatizadas y de desempeño, CI e imagen trazable al commit |
 | 13 | 11 nov. | Esteban Hernández | Clase suspendida. Configuración y despliegue se integran el 18 de noviembre |
 | 14 | 18 nov. | Esteban Hernández | Clase integrada: configuración, despliegue, diagnóstico, respaldo y restauración |
-| 15 | 25 nov. | Esteban Hernández | Última clase de contenido: secretos locales, CAP, bases de datos y procesamiento distribuido |
+| 15 | 25 nov. | Esteban Hernández | Última clase de contenido: sistemas distribuidos, CAP, datos y procesamiento; aplicación final y secretos locales |
 | 16 | 2 dic. | Esteban Hernández | Ejercicio colectivo de integración, incidente y recuperación |
 
 ## Uso de AWS Academy
@@ -94,7 +94,7 @@ La [ruta por sesiones](RUTA_CONTENEDORES.md) conserva una sola arquitectura y un
 - Sesión 12: convertir riesgos y casos conocidos en pruebas, evaluar desempeño, ejecutar CI y relacionar commit e imagen.
 - Sesión 13: separar configuración y secretos de la imagen, revisar permisos y reproducir el despliegue con migraciones.
 - Sesión 14: diagnosticar con logs y mediciones previas, y demostrar respaldo/restauración.
-- Sesión 15: ejercicio local de secretos, fundamentos de sistemas distribuidos y preparación de pruebas y recuperación.
+- Sesión 15: conceptos, principios, esquemas e implementaciones de sistemas distribuidos. El bloque final aplica lo aprendido al proyecto, retoma los secretos locales y prepara las pruebas.
 - Sesión 16: integración desde un clon limpio y ejercicio colectivo de fallo, recuperación y decisiones.
 
 Colas, una implementación serverless paralela y Kubernetes no forman parte de la ruta evaluable del segundo bloque.

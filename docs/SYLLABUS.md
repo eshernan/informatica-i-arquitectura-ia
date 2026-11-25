@@ -19,7 +19,7 @@ Requisitos, restricciones, atributos de calidad, compromisos, estilos, modularid
 
 Componentes, API, persistencia PostgreSQL, transacciones, concurrencia, idempotencia, control de versiones y pruebas automatizadas. Corresponde a los módulos 4, 6 y 7.
 
-El caso de sistemas distribuidos sigue una reserva entre Caddy, dos réplicas de la API y PostgreSQL. Se estudian las garantías de CAP durante una partición y los costos de coordinación en operación normal. En ejercicios de diseño se comparan fragmentación, replicación, cuórums y transacciones distribuidas. El tablero de ocupación permite contrastar MapReduce, consultas paralelas y flujos con eventos tardíos o duplicados.
+La clase de sistemas distribuidos sigue una medición meteorológica desde el sensor hasta el archivo y el mapa. Se estudian las garantías de CAP durante una partición y los costos de coordinación en operación normal. En ejercicios de diseño se comparan fragmentación, replicación, cuórums y transacciones distribuidas. El tablero meteorológico permite contrastar MapReduce, consultas paralelas y flujos con eventos tardíos o duplicados.
 
 ### 3. Entrega, operación y seguridad
 
@@ -42,7 +42,7 @@ Arquitectura objetivo, ADR, integración desde un clon limpio, fallo controlado,
 9. Gestionar configuración y secretos sin incorporarlos al código o la imagen.
 10. Defender decisiones y límites con evidencia reproducible.
 
-La [última clase de contenido del 25 de noviembre](../aws-learner-lab/sesiones/15_proyecto/README.md) comienza con un ejercicio local de secretos. El [2 de diciembre](../aws-learner-lab/sesiones/16_cierre/README.md) todo el grupo integra una versión y registra el resultado en una bitácora compartida.
+La [última clase de contenido del 25 de noviembre](../aws-learner-lab/sesiones/15_proyecto/README.md) cierra con la aplicación a LibreReserva y el ejercicio local de secretos. El [2 de diciembre](../aws-learner-lab/sesiones/16_cierre/README.md) todo el grupo integra una versión y registra el resultado en una bitácora compartida.
 
 ## Evaluación sugerida
 

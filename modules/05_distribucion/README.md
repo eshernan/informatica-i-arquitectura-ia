@@ -6,7 +6,7 @@ Elegir entre monolito modular, microservicios, eventos y funciones a partir de r
 
 ## Aplicación en la sesión del 25 de noviembre
 
-Siga una solicitud desde Caddy hasta una réplica de la API y PostgreSQL. Compare dos escrituras concurrentes con un reintento después de perder la respuesta. La [presentación y el ejercicio local](../../aws-learner-lab/sesiones/15_proyecto/README.md) desarrollan CAP con una lectura posterior a una escritura confirmada. Después se comparan Dynamo, Spanner y Snowflake, y se resuelve el conteo de ocupación por lote y por flujo de eventos.
+La [clase de sistemas distribuidos](../../aws-learner-lab/sesiones/15_proyecto/README.md) recorre una red de estaciones meteorológicas en cuatro niveles: conceptos, principios, esquemas e implementaciones. El bloque final aplica el mapa a LibreReserva y recupera el ejercicio local de secretos.
 
 ## Ejecución reemplazable y datos separados
 

@@ -19,7 +19,7 @@ Requisitos, restricciones, atributos de calidad, compromisos, estilos, modularid
 
 Componentes, API, persistencia PostgreSQL, transacciones, concurrencia, idempotencia, control de versiones y pruebas automatizadas. Corresponde a los módulos 4, 6 y 7.
 
-El caso de sistemas distribuidos sigue una reserva entre Caddy, dos réplicas de la API y PostgreSQL. Se estudian los mensajes entre procesos, la latencia, las escrituras concurrentes, los reintentos y los fallos parciales.
+El caso de sistemas distribuidos sigue una reserva entre Caddy, dos réplicas de la API y PostgreSQL. Se estudian las garantías de CAP durante una partición y los costos de coordinación en operación normal. En ejercicios de diseño se comparan fragmentación, replicación, cuórums y transacciones distribuidas. El tablero de ocupación permite contrastar MapReduce, consultas paralelas y flujos con eventos tardíos o duplicados.
 
 ### 3. Entrega, operación y seguridad
 

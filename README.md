@@ -73,7 +73,7 @@ El miércoles 7 de octubre corresponde a la Semana Universitaria y no se program
 | 12 | 4 nov. | Esteban Hernández | Pruebas automatizadas, CI e imagen trazable al commit |
 | 13 | 11 nov. | Esteban Hernández | Configuración segura, secretos y despliegue reproducible |
 | 14 | 18 nov. | Esteban Hernández | Diagnóstico, logs, medición, respaldo y restauración |
-| 15 | 25 nov. | Esteban Hernández | Última clase de contenido: secretos locales, sistemas distribuidos, pruebas, diagnóstico y recuperación |
+| 15 | 25 nov. | Esteban Hernández | Última clase de contenido: secretos locales, CAP, bases de datos y procesamiento distribuido |
 | 16 | 2 dic. | Esteban Hernández | Ejercicio colectivo de integración, incidente y recuperación |
 
 La descripción institucional completa se encuentra en la [agenda del segundo semestre de 2026](docs/AGENDA_16_SEMANAS.md). Si existe una diferencia entre una guía de laboratorio y la agenda, prevalecen el syllabus y las orientaciones del profesor titular.
@@ -111,7 +111,7 @@ Las rutas internas se presentan por propósito. El número histórico de la carp
 | 12 | TST · pruebas y entrega trazable | [Guía del 4 de noviembre](aws-learner-lab/sesiones/12_distribuidos/README.md), [ejercicios](modules/07_pruebas/EJERCICIOS_SESION12.md), [desempeño](modules/07_pruebas/PRUEBA_RENDIMIENTO.md), [evidencia](modules/07_pruebas/EVIDENCIA_SESION12.md) y [CI](.github/workflows/validate.yml) | Regresión detectada, medición de desempeño, pipeline e imagen asociada al commit |
 | 13 | CFG · configuración y despliegue seguro | [Plan del 11 de noviembre](aws-learner-lab/sesiones/13_api_eventos/README.md) | Clase suspendida. Contenidos integrados en la sesión 14 |
 | 14 | OPS · operación y recuperación | [Clase del 18 de noviembre](aws-learner-lab/sesiones/14_pruebas_entrega/README.md) y [preparación de EC2](aws-learner-lab/sesiones/14_pruebas_entrega/PREPARACION_AWS_LEARNER_LAB.md) | Despliegue, diagnóstico, respaldo y restauración verificada |
-| 15 | INT · cierre de contenido | [Guía y ejercicio del 25 de noviembre](aws-learner-lab/sesiones/15_proyecto/README.md) · [PowerPoint](aws-learner-lab/sesiones/15_proyecto/Configuracion_y_sistemas_distribuidos.pptx) | Secretos, sistemas distribuidos, pruebas y diagnóstico |
+| 15 | INT · cierre de contenido | [Guía y ejercicio del 25 de noviembre](aws-learner-lab/sesiones/15_proyecto/README.md) · [PowerPoint](aws-learner-lab/sesiones/15_proyecto/Sistemas_distribuidos_CAP_datos_y_procesamiento.pptx) | CAP y PACELC, bases distribuidas, procesamiento por lotes y por eventos |
 | 16 | CIE · ejercicio colectivo | [Guía de cierre](aws-learner-lab/sesiones/16_cierre/README.md) | Caso feliz, fallo, recuperación y decisiones defendidas |
 
 Los demás módulos se conservan como biblioteca del repositorio, pero no forman parte del recorrido evaluable de las semanas restantes.

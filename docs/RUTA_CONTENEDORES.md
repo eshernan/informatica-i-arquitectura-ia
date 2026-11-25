@@ -36,7 +36,7 @@ El objetivo no es declarar la arquitectura robusta, sino demostrar garantías: d
 | 12 · 4 nov. | ¿Cómo compruebo comportamiento y desempeño antes de entregar? | Pruebas por riesgo, desempeño, CI y etiqueta de commit | Prueba que detecta un fallo, medición declarada, ejecución CI e imagen identificada |
 | 13 · 11 nov. | ¿Cómo despliego sin incorporar secretos a la imagen? | Clase suspendida. Se integra en la sesión 14 | Configuración externa, permisos y migraciones |
 | 14 · 18 nov. | ¿Cómo diagnostico un fallo y recupero los datos? | Despliegue en EC2, logs, mediciones previas, respaldo y restauración | Caso de fallo diagnosticado, runbook y restauración verificada |
-| 15 · 25 nov. | ¿Cómo justificamos las garantías de la arquitectura? | Secretos locales, sistemas distribuidos y decisión arquitectónica | Diagrama, ADR, ficha de prueba y procedimiento |
+| 15 · 25 nov. | ¿Cómo justificamos las garantías de la arquitectura? | Secretos locales, CAP, bases de datos distribuidas y procesamiento de datos | Diagrama, ADR, ficha de prueba y procedimiento |
 | 16 · 2 dic. | ¿Puede todo el curso reproducir las garantías? | Un ejercicio colectivo desde clon limpio | Una bitácora común de pruebas, fallo y recuperación |
 
 ```mermaid

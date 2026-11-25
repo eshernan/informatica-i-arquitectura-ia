@@ -38,7 +38,7 @@ TEACHING_GUIDES = {
         "última clase de contenido", "ejercicio local de secretos", "sistemas distribuidos",
     ),
     "aws-learner-lab/sesiones/15_proyecto/SESION_2026-11-25.md": (
-        "Distribución de los 240 minutos", "RPO", "RTO",
+        "Distribución de los 240 minutos", "CAP", "PACELC", "cuórum", "MapReduce", "ventana",
     ),
     "aws-learner-lab/sesiones/16_cierre/README.md": (
         "todo el grupo", "clon limpio", "bitácora compartida", "restauración",

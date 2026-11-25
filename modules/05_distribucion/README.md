@@ -6,7 +6,7 @@ Elegir entre monolito modular, microservicios, eventos y funciones a partir de r
 
 ## Aplicación en la sesión del 25 de noviembre
 
-Siga una solicitud desde Caddy hasta una réplica de la API y PostgreSQL. Compare dos escrituras concurrentes con un reintento después de perder la respuesta. La [presentación y el ejercicio local](../../aws-learner-lab/sesiones/15_proyecto/README.md) incluyen los diagramas de secuencia, el ejemplo de latencia y el caso de fallo parcial.
+Siga una solicitud desde Caddy hasta una réplica de la API y PostgreSQL. Compare dos escrituras concurrentes con un reintento después de perder la respuesta. La [presentación y el ejercicio local](../../aws-learner-lab/sesiones/15_proyecto/README.md) desarrollan CAP con una lectura posterior a una escritura confirmada. Después se comparan Dynamo, Spanner y Snowflake, y se resuelve el conteo de ocupación por lote y por flujo de eventos.
 
 ## Ejecución reemplazable y datos separados
 

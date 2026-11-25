@@ -44,7 +44,7 @@ El primer bloque desarrolla los temas definidos por el profesor titular. El segu
 | 12 | 4 nov. | Esteban Hernández | Pruebas automatizadas y de desempeño, CI e imagen trazable al commit |
 | 13 | 11 nov. | Esteban Hernández | Clase suspendida. Configuración y despliegue se integran el 18 de noviembre |
 | 14 | 18 nov. | Esteban Hernández | Clase integrada: configuración, despliegue, diagnóstico, respaldo y restauración |
-| 15 | 25 nov. | Esteban Hernández | Última clase de contenido: secretos locales, sistemas distribuidos, pruebas, diagnóstico y recuperación |
+| 15 | 25 nov. | Esteban Hernández | Última clase de contenido: secretos locales, CAP, bases de datos y procesamiento distribuido |
 | 16 | 2 dic. | Esteban Hernández | Ejercicio colectivo de integración, incidente y recuperación |
 
 ## Uso de AWS Academy

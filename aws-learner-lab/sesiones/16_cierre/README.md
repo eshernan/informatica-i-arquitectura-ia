@@ -14,7 +14,7 @@ Traer de la [última clase de contenido](../15_proyecto/SESION_2026-11-25.md) el
 | 19:40–19:50 | Grupo | Pausa. |
 | 19:50–20:25 | Operación | Detener PostgreSQL, consultar vida, disponibilidad y reservas. Dibujar el último mensaje que llegó a cada componente. Registrar hora, rutas y respuestas. Recuperar la base y comprobar la reserva original. |
 | 20:25–21:20 | Datos y cliente | Pausar escrituras, guardar las filas ordenadas y crear el respaldo. Restaurar en una instancia con volumen vacío separado. Consultar por SQL y desde una API conectada al destino. Comparar identificadores e intervalos. |
-| 21:20–21:45 | Verificación y arquitectura | Relacionar cada garantía con una observación. Usar el ADR para explicar dónde se protege el intervalo y qué dependencia falló. |
+| 21:20–21:45 | Verificación y arquitectura | Relacionar cada garantía con una observación. Usar el ADR para explicar dónde se protege el intervalo y qué dependencia falló. Dibujar cómo cambiaría la decisión con dos copias separadas por un corte de red. Identificar qué lectura o escritura debería esperar y distinguir ese análisis de la caída observada en el PostgreSQL único. |
 | 21:45–22:00 | Grupo completo | Cerrar una bitácora común. Asignar responsable a cada brecha. Detener los servicios de práctica después de conservar la evidencia. |
 
 ## Reglas de relevo

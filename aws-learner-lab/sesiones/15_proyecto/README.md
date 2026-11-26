@@ -2,7 +2,7 @@
 
 El 25 de noviembre, de 18:00 a 22:00, la última clase de contenido sigue una red de estaciones meteorológicas para estudiar conceptos, principios, esquemas e implementaciones de sistemas distribuidos. Se analizan CAP y PACELC, bases distribuidas, procesamiento por lotes, por rondas y por eventos.
 
-- [Descargar el PowerPoint](Sistemas_distribuidos_CAP_datos_y_procesamiento.pptx).
+- [Descargar el PowerPoint](../../../presentaciones/15-sistemas-distribuidos.pptx).
 - [Consultar el horario, las consignas y las respuestas docentes](SESION_2026-11-25.md).
 - [Leer el módulo de sistemas distribuidos](../../../modules/05_distribucion/README.md).
 

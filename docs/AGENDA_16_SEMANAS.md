@@ -27,25 +27,27 @@ El primer bloque desarrolla los temas definidos por el profesor titular. El segu
 
 ## Programación
 
-| Semana | Fecha | Profesor | Tema |
-|---:|---|---|---|
-| 1 | 12 ago. | Carlos Montenegro | Modelo de software frente a arquitectura de software; evolución de las arquitecturas; cliente-servidor, multicapas y arquitectura web |
-| 2 | 19 ago. | Carlos Montenegro | UML y su papel en el desarrollo de software; introducción al repositorio |
-| 3 | 26 ago. | Carlos Montenegro | Paradigma de programación orientada a objetos; principios de POO y relación entre UML y POO |
-| 4 | 2 sep. | Carlos Montenegro | Lenguajes modernos orientados a objetos: Python y Java |
-| 5 | 9 sep. | Carlos Montenegro | Lenguajes modernos orientados a objetos: Python y Java |
-| 6 | 16 sep. | Carlos Montenegro | Lenguajes modernos orientados a objetos: Python y Java |
-| 7 | 23 sep. | Carlos Montenegro | Metapatrón MVC y manejo de comunicaciones |
-| 8 | 30 sep. | Carlos Montenegro | Evaluación del primer bloque |
-| — | 7 oct. | Semana Universitaria | No se programa una sesión ordinaria |
-| 9 | 14 oct. | Esteban Hernández | Docker: construcción de imagen, ejecución de LibreReserva y pruebas de despliegue local |
-| 10 | 27 oct. | Esteban Hernández · virtual | Balanceo y persistencia en archivos: dos instancias, Parquet compartido, concurrencia y bloqueo local |
-| 11 | 28 oct. | Esteban Hernández | Persistencia e integridad y temas de API confiable ya trabajados: idempotencia, errores, salud y recuperación |
-| 12 | 4 nov. | Esteban Hernández | Pruebas automatizadas y de desempeño, CI e imagen trazable al commit |
-| 13 | 11 nov. | Esteban Hernández | Clase suspendida. Configuración y despliegue se integran el 18 de noviembre |
-| 14 | 18 nov. | Esteban Hernández | Clase integrada: configuración, despliegue, diagnóstico, respaldo y restauración |
-| 15 | 25 nov. | Esteban Hernández | Última clase de contenido: sistemas distribuidos, CAP, datos y procesamiento; aplicación final y secretos locales |
-| 16 | 2 dic. | Esteban Hernández | Ejercicio colectivo de integración, incidente y recuperación |
+[Carpeta de presentaciones por clase](../presentaciones/README.md)
+
+| Semana | Fecha | Profesor | Tema | Presentaciones |
+|---:|---|---|---|---|
+| 1 | 12 ago. | Carlos Montenegro | Modelo de software frente a arquitectura de software; evolución de las arquitecturas; cliente-servidor, multicapas y arquitectura web | [Diseño del sistema](../presentaciones/01-03-diseno-del-sistema.ppt) |
+| 2 | 19 ago. | Carlos Montenegro | UML y su papel en el desarrollo de software; introducción al repositorio | [UML · diap. 94–101](../presentaciones/01-03-diseno-del-sistema.ppt) |
+| 3 | 26 ago. | Carlos Montenegro | Paradigma de programación orientada a objetos; principios de POO y relación entre UML y POO | [Objetos · diap. 26–27 y 100](../presentaciones/01-03-diseno-del-sistema.ppt) |
+| 4 | 2 sep. | Carlos Montenegro | Lenguajes modernos orientados a objetos: Python y Java | Sin diapositivas localizadas |
+| 5 | 9 sep. | Carlos Montenegro | Lenguajes modernos orientados a objetos: Python y Java | Sin diapositivas localizadas |
+| 6 | 16 sep. | Carlos Montenegro | Lenguajes modernos orientados a objetos: Python y Java | Sin diapositivas localizadas |
+| 7 | 23 sep. | Carlos Montenegro | Metapatrón MVC y manejo de comunicaciones | [MVC · apoyo, diap. 104–108](../presentaciones/01-03-diseno-del-sistema.ppt) |
+| 8 | 30 sep. | Carlos Montenegro | Evaluación del primer bloque | Evaluación |
+| — | 7 oct. | Semana Universitaria | No se programa una sesión ordinaria | Sin clase |
+| 9 | 14 oct. | Esteban Hernández | Docker: construcción de imagen, ejecución de LibreReserva y pruebas de despliegue local | [Clase](../presentaciones/09-contenedores-con-librereserva.pptx) · [Docker y Podman](../presentaciones/09-docker-y-podman.pptx) · [Despliegue](../presentaciones/09-contenedores-kubernetes-y-despliegue.pptx) |
+| 10 | 27 oct. | Esteban Hernández · virtual | Balanceo y persistencia en archivos: dos instancias, Parquet compartido, concurrencia y bloqueo local | [Estado y persistencia](../presentaciones/10-estado-persistencia-y-calidad.pptx) |
+| 11 | 28 oct. | Esteban Hernández | Persistencia e integridad y temas de API confiable ya trabajados: idempotencia, errores, salud y recuperación | [PostgreSQL](../presentaciones/11-persistencia-e-integridad-postgresql.pptx) |
+| 12 | 4 nov. | Esteban Hernández | Pruebas automatizadas y de desempeño, CI e imagen trazable al commit | [Pruebas y consultas seguras](../presentaciones/12-pruebas-y-consultas-seguras.pptx) |
+| 13 | 11 nov. | Esteban Hernández | Clase suspendida. Configuración y despliegue se integran el 18 de noviembre | [Clase integrada del 18 nov.](../presentaciones/14-configuracion-diagnostico-y-recuperacion.pptx) |
+| 14 | 18 nov. | Esteban Hernández | Clase integrada: configuración, despliegue, diagnóstico, respaldo y restauración | [Clase](../presentaciones/14-configuracion-diagnostico-y-recuperacion.pptx) · [Taller AWS](../presentaciones/14-taller-aws-learner-lab.pptx) |
+| 15 | 25 nov. | Esteban Hernández | Última clase de contenido: sistemas distribuidos, CAP, datos y procesamiento; aplicación final y secretos locales | [Sistemas distribuidos](../presentaciones/15-sistemas-distribuidos.pptx) |
+| 16 | 2 dic. | Esteban Hernández | Ejercicio colectivo de integración, incidente y recuperación | Ejercicio colectivo programado |
 
 ## Uso de AWS Academy
 

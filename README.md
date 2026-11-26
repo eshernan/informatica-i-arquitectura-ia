@@ -39,6 +39,8 @@ Referencias: [procesos sin estado](https://12factor.net/processes), [diseño par
 
 ## Agenda oficial del curso
 
+[Carpeta de presentaciones por clase](presentaciones/README.md)
+
 - Periodo: segundo semestre de 2026.
 - Horario de los encuentros: miércoles de 6:00 p. m. a 10:00 p. m.
 - Profesor titular: Dr. Carlos Montenegro Marín.
@@ -50,31 +52,31 @@ La secuencia conserva los contenidos definidos por el profesor titular. Los mate
 
 ### Unidad 1. Informática y conceptos básicos
 
-| Semana | Fecha | Profesor | Tema |
-|---:|---|---|---|
-| 1 | 12 ago. | Carlos Montenegro | Modelo de software frente a arquitectura de software; evolución de las arquitecturas; cliente-servidor, multicapas y arquitectura web |
-| 2 | 19 ago. | Carlos Montenegro | UML y su papel en el desarrollo de software; introducción al repositorio |
-| 3 | 26 ago. | Carlos Montenegro | Paradigma de programación orientada a objetos; principios de POO y relación entre UML y POO |
-| 4 | 2 sep. | Carlos Montenegro | Lenguajes modernos orientados a objetos: Python y Java |
-| 5 | 9 sep. | Carlos Montenegro | Lenguajes modernos orientados a objetos: Python y Java |
-| 6 | 16 sep. | Carlos Montenegro | Lenguajes modernos orientados a objetos: Python y Java |
-| 7 | 23 sep. | Carlos Montenegro | Metapatrón MVC y manejo de comunicaciones |
-| 8 | 30 sep. | Carlos Montenegro | Evaluación del primer bloque |
+| Semana | Fecha | Profesor | Tema | Presentaciones |
+|---:|---|---|---|---|
+| 1 | 12 ago. | Carlos Montenegro | Modelo de software frente a arquitectura de software; evolución de las arquitecturas; cliente-servidor, multicapas y arquitectura web | [Diseño del sistema](presentaciones/01-03-diseno-del-sistema.ppt) |
+| 2 | 19 ago. | Carlos Montenegro | UML y su papel en el desarrollo de software; introducción al repositorio | [UML · diap. 94–101](presentaciones/01-03-diseno-del-sistema.ppt) |
+| 3 | 26 ago. | Carlos Montenegro | Paradigma de programación orientada a objetos; principios de POO y relación entre UML y POO | [Objetos · diap. 26–27 y 100](presentaciones/01-03-diseno-del-sistema.ppt) |
+| 4 | 2 sep. | Carlos Montenegro | Lenguajes modernos orientados a objetos: Python y Java | Sin diapositivas localizadas |
+| 5 | 9 sep. | Carlos Montenegro | Lenguajes modernos orientados a objetos: Python y Java | Sin diapositivas localizadas |
+| 6 | 16 sep. | Carlos Montenegro | Lenguajes modernos orientados a objetos: Python y Java | Sin diapositivas localizadas |
+| 7 | 23 sep. | Carlos Montenegro | Metapatrón MVC y manejo de comunicaciones | [MVC · apoyo, diap. 104–108](presentaciones/01-03-diseno-del-sistema.ppt) |
+| 8 | 30 sep. | Carlos Montenegro | Evaluación del primer bloque | Evaluación |
 
 El miércoles 7 de octubre corresponde a la Semana Universitaria y no se programa una sesión ordinaria del curso.
 
 ### Unidad 2. Arquitectura de software
 
-| Semana | Fecha | Profesor | Tema y práctica asociada |
-|---:|---|---|---|
-| 9 | 14 oct. | Esteban Hernández | Docker: construcción de imagen, ejecución de LibreReserva y pruebas de despliegue local |
-| 10 | 27 oct. | Esteban Hernández · virtual | Balanceo y persistencia en archivos: dos instancias, Parquet compartido, concurrencia y bloqueo local |
-| 11 | 28 oct. | Esteban Hernández | Persistencia e integridad y temas de API confiable ya trabajados: idempotencia, errores, salud y recuperación |
-| 12 | 4 nov. | Esteban Hernández | Pruebas automatizadas, CI e imagen trazable al commit |
-| 13 | 11 nov. | Esteban Hernández | Configuración segura, secretos y despliegue reproducible |
-| 14 | 18 nov. | Esteban Hernández | Diagnóstico, logs, medición, respaldo y restauración |
-| 15 | 25 nov. | Esteban Hernández | Última clase de contenido: sistemas distribuidos, CAP, datos y procesamiento; aplicación final y secretos locales |
-| 16 | 2 dic. | Esteban Hernández | Ejercicio colectivo de integración, incidente y recuperación |
+| Semana | Fecha | Profesor | Tema y práctica asociada | Presentaciones |
+|---:|---|---|---|---|
+| 9 | 14 oct. | Esteban Hernández | Docker: construcción de imagen, ejecución de LibreReserva y pruebas de despliegue local | [Clase](presentaciones/09-contenedores-con-librereserva.pptx) · [Docker y Podman](presentaciones/09-docker-y-podman.pptx) · [Despliegue](presentaciones/09-contenedores-kubernetes-y-despliegue.pptx) |
+| 10 | 27 oct. | Esteban Hernández · virtual | Balanceo y persistencia en archivos: dos instancias, Parquet compartido, concurrencia y bloqueo local | [Estado y persistencia](presentaciones/10-estado-persistencia-y-calidad.pptx) |
+| 11 | 28 oct. | Esteban Hernández | Persistencia e integridad y temas de API confiable ya trabajados: idempotencia, errores, salud y recuperación | [PostgreSQL](presentaciones/11-persistencia-e-integridad-postgresql.pptx) |
+| 12 | 4 nov. | Esteban Hernández | Pruebas automatizadas, CI e imagen trazable al commit | [Pruebas y consultas seguras](presentaciones/12-pruebas-y-consultas-seguras.pptx) |
+| 13 | 11 nov. | Esteban Hernández | Clase suspendida. Configuración y despliegue se integran el 18 de noviembre | [Clase integrada del 18 nov.](presentaciones/14-configuracion-diagnostico-y-recuperacion.pptx) |
+| 14 | 18 nov. | Esteban Hernández | Clase integrada: configuración, despliegue, diagnóstico, respaldo y restauración | [Clase](presentaciones/14-configuracion-diagnostico-y-recuperacion.pptx) · [Taller AWS](presentaciones/14-taller-aws-learner-lab.pptx) |
+| 15 | 25 nov. | Esteban Hernández | Última clase de contenido: sistemas distribuidos, CAP, datos y procesamiento; aplicación final y secretos locales | [Sistemas distribuidos](presentaciones/15-sistemas-distribuidos.pptx) |
+| 16 | 2 dic. | Esteban Hernández | Ejercicio colectivo de integración, incidente y recuperación | Ejercicio colectivo programado |
 
 La descripción institucional completa se encuentra en la [agenda del segundo semestre de 2026](docs/AGENDA_16_SEMANAS.md). Si existe una diferencia entre una guía de laboratorio y la agenda, prevalecen el syllabus y las orientaciones del profesor titular.
 
@@ -111,7 +113,7 @@ Las rutas internas se presentan por propósito. El número histórico de la carp
 | 12 | TST · pruebas y entrega trazable | [Guía del 4 de noviembre](aws-learner-lab/sesiones/12_distribuidos/README.md), [ejercicios](modules/07_pruebas/EJERCICIOS_SESION12.md), [desempeño](modules/07_pruebas/PRUEBA_RENDIMIENTO.md), [evidencia](modules/07_pruebas/EVIDENCIA_SESION12.md) y [CI](.github/workflows/validate.yml) | Regresión detectada, medición de desempeño, pipeline e imagen asociada al commit |
 | 13 | CFG · configuración y despliegue seguro | [Plan del 11 de noviembre](aws-learner-lab/sesiones/13_api_eventos/README.md) | Clase suspendida. Contenidos integrados en la sesión 14 |
 | 14 | OPS · operación y recuperación | [Clase del 18 de noviembre](aws-learner-lab/sesiones/14_pruebas_entrega/README.md) y [preparación de EC2](aws-learner-lab/sesiones/14_pruebas_entrega/PREPARACION_AWS_LEARNER_LAB.md) | Despliegue, diagnóstico, respaldo y restauración verificada |
-| 15 | INT · cierre de contenido | [Guía y ejercicio del 25 de noviembre](aws-learner-lab/sesiones/15_proyecto/README.md) · [PowerPoint](aws-learner-lab/sesiones/15_proyecto/Sistemas_distribuidos_CAP_datos_y_procesamiento.pptx) | CAP y PACELC, bases distribuidas, procesamiento por lotes y por eventos |
+| 15 | INT · cierre de contenido | [Guía y ejercicio del 25 de noviembre](aws-learner-lab/sesiones/15_proyecto/README.md) · [PowerPoint](presentaciones/15-sistemas-distribuidos.pptx) | CAP y PACELC, bases distribuidas, procesamiento por lotes y por eventos |
 | 16 | CIE · ejercicio colectivo | [Guía de cierre](aws-learner-lab/sesiones/16_cierre/README.md) | Caso feliz, fallo, recuperación y decisiones defendidas |
 
 Los demás módulos se conservan como biblioteca del repositorio, pero no forman parte del recorrido evaluable de las semanas restantes.

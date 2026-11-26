@@ -4,6 +4,8 @@
 **Clase integrada:** configuración, despliegue, diagnóstico y recuperación de LibreReserva.
 **Resultado:** ejecutar una imagen identificada, explicar su configuración, diagnosticar un fallo de dependencia y comprobar una restauración.
 
+**Diapositivas:** [Configuración, diagnóstico y recuperación](../../../presentaciones/14-configuracion-diagnostico-y-recuperacion.pptx) · [Taller AWS Learner Lab](../../../presentaciones/14-taller-aws-learner-lab.pptx).
+
 ## Alcance ajustado
 
 El docente confirmó que la clase del 11 de noviembre se suspendió. Este encuentro incorpora los fundamentos de la [sesión 13](../13_api_eventos/README.md) y los temas esenciales de operación de hoy en un solo recorrido práctico.

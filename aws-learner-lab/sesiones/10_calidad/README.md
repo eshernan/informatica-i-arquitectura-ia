@@ -3,6 +3,8 @@
 **Fecha:** 27 de octubre de 2026, encuentro reprogramado de 6:00–10:00 p. m.
 **Resultado:** ejecutar dos instancias detrás de un balanceador, persistir reservas en un Parquet compartido y comprobar los efectos de las escrituras concurrentes con y sin bloqueo local.
 
+**Diapositivas:** [Estado, persistencia y atributos de calidad](../../../presentaciones/10-estado-persistencia-y-calidad.pptx).
+
 ## Relación con AWS Academy
 
 El módulo 9 de Cloud Foundations aporta el marco de arquitectura en la nube. Sus principios se aplican como preguntas sobre LibreReserva; no se crean recursos AWS ni se diseña una segunda implementación.

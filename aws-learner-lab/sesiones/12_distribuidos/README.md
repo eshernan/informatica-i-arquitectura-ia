@@ -3,6 +3,8 @@
 **Fecha:** 4 de noviembre de 2026, 6:00–10:00 p. m.
 **Resultado:** convertir riesgos conocidos de LibreReserva en pruebas, comprobar que CI detecta una regresión y relacionar la imagen construida con el commit que la produjo.
 
+**Diapositivas:** [Pruebas y consultas seguras](../../../presentaciones/12-pruebas-y-consultas-seguras.pptx).
+
 ## Alcance
 
 **Cobertura confirmada el 9 de noviembre:** esta clase también incluyó pruebas de desempeño. El [ejercicio del módulo 7](../../../modules/07_pruebas/PRUEBA_RENDIMIENTO.md) prepara 100 reservas y ejecuta tandas de 1.000, 2.000, 5.000 y 6.000 consultas concurrentes, registrando respuestas y tiempos. Se conserva como material de consulta; las sesiones siguientes aprovechan su evidencia sin volver a dictar la introducción.

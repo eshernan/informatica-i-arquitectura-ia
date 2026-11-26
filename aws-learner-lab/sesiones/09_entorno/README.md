@@ -3,6 +3,8 @@
 **Fecha:** 14 de octubre de 2026, 6:00–10:00 p. m.
 **Resultado alcanzado:** construir la imagen de LibreReserva, ejecutar la API en un contenedor y probar su despliegue local.
 
+**Diapositivas:** [Contenedores con LibreReserva](../../../presentaciones/09-contenedores-con-librereserva.pptx) · [Docker y Podman](../../../presentaciones/09-docker-y-podman.pptx) · [Ambientes de despliegue](../../../presentaciones/09-contenedores-kubernetes-y-despliegue.pptx).
+
 Esta guía registra el alcance realmente trabajado. Git y los pull requests se usan en los incrementos posteriores como mecanismo de entrega, sin abrir una sesión de recuperación independiente.
 
 ## Práctica realizada

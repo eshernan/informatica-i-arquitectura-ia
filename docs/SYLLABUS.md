@@ -9,6 +9,8 @@
 - Modalidad: explicación breve, laboratorio acumulativo, validación y defensa.
 - Agenda: [Programación docente de las 16 semanas](AGENDA_16_SEMANAS.md).
 
+[Presentaciones organizadas por sesión](../presentaciones/README.md).
+
 ## Unidades
 
 ### 1. Fundamentos y decisiones arquitectónicas
